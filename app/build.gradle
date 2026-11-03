@@ -1,0 +1,67 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Values come from GitHub secrets / environment variables. Google's official TEST ad IDs are used when nothing is set.
+def cfg = { String key, String dflt -> System.getenv(key) ?: (project.findProperty(key) ?: dflt) }
+def TEST_APP_ID = 'ca-app-pub-3940256099942544~3347511713'
+def TEST_REWARDED = 'ca-app-pub-3940256099942544/5224354917'
+def TEST_INTERSTITIAL = 'ca-app-pub-3940256099942544/1033173712'
+def keystoreFile = rootProject.file('app/upload.jks')
+
+android {
+    namespace 'com.crystalhold.td'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.crystalhold.td'
+        minSdk 24
+        targetSdk 36
+        versionCode Integer.parseInt(cfg('VERSION_CODE', '1'))
+        versionName cfg('VERSION_NAME', '1.0.0')
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreFile.exists()) {
+                storeFile keystoreFile
+                storePassword cfg('KEYSTORE_PASSWORD', '')
+                keyAlias cfg('KEY_ALIAS', 'upload')
+                keyPassword cfg('KEY_PASSWORD', '')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (keystoreFile.exists()) signingConfig signingConfigs.release
+            manifestPlaceholders = [admobAppId: cfg('ADMOB_APP_ID', TEST_APP_ID)]
+            buildConfigField 'String', 'ADMOB_REWARDED', "\"${cfg('ADMOB_REWARDED_ID', TEST_REWARDED)}\""
+            buildConfigField 'String', 'ADMOB_INTERSTITIAL', "\"${cfg('ADMOB_INTERSTITIAL_ID', TEST_INTERSTITIAL)}\""
+        }
+        debug {
+            manifestPlaceholders = [admobAppId: TEST_APP_ID]
+            buildConfigField 'String', 'ADMOB_REWARDED', "\"${TEST_REWARDED}\""
+            buildConfigField 'String', 'ADMOB_INTERSTITIAL', "\"${TEST_INTERSTITIAL}\""
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.activity:activity:1.10.1'
+    implementation 'androidx.core:core:1.16.0'
+    implementation 'androidx.webkit:webkit:1.12.1'
+    implementation 'com.google.android.gms:play-services-ads:25.5.0'
+    implementation 'com.google.android.ump:user-messaging-platform:3.2.0'
+    implementation 'com.android.billingclient:billing:8.3.0'
+}

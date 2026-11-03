@@ -1,0 +1,28 @@
+name: Unpack project zip
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack the uploaded zip into the repository
+        run: |
+          ZIP=$(find . -maxdepth 1 -name '*.zip' | head -1)
+          if [ -z "$ZIP" ]; then echo "No zip to unpack"; exit 0; fi
+          rm -rf /tmp/x && mkdir /tmp/x && unzip -q "$ZIP" -d /tmp/x
+          SRC=/tmp/x; [ -d /tmp/x/crystalhold ] && SRC=/tmp/x/crystalhold
+          rm -rf "$SRC/.github"
+          cp -a "$SRC/." .
+          git rm -q "$ZIP"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Unpack project files"
+          git push

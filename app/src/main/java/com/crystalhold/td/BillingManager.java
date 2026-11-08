@@ -34,7 +34,7 @@ import java.util.Set;
 /**
  * Google Play Billing (library 8).
  * Non-consumable: "remove_ads" (and later hero unlocks).
- * Consumable gem packs: "gems_s", "gems_m", "gems_l" - consumed right after purchase; the gems are kept
+ * Consumable gem packs: "gems_s", "gems_m", "gems_l", "gems_xl" - consumed right after purchase; the gems are kept
  * in SharedPreferences until the game collects them with takeGems(), so nothing is lost if the page reloads.
  * The game is told with window.__onStore(adFree, price, fresh) and window.__onGems().
  */
@@ -43,9 +43,10 @@ class BillingManager implements PurchasesUpdatedListener {
     static final String[] NON_CONSUMABLE = {"remove_ads"};
     static final Map<String, Integer> GEMS = new HashMap<>();
     static {
-        GEMS.put("gems_s", 120);
-        GEMS.put("gems_m", 350);
-        GEMS.put("gems_l", 800);
+        GEMS.put("gems_s", 100);
+        GEMS.put("gems_m", 300);
+        GEMS.put("gems_l", 700);
+        GEMS.put("gems_xl", 1600);
     }
 
     private final Activity activity;

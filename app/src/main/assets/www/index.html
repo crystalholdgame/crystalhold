@@ -2128,7 +2128,7 @@ function renderStoreBtns(){
 function audioHold(on){try{if(!AU.ctx)return;on?AU.ctx.suspend():AU.ctx.resume();}catch(e){}}
 /* ===== shop: gems, tools, rewarded ads, gem packs ===== */
 const ITEMS=[{id:'lives',ic:'❤️',cost:20},{id:'gold',ic:'💰',cost:20},{id:'freeze',ic:'❄️',cost:25},{id:'meteor',ic:'☄️',cost:25},{id:'shield',ic:'🛡️',cost:30}];
-const AD_GEMS=5,AD_GEMS_DAY=8,ITEM_MAX=2,GEMPACKS=[{id:'gems_s',n:120,ic:'💎'},{id:'gems_m',n:350,ic:'💎💎'},{id:'gems_l',n:800,ic:'💎💎💎'}];
+const AD_GEMS=5,AD_GEMS_DAY=8,ITEM_MAX=2,GEMPACKS=[{id:'gems_s',n:100,ic:'💎'},{id:'gems_m',n:300,ic:'💎💎'},{id:'gems_l',n:700,ic:'💎💎💎'},{id:'gems_xl',n:1600,ic:'👑💎'}];
 function gemInit(){if(S.gems===undefined)S.gems=30;S.inv=S.inv||{};}
 const todayKey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
 function adGemsLeft(){if(S.adDay!==todayKey()){S.adDay=todayKey();S.adN=0;}return Math.max(0,AD_GEMS_DAY-(S.adN||0));}

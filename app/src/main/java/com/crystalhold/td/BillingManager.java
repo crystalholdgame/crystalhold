@@ -40,7 +40,7 @@ import java.util.Set;
  */
 class BillingManager implements PurchasesUpdatedListener {
     static final String PRODUCT_ID = "remove_ads";
-    static final String[] NON_CONSUMABLE = {"remove_ads"};
+    static final String[] NON_CONSUMABLE = {"remove_ads", "hero_archer", "hero_ice", "hero_fire", "hero_thunder", "hero_laser", "hero_dragon", "hero_wolfm", "hero_hoop", "hero_goal", "heroes_pack"};
     static final Map<String, Integer> GEMS = new HashMap<>();
     static {
         GEMS.put("gems_s", 100);
@@ -58,6 +58,7 @@ class BillingManager implements PurchasesUpdatedListener {
     private final Map<String, ProductDetails> details = new HashMap<>();
     private final Map<String, String> prices = new HashMap<>();
     private final Set<String> consuming = new HashSet<>();
+    private final Set<String> owned = new HashSet<>();
     private boolean connecting;
 
     BillingManager(Activity activity, MainActivity.JsSink sink) {
@@ -65,6 +66,7 @@ class BillingManager implements PurchasesUpdatedListener {
         this.sink = sink;
         this.prefs = activity.getSharedPreferences("store", Activity.MODE_PRIVATE);
         this.adFree = prefs.getBoolean("ad_free", false);
+        this.owned.addAll(prefs.getStringSet("owned", new HashSet<>()));
         this.client = BillingClient.newBuilder(activity)
                 .setListener(this)
                 .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
@@ -80,6 +82,12 @@ class BillingManager implements PurchasesUpdatedListener {
     String price() {
         String p = prices.get(PRODUCT_ID);
         return p == null ? "" : p;
+    }
+
+    synchronized String ownedJson() {
+        org.json.JSONArray a = new org.json.JSONArray();
+        for (String id : owned) a.put(id);
+        return a.toString();
     }
 
     synchronized String pricesJson() {
@@ -150,16 +158,17 @@ class BillingManager implements PurchasesUpdatedListener {
         client.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build(),
                 (result, purchases) -> {
                     if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) return;
-                    boolean owned = false;
+                    boolean noAds = false;
+                    Set<String> now = new HashSet<>();
                     for (Purchase p : purchases) {
                         if (p.getPurchaseState() != Purchase.PurchaseState.PURCHASED) continue;
-                        if (p.getProducts().contains(PRODUCT_ID)) {
-                            owned = true;
-                            acknowledge(p);
-                        }
+                        for (String id : p.getProducts()) if (!GEMS.containsKey(id)) now.add(id);
+                        if (p.getProducts().contains(PRODUCT_ID)) noAds = true;
+                        if (!GEMS.containsKey(p.getProducts().get(0))) acknowledge(p);
                         grantGems(p); // a gem pack that was paid but never consumed (e.g. app closed)
                     }
-                    setAdFree(owned, false);
+                    setOwned(now);
+                    setAdFree(noAds, false);
                 });
     }
 
@@ -193,9 +202,18 @@ class BillingManager implements PurchasesUpdatedListener {
         if (code == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (Purchase p : purchases) {
                 if (p.getPurchaseState() != Purchase.PurchaseState.PURCHASED) continue;
-                if (p.getProducts().contains(PRODUCT_ID)) {
+                boolean nonCons = false;
+                for (String id : p.getProducts()) if (!GEMS.containsKey(id)) nonCons = true;
+                if (nonCons) {
                     acknowledge(p);
-                    setAdFree(true, true);
+                    Set<String> now;
+                    synchronized (this) {
+                        now = new HashSet<>(owned);
+                    }
+                    now.addAll(p.getProducts());
+                    setOwned(now);
+                    if (p.getProducts().contains(PRODUCT_ID)) setAdFree(true, true);
+                    else notifyGame(true);
                 }
                 grantGems(p);
             }
@@ -232,6 +250,12 @@ class BillingManager implements PurchasesUpdatedListener {
     private void acknowledge(Purchase p) {
         if (p.isAcknowledged()) return;
         client.acknowledgePurchase(AcknowledgePurchaseParams.newBuilder().setPurchaseToken(p.getPurchaseToken()).build(), r -> { });
+    }
+
+    private synchronized void setOwned(Set<String> ids) {
+        owned.clear();
+        owned.addAll(ids);
+        prefs.edit().putStringSet("owned", new HashSet<>(ids)).apply();
     }
 
     private void setAdFree(boolean value, boolean fresh) {

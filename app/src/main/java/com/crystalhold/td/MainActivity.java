@@ -179,6 +179,11 @@ public class MainActivity extends ComponentActivity {
         }
 
         @JavascriptInterface
+        public String owned() {
+            return billing != null ? billing.ownedJson() : "[]";
+        }
+
+        @JavascriptInterface
         public int takeGems() {
             return billing != null ? billing.takeGems() : 0;
         }

@@ -169,6 +169,21 @@ public class MainActivity extends ComponentActivity {
         }
 
         @JavascriptInterface
+        public void buy(String productId) {
+            runOnUiThread(() -> billing.buy(productId));
+        }
+
+        @JavascriptInterface
+        public String prices() {
+            return billing != null ? billing.pricesJson() : "{}";
+        }
+
+        @JavascriptInterface
+        public int takeGems() {
+            return billing != null ? billing.takeGems() : 0;
+        }
+
+        @JavascriptInterface
         public boolean privacyRequired() {
             return ads != null && ads.privacyOptionsRequired();
         }

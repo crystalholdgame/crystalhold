@@ -147,6 +147,17 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .region-head b{font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--gold-2)}
 .region-head span{font-size:13px;color:var(--dim);font-weight:800;font-variant-numeric:tabular-nums}
 .level-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:100%;max-width:520px}
+.gem-n{font-weight:900;color:#bff7ff;white-space:nowrap}.gem-n.big{margin-inline-start:auto;font-size:20px}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;width:100%;max-width:820px}
+.shop-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:16px;border:1.5px solid var(--rim);background:linear-gradient(180deg,rgba(61,46,32,.92),rgba(33,24,16,.92));text-align:center;position:relative}
+.shop-card .ic{font-size:34px;line-height:1.1}.shop-card b{font-family:var(--f-display);font-weight:400;font-size:17px;color:var(--gold-2)}
+.shop-card .d{font-size:11.5px;color:var(--dim);line-height:1.35;min-height:2.7em}.shop-card .own{position:absolute;top:6px;inset-inline-end:8px;font-weight:900;font-size:12px;color:#c8ffd8;background:#1f6a3a;border-radius:999px;padding:1px 8px}
+.shop-card button{margin-top:4px;min-width:110px;height:38px;border-radius:12px;border:0;font-weight:900;font-size:15px;background:linear-gradient(180deg,#7ff0ff,#2aa8c4);color:#06252c}
+.shop-card button.money{background:linear-gradient(180deg,#ffdc8f,#e39a34);color:#3a2205}.shop-card button:disabled{filter:grayscale(1) brightness(.7)}
+.item-bar{display:flex;gap:6px;flex:none;margin-inline-start:10px}
+.item-btn{position:relative;width:46px;height:46px;border-radius:12px;border:1.5px solid #6fd8e8;background:radial-gradient(circle at 40% 30%,#24545e,#0e2328 75%);font-size:23px;display:grid;place-items:center;padding:0;color:#fff}
+.item-btn .n{position:absolute;bottom:-6px;inset-inline-end:-6px;min-width:18px;height:18px;border-radius:9px;background:#e9b44c;color:#2a1a05;font-size:11px;font-weight:900;display:grid;place-items:center;padding:0 4px}
+.item-btn.used{filter:grayscale(1) brightness(.6)}.item-btn.on{box-shadow:0 0 0 3px #7dffd8,0 0 16px #7dffd8}
 .screen.scroll>*{flex-shrink:0}
 @media (orientation:landscape) and (max-height:520px){.level-grid{grid-template-columns:repeat(10,minmax(0,1fr));max-width:820px;gap:6px}.level-grid>*{aspect-ratio:auto!important;min-height:58px}#levels .hero-pick,#levels .region-tabs,#levels .region-head,#levels .lvl-info{max-width:820px;width:100%}}
 .ltile{position:relative;aspect-ratio:1/1.05;max-width:100%;border-radius:14px;border:1.5px solid var(--rim);background:linear-gradient(180deg,rgba(61,46,32,.95),rgba(33,24,16,.95));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px}
@@ -251,6 +262,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <footer class="dock">
     <button class="hero-btn" id="heroBtn"><canvas id="heroFace"></canvas><span class="dead" id="heroDead" hidden></span><span class="lv" id="heroLv">1</span></button>
     <div class="skills" id="skills"></div>
+    <div class="item-bar" id="itemBar"></div>
     <button class="wave-btn" id="waveBtn"><span class="wb-main"></span><span class="wb-sub"></span></button>
   </footer>
   <div class="sheet" id="buildSheet" hidden>
@@ -270,6 +282,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <span class="star-total"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span id="menuStars">0/300</span></span>
     <button class="btn" id="playBtn" data-t="play"></button>
     <button class="btn ghost" id="upgBtn" data-t="upgrades"></button>
+    <button class="btn ghost shop-open" id="shopBtn"><span data-t="shop"></span> <b class="gem-n">💎 <span class="gemCount">0</span></b></button>
     <div class="row"><button class="btn ghost" id="soundBtn"></button><button class="btn ghost" id="musicBtn"></button></div>
     <div class="row" hidden><button class="btn ghost" id="gfxBtn"></button></div>
     <div class="row"><button class="btn ghost" id="removeAdsBtn" hidden></button><button class="btn ghost" id="privacyBtn" data-t="privacy" hidden></button></div>
@@ -291,6 +304,13 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <p class="upg-hint" data-t="upgHint"></p>
     <div class="upg-list" id="upgList"></div>
     <button class="btn ghost" id="upgReset" data-t="resetUpg"></button>
+  </section>
+  <section class="screen scroll" id="shopScr" hidden>
+    <div class="scr-head"><button class="icon-btn wood back" id="shopBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button><h2 data-t="shop"></h2><b class="gem-n big">💎 <span class="gemCount">0</span></b></div>
+    <p class="upg-hint" data-t="shopHint"></p>
+    <div class="shop-grid" id="shopItems"></div>
+    <div class="sec-label" data-t="getGems"></div>
+    <div class="shop-grid" id="shopGems"></div>
   </section>
   <section class="screen" id="pauseScr" hidden>
     <h2 class="scr-title" data-t="pauseT"></h2>
@@ -343,6 +363,17 @@ const COIN='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="curre
 /* ================= i18n ================= */
 const LANGS={ar:{dir:'rtl',label:'العربية'},en:{dir:'ltr',label:'English'},no:{dir:'ltr',label:'Norsk'}};
 const STR={
+  shop:['المتجر','Shop','Butikk'],shopHint:['أدوات تساعدك في المراحل الصعبة. يمكنك استعمال كل أداة مرتين في المرحلة.','Tools for the hard levels. Each tool can be used twice per level.','Verktøy for vanskelige brett. Hvert verktøy kan brukes to ganger per brett.'],
+  getGems:['احصل على جواهر','Get gems','Få edelsteiner'],buyN:['شراء','Buy','Kjøp'],ownN:['لديك {0}','You have {0}','Du har {0}'],
+  it_lives:['+5 أرواح','+5 lives','+5 liv'],it_livesD:['يضيف 5 أرواح للكريستال فورًا','Adds 5 lives to the crystal at once','Gir krystallen 5 liv med en gang'],
+  it_gold:['+300 ذهب','+300 gold','+300 gull'],it_goldD:['ذهب إضافي لبناء الأبراج وتطويرها','Extra gold for building and upgrading','Ekstra gull til å bygge og oppgradere'],
+  it_freeze:['قنبلة الجليد','Freeze bomb','Frysebombe'],it_freezeD:['تجمّد كل الوحوش 5 ثوانٍ','Freezes every monster for 5 seconds','Fryser alle monstre i 5 sekunder'],
+  it_meteor:['النيزك','Meteor','Meteor'],it_meteorD:['ضربة هائلة على مكان تختاره','A huge strike where you tap','Et enormt nedslag der du trykker'],
+  it_shield:['درع الكريستال','Crystal shield','Krystallskjold'],it_shieldD:['لا تخسر أرواحًا لمدة 15 ثانية','No lives lost for 15 seconds','Ingen liv tapes i 15 sekunder'],
+  adGems:['شاهد إعلانًا: +{0} 💎','Watch an ad: +{0} 💎','Se en reklame: +{0} 💎'],adGemsLeft:['{0} متبقية اليوم','{0} left today','{0} igjen i dag'],adGemsNone:['عُد غدًا لمزيد من الجواهر','Come back tomorrow for more gems','Kom tilbake i morgen for flere edelsteiner'],
+  gemPack:['{0} جوهرة','{0} gems','{0} edelsteiner'],gemsGot:['+{0} 💎','+{0} 💎','+{0} 💎'],notEnoughGems:['جواهر غير كافية','Not enough gems','Ikke nok edelsteiner'],
+  itemLimit:['استعملتها مرتين في هذه المرحلة','Used twice this level','Brukt to ganger på dette brettet'],tapMeteor:['اضغط على الخريطة لإسقاط النيزك','Tap the map to drop the meteor','Trykk på kartet for å slippe meteoren'],
+  recItems:['💎 مرحلة صعبة: أدوات المتجر قد تساعدك هنا','💎 Hard level: shop tools can help here','💎 Vanskelig brett: verktøy fra butikken kan hjelpe'],shieldOn:['درع الكريستال!','Crystal shield!','Krystallskjold!'],
   assistBtn:['محاولة أسهل (وحوش أضعف 25% و+5 أرواح، نجمتان كحد أقصى)','Easier try (25% weaker monsters, +5 lives, max 2 stars)','Enklere forsøk (25 % svakere monstre, +5 liv, maks 2 stjerner)'],
   assistOn:['وضع المساعدة','Assist mode','Hjelpemodus'],
   title1:['حُرّاس','Crystalhold','Crystalhold'],title2:['الكريستال','Tower Defense','Tårnforsvar'],
@@ -1137,6 +1168,8 @@ function useSkill(i){
   if(sk.id==='nova'){snowFx(h.x,h.y,40,2.6,1.4,.1);mistFx(h.x,h.y,8,.5,.2);groundFx(h.x,h.y,2.6,'ice',3);for(const e of G.enemies)if(!e.dead&&Math.hypot(e.x-h.x,e.y-h.y)<2.8){e.frozenT=2.5;iceShards(e.x,e.y,5,.4);if(!e.fly)iceSpikes(e.x,e.y,4,e.r*1.2);hurt(e,36*sc,'energy',{byHero:true,src:'ice'});}ringFx(h.x,h.y,'#dff4ff',.2,2.8,.6,.12);for(let k=0;k<30&&canAdd();k++){const a=Math.random()*6.28,r=Math.random()*2.8;G.parts.push({k:'spark',x:h.x+Math.cos(a)*r,y:h.y+Math.sin(a)*r,h:.1,vx:0,vy:0,vh:1.2,g:0,life:.8,max:.8,size:.08,color:'#e8f7ff',drag:0});}sfx('freeze',h.x);}
 }
 function castTarget(x,y){
+  if(G.targeting==='meteor'){dropMeteor(x,y);return;}
+  if(G.targeting===null||G.targeting===undefined)return;
   const i=G.targeting;G.targeting=null;showHint(null);const h=G.hero,sk=HEROES[h.type].skills[i];if(h.dead)return;h.cd[i]=sk.cd*G.bn.skill;const sc=skillScale();
   if(sk.id==='sky'){G.meteors.push({x,y,t:0,dur:.55,kind:'sword',dmg:150*sc,rad:1.4,stun:1.3});sfx('sky',x);}
   if(sk.id==='fireball'){h.atkAnim=1;G.projs.push({k:'fireball',sx:h.x,sy:h.y,ex:x,ey:y,x:h.x,y:h.y,h0:.7,t:0,ft:.45,h:.9,dmg:85*sc,rad:1.1});sfx('fireball',h.x);}
@@ -1149,6 +1182,7 @@ function castTarget(x,y){
   if(sk.id==='rain'){for(let k=0;k<5;k++){const a=Math.random()*6.28,r=Math.random()*1.3;G.meteors.push({x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,t:-k*.25,dur:.5,kind:'rock',dmg:55*sc,rad:.85});}sfx('meteor',x);}
 }
 function update(dt){
+  if(G&&G.shieldT>0){G.shieldT-=dt;if(Math.random()<dt*6){const c=castlePos();ringFx(c.x,c.y,'#9fe6ff',.9,1.3,.5,.05);}}
   G.time+=dt;
   while(G.queue.length&&G.queue[0].t<=G.time){const q=G.queue.shift();spawnEnemy(q.type,undefined,q.pi);}
   if(!G.demo&&!G.over&&G.autoT&&G.time>=G.autoT){G.autoT=null;if(G.wave>=1&&G.wave<G.waves&&G.queue.length===0)startWave();}
@@ -1196,7 +1230,7 @@ function update(dt){
 }
 function leak(e){
   if(G.demo||G.over)return;
-  if(window.LEAKS)LEAKS.push(e.type+(e.fly?'^':'')+'@'+G.wave+'p'+e.pi);G.lives=Math.max(0,G.lives-e.lives);G.castleHit=.5;shakeIt(.3);const c=castlePos();sfx('leak',c.x);
+  if(window.LEAKS)LEAKS.push(e.type+(e.fly?'^':'')+'@'+G.wave+'p'+e.pi);if(G.shieldT>0){const c=castlePos();ringFx(c.x,c.y,'#9fe6ff',.2,1.4,.4,.08);return;}G.lives=Math.max(0,G.lives-e.lives);G.castleHit=.5;shakeIt(.3);const c=castlePos();sfx('leak',c.x);
   debris(c.x,c.y,'#9a948a',8,3,.6);
   try{navigator.vibrate&&navigator.vibrate(60);}catch(err){}
   if(G.lives<=0){G.over=true;smokeFx(c.x,c.y,16,.5,true,.5);debris(c.x,c.y,'#8a847a',24,5,.8);flashFx(c.x,c.y,2,'#ff7a2a',.4,.8);shakeIt(.8);const g0=G;setTimeout(()=>{if(G!==g0)return;if(APP&&!G.revived)offerRevive();else endLevel(false);},1400);}
@@ -1932,8 +1966,8 @@ function onTap(ev){
 }
 function banner(main,sub){const b=$('#banner');b.innerHTML=`<b>${main}</b>${sub?`<span>${sub}</span>`:''}`;b.classList.remove('show');void b.offsetWidth;b.classList.add('show');}
 function showHint(s){const h=$('#hint');if(!s){h.hidden=true;return;}h.textContent=s;h.hidden=false;}
-const SCREENS=['menu','levels','upgScr','pauseScr','endScr','reviveScr'];
-function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','levels','upgScr'].includes(id));if(id==='menu')$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;}
+const SCREENS=['menu','levels','upgScr','shopScr','pauseScr','endScr','reviveScr'];
+function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','levels','upgScr','shopScr'].includes(id));updGems();if(id==='menu')$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;}
 function demoLevel(){return Math.min(S.unlocked-1,NLEV-1);}
 function toMenu(screen){closeSheets();showHint(null);newGame(demoLevel(),true);if(screen==='levels')renderLevels();showScreen(screen);}
 /* language */
@@ -1972,13 +2006,14 @@ function renderLevels(){
   renderInfo();
 }
 function renderInfo(){
-  const i=viewSel!==null?viewSel:S.sel,lv=getLevel(i),box=$('#lvlInfo'),inRegion=Math.floor(i/10)===curRegion,locked=i>=S.unlocked;
+  const i=viewSel!==null?viewSel:S.sel,lv=getLevel(i),hardLv=lv.boss||((window.AUTOMAPS&&AUTOMAPS[i]&&AUTOMAPS[i].diff)||0)>=.8,box=$('#lvlInfo'),inRegion=Math.floor(i/10)===curRegion,locked=i>=S.unlocked;
   if(!inRegion){box.hidden=true;return;}box.hidden=false;
   const mods=lv.mods.map(m=>`<span class="mod" title="${tx(MODS[m].desc)}">${tx(MODS[m].name)}: ${tx(MODS[m].desc)}</span>`).join('');
-  box.innerHTML=`<canvas></canvas><h3>${t('levelN',i+1)} · ${lv.name}</h3><div class="meta">${wavesLabel(lv.waves)} · ${t('plotsN',lv.maxP)} · ★ ${S.stars[i]||0}/3</div>${lv.dom?`<div class="meta feat">${t('domMon',tx(ACLS[lv.dom].name))}</div>`:''}${(lv.feat||[]).length?`<div class="meta feat">${t('featMon')} ${lv.feat.map(k=>tx(ENEMIES[k].name)).join(LANG==='ar'?'، ':', ')}</div>`:''}<div class="mods">${lv.boss?`<span class="mod boss">${t('bossLvl')}</span>`:''}${mods||(!lv.boss?`<span class="meta">${t('noMods')}</span>`:'')}</div><span></span><button class="btn go" id="goBtn"${locked?' disabled':''}>${locked?t('lockedLvl',S.unlocked):t('startBtn')}</button>${APP&&!locked?`<button class="btn ghost go2" id="goAdBtn">${t('goldBtn',bonusGold(i))}${adBadge()}</button>`:''}`;
+  box.innerHTML=`<canvas></canvas><h3>${t('levelN',i+1)} · ${lv.name}</h3><div class="meta">${wavesLabel(lv.waves)} · ${t('plotsN',lv.maxP)} · ★ ${S.stars[i]||0}/3</div>${lv.dom?`<div class="meta feat">${t('domMon',tx(ACLS[lv.dom].name))}</div>`:''}${(lv.feat||[]).length?`<div class="meta feat">${t('featMon')} ${lv.feat.map(k=>tx(ENEMIES[k].name)).join(LANG==='ar'?'، ':', ')}</div>`:''}<div class="mods">${lv.boss?`<span class="mod boss">${t('bossLvl')}</span>`:''}${mods||(!lv.boss?`<span class="meta">${t('noMods')}</span>`:'')}</div>${hardLv?`<button class="btn ghost shop-open" id="lvShopBtn">${t('recItems')} · 💎 <span class="gemCount">${S.gems||0}</span></button>`:''}<span></span><button class="btn go" id="goBtn"${locked?' disabled':''}>${locked?t('lockedLvl',S.unlocked):t('startBtn')}</button>${APP&&!locked?`<button class="btn ghost go2" id="goAdBtn">${t('goldBtn',bonusGold(i))}${adBadge()}</button>`:''}`;
   drawPreview(box.querySelector('canvas'),i);
   if(locked)return;
   $('#goBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');startLevel(i);});
+  const lsb=$('#lvShopBtn');if(lsb)lsb.addEventListener('click',()=>{sfx('ui');shopFrom='levels';renderShop();showScreen('shopScr');});
   if(APP)$('#goAdBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');watchAd('gold',ok=>{startLevel(i);if(ok){G.gold+=bonusGold(i);banner(t('goldN',bonusGold(i)),'');}});});
 }
 function drawPreview(cv,i){
@@ -2004,7 +2039,7 @@ function startLevel(i){
   if(needMap(i)&&!startLevel.wait){startLevel.wait=1;ensureMap(i,()=>{startLevel.wait=0;startLevel(i);});return;}
   newGame(i,false);closeSheets();showScreen(null);
   for(const k in hudCache)delete hudCache[k];waveKey='';lastGold=-1;lastHeroKey='';
-  buildSkills();buildTowerList();setSpeed(1);
+  buildSkills();buildTowerList();setSpeed(1);G.itemUse={};renderItemBar();
   const lv=G.lv;
   banner(lv.name,`${t('levelN',i+1)} · ${wavesLabel(lv.waves)}${G.assist?' · '+t('assistOn'):''}`);
   const msgs=[];const nt=TORDER.find(k=>TOWERS[k].unlock===i&&i>0);if(nt)msgs.push([t('newDef'),tx(TOWERS[nt].name)+' — '+tx(TOWERS[nt].desc)]);
@@ -2025,6 +2060,7 @@ function adviceHTML(i,losses){const lv=getLevel(i),mix=levelMix(i),sep=LANG==='a
   return `<b>${t('hintT')}</b><ul style="margin:6px 0 0;padding:0">${out.map(x=>`<li>${x}</li>`).join('')}</ul>`;}
 function endLevel(win){
   if(!G||G.demo)return;
+  const prevStars=S.stars[G.L]||0;
   const stars=win?Math.min(G.assist?2:3,(G.lives>=G.maxLives?3:G.lives>=G.maxLives*.5?2:1)):0,newStars=win?Math.max(0,stars-(S.stars[G.L]||0)):0;
   S.loss=S.loss||{};if(win)delete S.loss[G.L];else S.loss[G.L]=(S.loss[G.L]||0)+1;const losses=S.loss[G.L]||0;
   const before=S.unlocked;
@@ -2035,6 +2071,8 @@ function endLevel(win){
   $('#endStars').innerHTML=[0,1,2].map(j=>`<svg class="${j<stars?'on':''}" viewBox="0 0 24 24"><path d="${STAR}"/></svg>`).join('');
   $('#endSub').textContent=win?(last?t('winAllSub'):stars<3?t('win12'):t('win3')):t('loseSub',G.wave,G.waves);
   $('#endStats').innerHTML=`<div class="chip"><span>${t('kills')}</span><b>${G.kills}</b></div><div class="chip"><span>${t('livesL')}</span><b>${G.lives}/${G.maxLives}</b></div><div class="chip"><span>${tx(HEROES[G.hero.type].name)}</span><b>${t('heroLv',G.hero.lvl)}</b></div>`;
+  let gemGain=0;if(win){gemGain=2*newStars+(G.lv.boss&&prevStars===0?5:0);if(gemGain){gemInit();S.gems+=gemGain;save();}}
+  if(gemGain)$('#endStats').innerHTML+=`<div class="chip"><span>💎</span><b>+${gemGain}</b></div>`;
   $('#nextBtn').hidden=!(win&&!last);
   const xb=$('#xpAdBtn'),xg=Math.round(G.xpEarned||0);xb.hidden=!(APP&&win&&xg>0);xb.disabled=false;
   if(!xb.hidden){xb.innerHTML=t('xpBtn',xg)+adBadge();xb.onclick=()=>{xb.disabled=true;watchAd('xp',ok=>{if(ok){S.xp[G.hero.type]=(S.xp[G.hero.type]||0)+xg;save();xb.textContent=t('xpDone');sfx('level');}else xb.disabled=false;});};}
@@ -2056,6 +2094,9 @@ function toggleMusic(){S.music=!S.music;save();soundLabel();ensureAudio();busLev
 function pauseGame(){if(!G||G.demo||G.over||G.paused)return;G.paused=true;closeSheets();save();showScreen('pauseScr');}
 $('#playBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');curRegion=null;renderLevels();showScreen('levels');});
 $('#upgBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');renderUpg();showScreen('upgScr');});
+$('#shopBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');shopFrom='menu';renderShop();showScreen('shopScr');});
+$('#shopBack').addEventListener('click',()=>{sfx('ui');if(shopFrom==='levels'){renderLevels();}showScreen(shopFrom||'menu');});
+let shopFrom='menu';
 $('#upgBack').addEventListener('click',()=>{sfx('ui');showScreen('menu');});
 $('#levelsBack').addEventListener('click',()=>{sfx('ui');showScreen('menu');});
 $('#gfxBtn').addEventListener('click',()=>{const o=['high','med','low'];S.gfx=o[(o.indexOf(S.gfx)+1)%3];save();gfxLabel();setTimeout(()=>location.reload(),150);});
@@ -2085,6 +2126,47 @@ function renderStoreBtns(){
   pb.hidden=!appCall(()=>APP.privacyRequired(),false);
 }
 function audioHold(on){try{if(!AU.ctx)return;on?AU.ctx.suspend():AU.ctx.resume();}catch(e){}}
+/* ===== shop: gems, tools, rewarded ads, gem packs ===== */
+const ITEMS=[{id:'lives',ic:'❤️',cost:20},{id:'gold',ic:'💰',cost:20},{id:'freeze',ic:'❄️',cost:25},{id:'meteor',ic:'☄️',cost:25},{id:'shield',ic:'🛡️',cost:30}];
+const AD_GEMS=5,AD_GEMS_DAY=8,ITEM_MAX=2,GEMPACKS=[{id:'gems_s',n:120,ic:'💎'},{id:'gems_m',n:350,ic:'💎💎'},{id:'gems_l',n:800,ic:'💎💎💎'}];
+function gemInit(){if(S.gems===undefined)S.gems=30;S.inv=S.inv||{};}
+const todayKey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
+function adGemsLeft(){if(S.adDay!==todayKey()){S.adDay=todayKey();S.adN=0;}return Math.max(0,AD_GEMS_DAY-(S.adN||0));}
+function updGems(){document.querySelectorAll('.gemCount').forEach(e=>e.textContent=S.gems||0);}
+function addGems(n,show){S.gems=(S.gems||0)+n;save();updGems();if(show)banner(t('gemsGot',n),'');}
+const itemGold=()=>300+(G?Math.min(60,G.L)*10:0);
+function renderShop(){gemInit();updGems();if(APP){try{STORE.prices=JSON.parse(appCall(()=>APP.prices(),'{}')||'{}');}catch(e){}}const box=$('#shopItems');box.innerHTML='';
+  for(const it of ITEMS){const c=document.createElement('div');c.className='shop-card';const own=S.inv[it.id]||0;
+    c.innerHTML=`${own?`<span class="own">×${own}</span>`:''}<span class="ic">${it.ic}</span><b>${t('it_'+it.id)}</b><span class="d">${t('it_'+it.id+'D')}</span><button>💎 ${it.cost}</button>`;
+    const b=c.querySelector('button');b.disabled=(S.gems||0)<it.cost;b.addEventListener('click',()=>buyItem(it.id));box.appendChild(c);}
+  const gb=$('#shopGems');gb.innerHTML='';const left=adGemsLeft();
+  const ad=document.createElement('div');ad.className='shop-card';ad.innerHTML=`<span class="ic">🎬</span><b>${t('adGems',AD_GEMS)}</b><span class="d">${left?t('adGemsLeft',left):t('adGemsNone')}</span><button>${t('adGems',AD_GEMS)}</button>`;
+  const ab=ad.querySelector('button');ab.disabled=!left||!APP;ab.addEventListener('click',()=>{if(!adGemsLeft())return;ab.disabled=true;watchAd('gems',ok=>{if(ok){S.adN=(S.adN||0)+1;addGems(AD_GEMS,false);sfx('coin');}renderShop();});});gb.appendChild(ad);
+  if(APP)for(const pk of GEMPACKS){const pr=(STORE.prices||{})[pk.id]||'';const c=document.createElement('div');c.className='shop-card';
+    c.innerHTML=`<span class="ic">${pk.ic}</span><b>${t('gemPack',pk.n)}</b><span class="d"></span><button class="money">${pr||t('buyN')}</button>`;
+    c.querySelector('button').addEventListener('click',()=>{sfx('ui');appCall(()=>APP.buy(pk.id));});gb.appendChild(c);}
+}
+function buyItem(id){gemInit();const it=ITEMS.find(x=>x.id===id);if((S.gems||0)<it.cost){showHint(t('notEnoughGems'));setTimeout(()=>showHint(null),1800);return;}
+  S.gems-=it.cost;S.inv[id]=(S.inv[id]||0)+1;save();sfx('coin');renderShop();}
+function renderItemBar(){gemInit();const bar=$('#itemBar');if(!bar)return;bar.innerHTML='';if(!G||G.demo)return;
+  for(const it of ITEMS){const own=S.inv[it.id]||0;if(!own&&!(G.itemUse&&G.itemUse[it.id]))continue;const b=document.createElement('button');b.className='item-btn';b.dataset.id=it.id;
+    const used=(G.itemUse&&G.itemUse[it.id])||0;b.classList.toggle('used',used>=ITEM_MAX||!own);b.classList.toggle('on',G.targeting==='meteor'&&it.id==='meteor');
+    b.innerHTML=`${it.ic}<span class="n">${own}</span>`;b.addEventListener('click',ev=>{ev.stopPropagation();useItem(it.id);});bar.appendChild(b);}}
+function useItem(id){if(!G||G.demo||G.over||G.paused)return;gemInit();G.itemUse=G.itemUse||{};
+  if(id==='meteor'&&G.targeting==='meteor'){G.targeting=null;showHint(null);renderItemBar();return;}
+  if(!(S.inv[id]>0))return;if((G.itemUse[id]||0)>=ITEM_MAX){showHint(t('itemLimit'));setTimeout(()=>showHint(null),1800);return;}
+  ensureAudio();
+  if(id==='meteor'){G.targeting='meteor';closeSheets();showHint(t('tapMeteor'));sfx('ui');renderItemBar();return;}
+  consumeItem(id);
+  if(id==='lives'){G.lives+=5;const c=castlePos();ringFx(c.x,c.y,'#ff8aa0',.2,1.6,.6,.1);burst(c.x,c.y,'#ff8aa0',18,3,.12,.6,.8);sfx('level');banner(t('it_lives'),'');}
+  if(id==='gold'){const g=itemGold();G.gold+=g;sfx('coin');banner('+'+g+' 🪙','');}
+  if(id==='freeze'){for(const e of G.enemies)if(!e.dead){e.frozenT=Math.max(e.frozenT,5);iceShards(e.x,e.y,4,.35);}shakeIt(.25);sfx('freeze');banner(t('it_freeze'),'');}
+  if(id==='shield'){G.shieldT=15;const c=castlePos();ringFx(c.x,c.y,'#9fe6ff',.3,2.2,.8,.14);sfx('cry',c.x);banner(t('shieldOn'),'');}
+}
+function consumeItem(id){S.inv[id]=Math.max(0,(S.inv[id]||0)-1);G.itemUse[id]=(G.itemUse[id]||0)+1;save();renderItemBar();}
+function dropMeteor(x,y){consumeItem('meteor');G.targeting=null;showHint(null);const d=320*G.lv.hp*Math.pow(playerPow(),.8);
+  for(let k=0;k<3;k++)G.meteors.push({x:x+(k?(Math.random()-.5)*1.2:0),y:y+(k?(Math.random()-.5)*1.2:0),t:-k*.18,dur:.6,kind:'rock',dmg:k?d*.35:d,rad:k?1.1:1.9});sfx('fireball',x);renderItemBar();}
+window.__onGems=function(){const n=appCall(()=>APP.takeGems(),0)|0;if(n>0){addGems(n,true);sfx('level');if(!$('#shopScr').hidden)renderShop();}};
 function watchAd(tag,cb){
   if(!APP){cb(false);return;}
   if(STORE.adFree){cb(true);return;}
@@ -2099,7 +2181,7 @@ function maybeInterstitial(){
   adShowing=true;audioHold(true);if(!appCall(()=>{APP.interstitial();return true;},false)){adShowing=false;audioHold(false);}
 }
 window.__onInterDone=function(){adShowing=false;audioHold(false);};
-window.__onStore=function(adFree,price,fresh){const was=STORE.adFree;STORE.adFree=!!adFree;STORE.price=price||'';renderStoreBtns();if(STORE.adFree&&!was&&fresh)banner(t('adFreeThanks'),'');if(!$('#levels').hidden)renderInfo();};
+window.__onStore=function(adFree,price,fresh){const was=STORE.adFree;STORE.adFree=!!adFree;STORE.price=price||'';try{STORE.prices=JSON.parse(appCall(()=>APP.prices(),'{}')||'{}');}catch(e){}window.__onGems();if(!$('#shopScr').hidden)renderShop();renderStoreBtns();if(STORE.adFree&&!was&&fresh)banner(t('adFreeThanks'),'');if(!$('#levels').hidden)renderInfo();};
 function offerRevive(){
   G.paused=true;closeSheets();
   $('#reviveScr').querySelector('p').textContent=STORE.adFree?t('reviveSFree'):reviveGold()?t('reviveS2',reviveLives(),reviveGold()):t('reviveS');
@@ -2151,6 +2233,7 @@ new ResizeObserver(resize).observe($('#stage'));
 newGame(demoLevel(),true);
 showScreen('menu');
 requestAnimationFrame(frame);
+try{gemInit();updGems();}catch(e){}
 window.__booted=true;
 </script>
 

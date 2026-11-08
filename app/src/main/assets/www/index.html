@@ -127,7 +127,11 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .scr-head .star-total{margin-inline-start:auto}
 .scr-title.lose{color:#ff8a7a}
 .sec-label{width:100%;max-width:520px;text-align:start;font-size:13px;font-weight:800;color:var(--dim);letter-spacing:.3px;margin-top:2px}
-.hero-pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.hero-pick{display:flex;gap:10px;width:100%;max-width:560px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;scrollbar-width:none}
+.hero-pick::-webkit-scrollbar{display:none}
+.hero-pick .hcard{flex:none;width:150px;scroll-snap-align:start}
+.hcard.locked{opacity:.5;filter:grayscale(.8)}
+.hcard .fit{font-size:11px;font-weight:800;padding:1px 8px;border-radius:999px}.hcard .fit.good{background:#1f6a3a;color:#c8ffd8}.hcard .fit.bad{background:#6a2a1f;color:#ffd0c8}
 .hcard{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px;border-radius:16px;border:1.5px solid var(--rim);background:linear-gradient(180deg,rgba(61,46,32,.9),rgba(33,24,16,.9));text-align:center}
 .hcard.on{border-color:var(--gold);box-shadow:0 0 0 2px rgba(233,180,76,.35),0 0 20px rgba(233,180,76,.25)}
 .hcard canvas{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#4a3a28,#1d150d)}
@@ -162,6 +166,9 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .mod.boss{background:rgba(233,180,76,.18);border-color:rgba(233,180,76,.6);color:var(--gold-2)}
 .lvl-info .go{grid-column:1/3;margin-top:8px;width:100%;min-width:0}
 .lvl-info .go2{grid-column:1/3;width:100%;min-width:0;font-size:15px}
+.end-hint{width:100%;max-width:520px;padding:12px 14px;border-radius:16px;background:linear-gradient(180deg,rgba(30,70,60,.92),rgba(16,40,34,.92));border:1.5px solid #4fd8b0;font-size:14px;font-weight:700;line-height:1.6;text-align:start}
+.end-hint b{color:#9fffe0;font-size:16px}
+.end-hint li{margin-inline-start:18px}
 .ring-b{position:absolute;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;border:2px solid #d9b25a;background:radial-gradient(circle at 50% 35%,#2a6e6a,#123634 70%);box-shadow:0 3px 8px rgba(0,0,0,.55),0 0 10px rgba(80,240,210,.35);padding:0;display:grid;place-items:center;pointer-events:auto;transition:transform .12s}
 .ring-b img{width:48px;height:48px;object-fit:contain;pointer-events:none}
 .ring-b .pr{position:absolute;top:44px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;padding:1px 6px;border-radius:999px;background:rgba(20,12,6,.9);border:1px solid #6e5434;font-weight:800;font-size:11.5px;color:var(--gold-2);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -301,7 +308,8 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <div class="end-stars" id="endStars"></div>
     <p id="endSub"></p>
     <div class="end-stats" id="endStats"></div>
-    <div class="end-btns"><button class="btn ghost ad" id="starAdBtn" hidden></button><button class="btn ghost ad" id="xpAdBtn" hidden></button><button class="btn" id="nextBtn" data-t="next"></button><button class="btn ghost" id="retryBtn" data-t="retry"></button><button class="btn ghost" id="endLevelsBtn" data-t="levelsMenu"></button></div>
+    <div class="end-hint" id="endHint" hidden></div>
+    <div class="end-btns"><button class="btn ghost ad" id="retryAdBtn" hidden></button><button class="btn ghost ad" id="starAdBtn" hidden></button><button class="btn ghost ad" id="xpAdBtn" hidden></button><button class="btn" id="nextBtn" data-t="next"></button><button class="btn ghost" id="retryBtn" data-t="retry"></button><button class="btn ghost" id="endLevelsBtn" data-t="levelsMenu"></button></div>
   </section>
 </div>
 
@@ -319,7 +327,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 <script src="GLTFLoader.js"></script>
 <script src="SkeletonUtils.js"></script>
 <script src="icons.js"></script><script src="maps/meadow1.js"></script><script src="maps/auto.js"></script>
-<script src="models/goblin.js"></script><script src="models/orc.js"></script><script src="models/knight.js"></script><script src="models/shaman.js"></script><script src="models/wolf.js"></script><script src="models/bat.js"></script><script src="models/slime.js"></script><script src="models/frog.js"></script><script src="models/drake.js"></script><script src="models/dragon.js"></script><script src="models/icewolf.js"></script><script src="models/direwolf.js"></script><script src="models/troll.js"></script><script src="models/ogre.js"></script><script src="models/t_archer1.js"></script><script src="models/t_archer2.js"></script><script src="models/t_archer3.js"></script><script src="models/t_cannon1.js"></script><script src="models/t_cannon2.js"></script><script src="models/t_cannon3.js"></script><script src="models/t_frost1.js"></script><script src="models/t_frost2.js"></script><script src="models/t_frost3.js"></script><script src="models/t_lightning1.js"></script><script src="models/t_lightning2.js"></script><script src="models/t_lightning3.js"></script><script src="models/t_ballista1.js"></script><script src="models/t_ballista2.js"></script><script src="models/t_ballista3.js"></script><script src="models/t_mortar1.js"></script><script src="models/t_mortar2.js"></script><script src="models/t_mortar3.js"></script>
+<script src="models/goblin.js"></script><script src="models/orc.js"></script><script src="models/knight.js"></script><script src="models/shaman.js"></script><script src="models/wolf.js"></script><script src="models/bat.js"></script><script src="models/slime.js"></script><script src="models/frog.js"></script><script src="models/drake.js"></script><script src="models/dragon.js"></script><script src="models/icewolf.js"></script><script src="models/direwolf.js"></script><script src="models/troll.js"></script><script src="models/ogre.js"></script><script src="models/hknight.js"></script><script src="models/hmage.js"></script><script src="models/harcher.js"></script><script src="models/hice.js"></script><script src="models/hfire.js"></script><script src="models/t_archer1.js"></script><script src="models/t_archer2.js"></script><script src="models/t_archer3.js"></script><script src="models/t_cannon1.js"></script><script src="models/t_cannon2.js"></script><script src="models/t_cannon3.js"></script><script src="models/t_frost1.js"></script><script src="models/t_frost2.js"></script><script src="models/t_frost3.js"></script><script src="models/t_lightning1.js"></script><script src="models/t_lightning2.js"></script><script src="models/t_lightning3.js"></script><script src="models/t_ballista1.js"></script><script src="models/t_ballista2.js"></script><script src="models/t_ballista3.js"></script><script src="models/t_mortar1.js"></script><script src="models/t_mortar2.js"></script><script src="models/t_mortar3.js"></script>
 <script>
 'use strict';
 const COLS=9,ROWS=13,NLEV=100;
@@ -340,6 +348,12 @@ const STR={
   sosBtn:['ذهب طوارئ +{0}','Emergency gold +{0}','Nødgull +{0}'],sosGot:['+{0} ذهب! أنقذ القلعة','+{0} gold! Save the castle','+{0} gull! Redd borgen'],
   starBtn:['ضاعف النجوم (+{0} ★)','Double stars (+{0} ★)','Doble stjernene (+{0} ★)'],starDone:['تمت مضاعفة النجوم!','Stars doubled!','Stjernene doblet!'],bonusX2:['ذهب مضاعف','Double gold','Dobbelt gull'],
   reviveS2:['شاهد إعلاناً قصيراً لترميم الأسوار ومواصلة القتال (+{0} أرواح و+{1} ذهب).','Watch a short ad to repair the walls and keep fighting (+{0} lives, +{1} gold).','Se en kort reklame for å reparere murene og kjempe videre (+{0} liv, +{1} gull).'],
+  fitGood:['✓ مناسب لهذه المرحلة','✓ Good for this level','✓ Bra for dette brettet'],fitBad:['✗ ضعيف في هذه المرحلة','✗ Weak in this level','✗ Svak på dette brettet'],newHero:['بطل جديد!','New hero!','Ny helt!'],
+  domMon:['⚔️ معظم الوحوش: {0}','⚔️ Most monsters: {0}','⚔️ De fleste monstrene: {0}'],
+  hintT:['💡 نصيحة للفوز','💡 How to win','💡 Slik vinner du'],hintHero:['البطل الأنسب هنا: {0}','Best hero here: {0}','Beste helt her: {0}'],hintTowers:['أفضل الأبراج هنا: {0}','Best towers here: {0}','Beste tårn her: {0}'],
+  hintAvoid:['تجنّب {0}، فهو ضعيف ضد وحوش هذه المرحلة','Avoid {0} — it is weak against these monsters','Unngå {0} — det er svakt mot disse monstrene'],hintAir:['الطائرون كثيرون: المدفع والهاون لا يصيبانهم','Many flyers: cannons and mortars cannot hit them','Mange flygende: kanoner og mortere treffer dem ikke'],
+  hintPaths:['الوحوش تأتي من {0} مداخل، وزّع أبراجك على المداخل كلها','Monsters come from {0} entrances — spread your towers','Monstrene kommer fra {0} innganger — spre tårnene'],hintShop:['رقِّ أبراجك وبطلك من المتجر بالنجوم','Upgrade towers and hero in the shop with stars','Oppgrader tårn og helt i butikken med stjerner'],
+  hintBoss:['احتفظ بأقوى مهارة للزعيم في الجولة الأخيرة','Save your strongest skill for the final boss','Spar den sterkeste ferdigheten til sjefen'],hintRegion:['في هذه المنطقة: {0}','In this region: {0}','I denne regionen: {0}'],retryGold:['حاول مع +{0} ذهب','Retry with +{0} gold','Prøv igjen med +{0} gull'],
   pickTower:['اختر برجًا — المسة الأولى تعرض التفاصيل','Pick a tower — first tap shows details','Velg et tårn — første trykk viser detaljer'],tapAgain:['المس مرة أخرى للبناء','Tap again to build','Trykk igjen for å bygge'],
   reviveBtn:['واصل القتال','Keep fighting','Kjemp videre'],giveUp:['استسلم','Give up','Gi opp'],
   xpBtn:['ضاعف خبرة البطل (+{0})','Double hero XP (+{0})','Doble heltens XP (+{0})'],xpDone:['تمت مضاعفة الخبرة!','XP doubled!','XP doblet!'],
@@ -403,16 +417,30 @@ const TOWERS={
 /* armor classes: damage multiplier per damage source */
 const SRC_OF={javelin:'jav',archer:'arrow',cannon:'blast',mortar:'blast',frost:'ice',lightning:'shock',ballista:'bolt'};
 const ACLS={
-  flesh:{name:N3('بلا درع','Unarmored','Uten rustning'),m:{jav:1.2,arrow:1.25,blast:1,ice:1,shock:1,bolt:1}},
-  light:{name:N3('درع خفيف / فرو','Light armor / fur','Lett rustning / pels'),m:{jav:1.35,arrow:1.5,blast:.9,ice:1,shock:.75,bolt:.85}},
-  heavy:{name:N3('درع حديد ثقيل','Heavy plate','Tung plate'),m:{jav:.7,arrow:.6,blast:.85,ice:.75,shock:1.7,bolt:1.4}},
-  gel:{name:N3('جسم هلامي','Gel body','Geléekropp'),m:{jav:.75,arrow:.6,blast:1.5,ice:1.4,shock:1.1,bolt:.65}},
-  hide:{name:N3('جلد سميك','Thick hide','Tykk hud'),m:{jav:1.35,arrow:.8,blast:1.3,ice:1.2,shock:.9,bolt:1.15}},
-  scale:{name:N3('حراشف','Scales','Skjell'),m:{jav:1,arrow:.7,blast:1,ice:1.5,shock:1.3,bolt:1.2}},
+  flesh:{name:N3('بلا درع','Unarmored','Uten rustning'),m:{blade:1.2,fire:1.15,jav:1.2,arrow:1.25,blast:1,ice:1,shock:1,bolt:1}},
+  light:{name:N3('درع خفيف / فرو','Light armor / fur','Lett rustning / pels'),m:{blade:1.1,fire:1,jav:1.35,arrow:1.5,blast:.9,ice:1,shock:.75,bolt:.85}},
+  heavy:{name:N3('درع حديد ثقيل','Heavy plate','Tung plate'),m:{blade:.75,fire:.9,jav:.7,arrow:.6,blast:.85,ice:.75,shock:1.7,bolt:1.4}},
+  gel:{name:N3('جسم هلامي','Gel body','Geléekropp'),m:{blade:.8,fire:1.4,jav:.75,arrow:.6,blast:1.5,ice:1.4,shock:1.1,bolt:.65}},
+  hide:{name:N3('جلد سميك','Thick hide','Tykk hud'),m:{blade:1,fire:1.35,jav:1.35,arrow:.8,blast:1.3,ice:1.2,shock:.9,bolt:1.15}},
+  scale:{name:N3('حراشف','Scales','Skjell'),m:{blade:.9,fire:.6,jav:1,arrow:.7,blast:1,ice:1.5,shock:1.3,bolt:1.2}},
 };
 function tvLine(type){const src=SRC_OF[type];if(!src)return '';const st=strongVs(src).map(c=>tx(ACLS[c].name)).join(LANG==='ar'?'، ':', '),wk=weakVs(src).map(c=>tx(ACLS[c].name)).join(LANG==='ar'?'، ':', ');return (st?t('strongVs',st):'')+(wk?'  •  '+t('weakVs',wk):'');}
 function enLine(type){const ac=ENEMIES[type].ac,c=ACLS[ac];if(!c)return '';const top=Math.max(...TORDER.map(k=>c.m[SRC_OF[k]]||1)),best=TORDER.filter(k=>(c.m[SRC_OF[k]]||1)>=Math.min(1.3,top)&&(c.m[SRC_OF[k]]||1)>1).map(k=>tx(TOWERS[k].name)).join(LANG==='ar'?'، ':', ');return t('armorIs',tx(c.name),best||'—');}
-function acMul(e,src){const c=ACLS[ENEMIES[e.type].ac];return c&&src?(c.m[src]||1):1;}
+/* each region favours or resists some damage types (fire is weak in the volcano, frost is weak in the snow...) */
+const REGMOD={meadow:{},forest:{arrow:1.2,fire:1.1},plains:{arrow:1.1,blade:1.1},marsh:{shock:1.25,fire:.85},snow:{ice:.6,fire:1.3},desert:{fire:.85,ice:1.2},ruins:{shock:1.1,bolt:1.1},dark:{fire:1.15,arrow:.9},volcano:{fire:.6,ice:1.3,blast:.85},citadel:{blade:1.15,shock:1.1}};
+const regMul=src=>{if(!G||!G.lv||!src)return 1;const r=REGMOD[G.lv.theme]||{};return r[src]||1;};
+/* after level 20 strengths and weaknesses grow, so the right hero and towers matter */
+const sharpK=L=>L<20?1:1+Math.min(.7,(L-19)*.035);
+function classMul(ac,src,L){const c=ACLS[ac];if(!c||!src)return 1;const m=c.m[src]||1;return Math.max(.25,1+(m-1)*sharpK(L));}
+const MIXC={};
+function levelMix(i){if(MIXC[i])return MIXC[i];const lv=getLevel(i),mix={};for(let w=1;w<=lv.waves;w++)for(const q of makeWave(lv,w,lv.waves))mix[q.type]=(mix[q.type]||0)+ENEMIES[q.type].hp*(ENEMIES[q.type].boss?.5:1);return MIXC[i]=mix;}
+function srcFit(src,i){const lv=getLevel(i),mix=levelMix(i),reg=(REGMOD[lv.theme]||{})[src]||1;let a=0,n=0;for(const k in mix){const air=ENEMIES[k].fly;a+=mix[k]*classMul(ENEMIES[k].ac,src,i)*(air&&(src==='blast'||src==='blade')?0:1);n+=mix[k];}return n?a/n*reg:1;}
+/* share of the level's monsters (by number) that are small, fast swarmers */
+const SWC={};function swarmShare(i){if(SWC[i]!==undefined)return SWC[i];const lv=getLevel(i);let a=0,n=0;for(let w=1;w<=lv.waves;w++)for(const q of makeWave(lv,w,lv.waves)){n++;if(ENEMIES[q.type].hp<70)a++;}return SWC[i]=n?a/n:0;}
+function towerFit(type,i){const sw=swarmShare(i),f=srcFit(SRC_OF[type],i);const role={cannon:1+.35*sw,mortar:1+.3*sw,lightning:1+.2*sw,frost:1.12,archer:1,ballista:1+.25*(1-sw)-.15*sw}[type]||1;return f*role;}
+function heroScore(id,i){const D=HEROES[id],sw=swarmShare(i);return srcFit(D.src,i)*(D.melee?1+.3*sw:1)*(id==='ice'?1+.15*sw:1);}
+function heroFit(id,lv){const f=heroScore(id,lv.i);return f>1.1?1:f<.9?-1:0;}
+function acMul(e,src){if(!src)return 1;return classMul(ENEMIES[e.type].ac,src,G?G.L:0)*regMul(src);}
 function strongVs(src){return Object.keys(ACLS).filter(c=>ACLS[c].m[src]>=1.3);}
 function weakVs(src){return Object.keys(ACLS).filter(c=>ACLS[c].m[src]<=.75);}
 const TORDER=['archer','cannon','frost','lightning','ballista','mortar'];
@@ -435,12 +463,29 @@ const ENEMIES={
   dragon:{ac:'scale',name:N3('التنين','Dragon','Drage'),desc:N3('زعيم طائر — لا يصيبه إلا ما يضرب الجو','Flying boss — only anti-air can hit it','Flygende sjef – bare luftvern treffer den'),hp:1800,sp:.38,gold:200,armor:4,r:.5,atk:0,lives:6,fly:true,boss:true},
 };
 const HEROES={
-  knight:{name:N3('أرثر الفارس','Arthur the Knight','Ridder Arthur'),hp:360,dmg:22,rate:1.2,range:.75,speed:2.3,armor:.3,melee:true,desc:N3('يصدّ الأعداء بجسده ويقاتلهم وجهاً لوجه','Blocks enemies and fights them up close','Stopper fiender og kjemper på nært hold'),
+  knight:{name:N3('أرثر المحارب','Arthur the Warrior','Krigeren Arthur'),src:'blade',col:'#ffd98a',hp:380,dmg:24,rate:1.2,range:.75,speed:2.3,armor:.3,melee:true,unlock:0,desc:N3('يوقف الوحوش بجسده ويقاتلها بالسيف','Blocks monsters and fights them with his sword','Stopper monstre og slåss med sverdet'),
     skills:[{id:'whirl',name:N3('دوّامة','Whirlwind','Virvelvind'),cd:12,c:'#ffd98a'},{id:'cry',name:N3('صرخة','War Cry','Krigsrop'),cd:24,c:'#ff8a5a'},{id:'sky',name:N3('سيف السماء','Sky Sword','Himmelsverd'),cd:30,c:'#9fd8ff',target:true}]},
-  mage:{name:N3('ليلى الساحرة','Layla the Mage','Trollkvinnen Layla'),hp:200,dmg:16,rate:.85,range:2.9,speed:2.0,armor:0,melee:false,desc:N3('تقصف من بعيد وتصيب الأعداء الطائرين','Strikes from afar and hits flying enemies','Angriper på avstand og treffer flygende fiender'),
-    skills:[{id:'fireball',name:N3('كرة نار','Fireball','Ildkule'),cd:9,c:'#ff8a3d',target:true},{id:'nova',name:N3('عاصفة جليد','Frost Nova','Frostnova'),cd:20,c:'#8fd3ff'},{id:'rain',name:N3('مطر نيازك','Meteor Rain','Meteorregn'),cd:34,c:'#ffb36b',target:true}]},
+  mage:{name:N3('ليلى ساحرة البرق','Layla the Storm Mage','Stormmagikeren Layla'),src:'shock',col:'#c9a6ff',hp:210,dmg:17,rate:.9,range:2.9,speed:2.0,armor:0,melee:false,air:true,unlock:0,desc:N3('برق يقفز بين الوحوش ويخترق الدروع الثقيلة','Lightning that jumps between monsters and pierces heavy armor','Lyn som hopper mellom monstre og går gjennom tung rustning'),
+    skills:[{id:'chain',name:N3('برق متسلسل','Chain Lightning','Kjedelyn'),cd:10,c:'#c9a6ff'},{id:'storm',name:N3('عاصفة رعدية','Thunderstorm','Tordenvær'),cd:26,c:'#9f8cff',target:true},{id:'surge',name:N3('فيض سحري','Arcane Surge','Magisk bølge'),cd:30,c:'#ff9ff0'}]},
+  archer:{name:N3('ريان الرامي','Rayan the Ranger','Jegeren Rayan'),src:'arrow',col:'#b6f07a',hp:230,dmg:15,rate:1.7,range:3.5,speed:2.4,armor:.05,melee:false,air:true,unlock:5,desc:N3('مدى بعيد جدًا ويصيب الطائرين بسهولة','Very long range and deadly against flyers','Svært lang rekkevidde og dødelig mot flygende'),
+    skills:[{id:'volley',name:N3('مطر السهام','Arrow Rain','Pileregn'),cd:12,c:'#b6f07a',target:true},{id:'pierce',name:N3('سهم خارق','Piercing Shot','Gjennomboring'),cd:16,c:'#ffe28a'},{id:'eagle',name:N3('نسر الصيد','Hunting Eagle','Jaktørn'),cd:28,c:'#e0b070'}]},
+  ice:{name:N3('ثلجة سيدة الصقيع','Frosta the Ice Queen','Isdronningen Frosta'),src:'ice',col:'#9fe6ff',hp:240,dmg:12,rate:1,range:2.7,speed:2.0,armor:.05,melee:false,air:true,unlock:15,desc:N3('تبطئ الوحوش وتجمّدها، حتى الزعماء','Slows and freezes monsters, even bosses','Bremser og fryser monstre, selv sjefer'),
+    skills:[{id:'nova',name:N3('انفجار صقيع','Frost Nova','Frostnova'),cd:18,c:'#8fd3ff'},{id:'blizzard',name:N3('عاصفة ثلجية','Blizzard','Snøstorm'),cd:24,c:'#d4f2ff',target:true},{id:'prison',name:N3('سجن جليدي','Ice Prison','Isfengsel'),cd:30,c:'#6fc8ff',target:true}]},
+  fire:{name:N3('جمر سيد النار','Ember the Fire Lord','Ildherren Ember'),src:'fire',col:'#ff9a4a',hp:250,dmg:22,rate:.85,range:2.6,speed:2.1,armor:.05,melee:false,air:true,unlock:25,desc:N3('كرات نار تنفجر وتحرق الأرض','Exploding fireballs that set the ground ablaze','Eksploderende ildkuler som setter bakken i brann'),
+    skills:[{id:'fireball',name:N3('كرة نار','Fireball','Ildkule'),cd:9,c:'#ff8a3d',target:true},{id:'firewall',name:N3('جدار نار','Fire Wall','Ildmur'),cd:20,c:'#ff6a2a',target:true},{id:'rain',name:N3('مطر نيازك','Meteor Rain','Meteorregn'),cd:32,c:'#ffb36b',target:true}]},
 };
+const HORDER=['knight','mage','archer','ice','fire'];
+const heroOpen=id=>(HEROES[id].unlock||0)<S.unlocked||HEROES[id].unlock===0;
 const SKILL_ICO={
+  chain:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L5 13h5l-2 9 9-12h-5l3-8z"/></svg>',
+  storm:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10a5 5 0 0 1 9.6-2A4 4 0 1 1 17 16H7a3 3 0 0 1-1-6z" opacity=".7"/><path d="M12 13l-3 5h3l-1 4 4-6h-3l1-3z"/></svg>',
+  surge:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="10.5" stroke-dasharray="3 3"/></svg>',
+  volley:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 3l4 9M11 3l3 9M17 3l2 9"/><path d="M7 14l2-2 1 3zM13 14l1-2 2 2zM18 14l1-2 1 3z" fill="currentColor"/></svg>',
+  pierce:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 21L19 5"/><path d="M14 4h6v6" /><path d="M6 14l4 4M9 11l4 4" stroke-width="1.6"/></svg>',
+  eagle:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 9c4 0 7 1 10 4 3-3 6-4 10-4-2 2-4 5-8 6l-2 4-2-4c-4-1-6-4-8-6z"/></svg>',
+  blizzard:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M3.5 7l17 10M20.5 7l-17 10"/><path d="M9 4l3 2 3-2M9 20l3-2 3 2"/></svg>',
+  prison:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l7 5v10l-7 5-7-5V7z"/><path d="M9 7v10M12 6v12M15 7v10"/></svg>',
+  firewall:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 21c-1-4 2-6 2-9 2 2 2 4 2 5 1-3 3-5 2-9 3 2 5 6 4 10 1-1 2-3 2-5 2 3 3 6 2 8z"/></svg>',
   whirl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3a9 9 0 1 1-8.5 6"/><path d="M12 7a5 5 0 1 1-4.7 3.3"/><path d="M3.5 3.5L3 9l5.5-.5"/></svg>',
   cry:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9v6h4l6 4V5L8 9z" fill="currentColor"/><path d="M17.5 8.5a5 5 0 0 1 0 7M20 6a8.5 8.5 0 0 1 0 12"/></svg>',
   sky:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22l-2.2-4h4.4z"/><rect x="10.8" y="2" width="2.4" height="15" rx="1"/><rect x="7" y="15" width="10" height="2.2" rx="1"/></svg>',
@@ -595,6 +640,8 @@ const FMIN={frog:3,icewolf:6,direwolf:12,drake:16};
 function levelFeat(i,theme){const r=rng32(i*911+7),base=(FEAT[theme]||[]).filter(k=>i>=FMIN[k]);const all=Object.keys(FMIN).filter(k=>i>=FMIN[k]);const out=[...new Set(base)];
   if(all.length&&r()<.6){const g=all[Math.floor(r()*all.length)];if(!out.includes(g))out.push(g);}
   if(!out.length&&all.length)out.push(all[Math.floor(r()*all.length)]);return out.slice(0,i<30?1:i<60?2:3);}
+/* difficulty: tutorial levels gentle, then a few strong towers are not enough; the late game already scales on its own */
+const diffK=i=>i<2?1:i<7?2.35:i<10?2.05+(i-7)*.04:i<31?2.05-(i-10)*.0125:i<46?1.8-(i-30)*.025:Math.max(1,1.425-(i-45)*.008);
 const LVCACHE={};
 function getLevel(i){
   if(LVCACHE[i])return LVCACHE[i];
@@ -603,9 +650,10 @@ function getLevel(i){
   if(i>=8){let n=0;const r=rnd();if(i<30)n=r<.5?1:0;else if(i<60)n=r<.35?2:1;else n=r<.7?2:1;if(i>=90)n=2;
     const pool=Object.keys(MODS).filter(m=>!(m==='fragile'&&i<40)&&!(m==='regen'&&i<20)&&!(m==='elite'&&i<25));
     while(mods.length<n&&pool.length){const k=pool.splice(Math.floor(rnd()*pool.length),1)[0];mods.push(k);}}
-  const lv={i,region,theme:REGIONS[region].theme,boss,mods,waves:7+Math.floor(i*13/99),hp:1+2.6*Math.pow(i/99,.95),maxP:(i<6?10+i:10+Math.floor(rnd()*5))+Math.floor(i/25),
+  const lv={i,region,theme:REGIONS[region].theme,boss,mods,waves:7+Math.floor(i*13/99),hp:(1+2.6*Math.pow(i/99,.95))*diffK(i),maxP:(i<6?10+i:10+Math.floor(rnd()*5))+Math.floor(i/25),
     name:tx(REGIONS[region].name)+' '+(i%10+1)};
   lv.feat=levelFeat(i,lv.theme);
+  if(i>=19){const doms=['heavy','gel','light','hide','scale'],r=rng32(i*5279+11);let d=doms[Math.floor(r()*doms.length)];if(d==='scale'&&i<30)d='heavy';lv.dom=d;}
   if(PMAPLV[i]&&window.MAPIMG&&MAPIMG[PMAPS[PMAPLV[i]].img]){lv.pmap=PMAPS[PMAPLV[i]];lv.maxP=lv.pmap.plots.length;}
   else{const am=autoMap(i);if(am)lv.pmap=am;}
   Object.defineProperty(lv,'paths',{get(){if(this.pmap){const pm=this.pmap,MW=COLS,MH=COLS*pm.aspect,n=pm.auto?pm.paths.length:Math.min(pm.paths.length,1+i);return pm.paths.slice(0,n).map(P=>P.map(([u,v])=>[u*MW-.5,v*MH-.5]));}return this._ps||(this._ps=genPaths(i));}});
@@ -806,6 +854,7 @@ function newGame(i,demo=false){
   const lives=(lv.mods.includes('fragile')?8:15)+(demo?0:2*upr('walls'));
   G={L:i,lv,path,paths,grid,painted:!!lv.pmap,mapH:lv.pmap?COLS*lv.pmap.aspect:ROWS,plots,demo,bn,gold:Math.round((180+9*Math.min(i,60)+45*(paths.length-1))*(scarce?.75:1))+(demo?0:40*upr('gold')),lives,maxLives:lives,wave:0,waves:lv.waves,queue:[],enemies:[],towers:[],tmap:{},projs:[],parts:[],texts:[],bolts:[],decals:[],meteors:[],
      time:0,speed:1,paused:false,over:false,shake:0,castleHit:0,selected:null,buildCell:null,targeting:null,cleared:0,kills:0,nextId:1,demoT:0,flag:null};
+  if(!HEROES[S.hero]||!heroOpen(S.hero))S.hero='knight';
   G.hero=makeHero(demo?'knight':S.hero);
   if(demo)G.plots.slice(0,5).forEach((p,k)=>addTower(['archer','cannon','frost','lightning','ballista'][k],p.c,p.r,k%3));
   buildWorld();
@@ -824,8 +873,10 @@ function addTower(type,c,r,lvl=0){const pq=plotXY(c,r);const t={type,c,r,x:pq.x,
 function makeWave(lv,w,N){
   const i=lv.i,L=Math.min(5,i),sky=lv.mods.includes('sky'),cm=(1+i/200)*(lv.mods.includes('swarm')?1.5:1);
   const out=[];let t=0;const np=Math.min(lv.paths.length,1+Math.floor((w-1)/(i<10?3:2)));let gi=w;
-  const add=(type,n,gap,raw)=>{n=raw?n:Math.max(1,Math.round(n*cm));const gp=raw?gap:gap/Math.sqrt(cm);const pi=gi++%np;const split=np>1&&n>=8;for(let k=0;k<n;k++){out.push({t,type,pi:split?(pi+k)%np:pi});t+=split&&k%np!==np-1?gp*.15:gp;}t+=np>1?.5:1.1;};
-  const F=lv.feat||[];add('goblin',(5+w*1.4)*(F.length?.7:1),.7);
+  const addB=(type,n,gap,raw)=>{n=raw?n:Math.max(1,Math.round(n*cm));const gp=raw?gap:gap/Math.sqrt(cm);const pi=gi++%np;const split=np>1&&n>=8;for(let k=0;k<n;k++){out.push({t,type,pi:split?(pi+k)%np:pi});t+=split&&k%np!==np-1?gp*.15:gp;}t+=np>1?.5:1.1;};
+  const F=lv.feat||[],DOMT={heavy:['knight','orc','darkknight'],gel:['slime','frog'],light:['wolf','bat','icewolf'],hide:['troll','direwolf'],scale:['drake']};
+  const add=(type,n,gap,raw)=>{if(!raw&&lv.dom&&!ENEMIES[type].boss){const k=Math.min(1,(i-18)/10);n*=ENEMIES[type].ac===lv.dom?1+.5*k:1-.28*k;}addB(type,n,gap,raw);};
+  add('goblin',(5+w*1.4)*(F.length?.7:1),.7);
   if(w>=3)add('wolf',2+w,.4);
   if(L>=1&&w>=3)add('knight',1+Math.floor(w/3),.95);
   if((L>=1&&w>=4)||(sky&&w>=2))add('bat',(3+Math.floor(w/2))*(sky?2:1),.45);
@@ -835,7 +886,8 @@ function makeWave(lv,w,N){
   if(i>=15&&w>=4)add('troll',1+Math.floor(w/5)+Math.floor(i/40),1.8);
   if(i>=35&&w>=5)add('darkknight',1+Math.floor(w/6)+Math.floor(i/50),1.6);
   const fm=1/Math.sqrt(Math.max(1,F.length));F.forEach((f,k)=>{if(w<2+k*2)return;if(f==='frog')add('frog',(2+w*.7)*(i<10?.6:1)*fm,.5);else if(f==='icewolf')add('icewolf',(2+w*.55)*fm,.3);else if(f==='direwolf'){add('direwolf',1+Math.floor(w/5),1.4);add('wolf',(2+w*.5)*fm,.25);}else if(f==='drake')add('drake',Math.max(1,Math.round((1+w/4)*fm)),1.2);});
-  if(w%4===0)add('wolf',6+w,.22);
+  if(lv.dom&&w>=2){const ts=DOMT[lv.dom].filter(k=>k!=='darkknight'||i>=35).filter(k=>k!=='icewolf'||i>=6),k=ts[w%ts.length],big=ENEMIES[k].hp>150;add(k,big?1+Math.floor(w/3):2+w*.6,big?1.3:.45);}
+  if(w%4===0)addB('wolf',w===4?5:4+w*.8,.22);
   if(lv.boss&&w%5===0&&w<N)add('ogre',1,3,true);
   if(w===N){add('ogre',Math.round((1+Math.floor(i/30))*(lv.boss?1.5:1)),5,true);
     if(i>=49&&lv.boss)add('dragon',1+Math.floor((i-49)/25),6,true);
@@ -984,28 +1036,42 @@ function updateProjs(dt){
       if(p.tgt&&p.tgt.dead)p.tgt=null;
       if(p.tgt){const dx=p.tgt.x-p.x,dy=p.tgt.y-p.y,dd=Math.hypot(dx,dy);
         if(dd<p.tgt.r+.1+p.sp*dt){
-          if(p.k==='magic')explode2(p.tgt.x,p.tgt.y,.5,p.dmg);
-          else{hurt(p.tgt,p.dmg,p.k==='spear'?'energy':'phys',{crit:p.crit,src:p.k==='spear'?'bolt':p.jav?'jav':'arrow'});debris(p.x,p.y,'#c9b38a',p.k==='spear'?5:2,1.4,p.tgt.fly?.85:.4);burst(p.x,p.y,'#ffe9a8',p.k==='spear'?8:4,2.4,.07,.25,p.tgt.fly?.85:.4);}
+          if(p.k==='magic')explode2(p.tgt.x,p.tgt.y,.5,p.dmg,{src:p.src||'fire',col:p.col,chain:p.src==='shock'?2:0,slow:p.src==='ice'?.35:0});
+          else{hurt(p.tgt,p.dmg,p.k==='spear'?'energy':'phys',{crit:p.crit,src:p.k==='spear'?'bolt':p.jav?'jav':'arrow',byHero:!!p.hero});debris(p.x,p.y,'#c9b38a',p.k==='spear'?5:2,1.4,p.tgt.fly?.85:.4);burst(p.x,p.y,'#ffe9a8',p.k==='spear'?8:4,2.4,.07,.25,p.tgt.fly?.85:.4);}
           p.dead=true;continue;}
         p.vx=dx/dd*p.sp;p.vy=dy/dd*p.sp;}
       p.x+=p.vx*dt;p.y+=p.vy*dt;if((p.life-=dt)<=0)p.dead=true;
       if((p.k==='arrow'||p.k==='spear')&&canAdd()&&Math.random()<.7)G.parts.push({k:'spark',x:p.x,y:p.y,h:p.lh===undefined?p.h0:p.lh,vx:0,vy:0,vh:0,g:0,life:.2,max:.2,size:p.k==='spear'?.1:.07,color:p.k==='spear'?'#ffffff':'#fff0b0',drag:0});
-      if(p.k==='magic'&&canAdd()&&Math.random()<.8)G.parts.push({k:'spark',x:p.x,y:p.y,h:.55,vx:0,vy:0,vh:.2,g:0,life:.3,max:.3,size:.08,color:'#ff9a3d',drag:0});
+      if(p.k==='magic'&&canAdd()&&Math.random()<.8)G.parts.push({k:'spark',x:p.x,y:p.y,h:.55,vx:0,vy:0,vh:.2,g:0,life:.3,max:.3,size:.09,color:p.col||'#ff9a3d',drag:0});
     }else if(p.k==='shell'||p.k==='fireball'){
       p.t+=dt/p.ft;const u=Math.min(1,p.t);p.x=p.sx+(p.ex-p.sx)*u;p.y=p.sy+(p.ey-p.sy)*u;
       if(p.big&&canAdd()){const uu=Math.min(1,p.t),hh=p.h0*(1-uu)+Math.sin(Math.PI*uu)*p.h;fireFx(p.x,p.y,1,hh,.2,.02,.15);if(Math.random()<.5)emberFx(p.x,p.y,1,hh,.8);}
       if(canAdd()&&(p.k==='fireball'||p.big))G.parts.push({k:p.k==='fireball'?'spark':'smoke',x:p.x,y:p.y,h:p.h0*(1-u)+Math.sin(Math.PI*u)*p.h,vx:0,vy:0,vh:.1,g:0,life:p.k==='fireball'?.35:.5,max:.5,size:p.k==='fireball'?.18:.07,color:'#ff7a2a',drag:0});
-      if(p.t>=1){explode(p.ex,p.ey,p.rad,p.dmg,p.k==='fireball'?'energy':'phys',p.k==='fireball'?{air:true,byHero:true,color:'#ff7a2a'}:{src:'blast',burn:p.big?2.6:1.4,burnDmg:p.dmg*(p.big?.012:.007)});if(p.k==='fireball')burst(p.ex,p.ey,'#ff7a2a',20,5,.13,.5,.4);p.dead=true;}
+      if(p.t>=1){explode(p.ex,p.ey,p.rad,p.dmg,p.k==='fireball'?'energy':'phys',p.k==='fireball'?{air:true,byHero:true,color:'#ff7a2a',src:'fire',burn:2,burnDmg:p.dmg*.012}:{src:'blast',burn:p.big?2.6:1.4,burnDmg:p.dmg*(p.big?.012:.007)});if(p.k==='fireball')burst(p.ex,p.ey,'#ff7a2a',20,5,.13,.5,.4);p.dead=true;}
     }
   }
   G.projs=G.projs.filter(p=>!p.dead);
 }
-function explode2(x,y,rad,dmg){for(const e of G.enemies){if(e.dead)continue;if(Math.hypot(e.x-x,e.y-y)<=rad+e.r)hurt(e,dmg,'energy',{byHero:true});}burst(x,y,'#ffb04a',8,2.5,.1,.35,.45);flashFx(x,y,.6,'#ff9a3d',.12,.45);}
+function explode2(x,y,rad,dmg,o={}){const col=o.col||'#ffb04a';let first=null;for(const e of G.enemies){if(e.dead)continue;if(Math.hypot(e.x-x,e.y-y)<=rad+e.r){if(!first)first=e;hurt(e,dmg,'energy',{byHero:true,src:o.src});if(o.slow&&!e.dead&&!ENEMIES[e.type].noSlow){e.slowF=Math.max(e.slowF,o.slow);e.slowT=Math.max(e.slowT,1.5);}}}
+  burst(x,y,col,8,2.5,.1,.35,.45);flashFx(x,y,.6,col,.12,.45);if(o.src==='ice')snowFx(x,y,5,.3,.8,.12);
+  if(o.chain&&first){let cur=first;const hits=[first];for(let k=0;k<o.chain;k++){let nx=null,nd=1.5;for(const e of G.enemies){if(e.dead||hits.includes(e))continue;const d=Math.hypot(e.x-cur.x,e.y-cur.y);if(d<nd){nd=d;nx=e;}}if(!nx)break;hits.push(nx);G.bolts.push({pts:[[cur.x,cur.y,.5],[nx.x,nx.y,nx.fly?.85:.45]],life:.15});hurt(nx,dmg*(.6-k*.2),'energy',{byHero:true,src:'shock'});cur=nx;}}}
 /* hero */
 const heroMult=()=>(1+.1*(G.hero.lvl-1))*G.bn.hero;
 const lvScale=()=>1+(G.lv.hp-1)*.8;
 const skillScale=()=>G.lv.hp*heroMult();
 function heroMove(h,tx_,ty,dt,sp){const dx=tx_-h.x,dy=ty-h.y,d=Math.hypot(dx,dy);if(d<.03)return true;const s=Math.min(d,sp*dt);h.x+=dx/d*s;h.y+=dy/d*s;h.ang=Math.atan2(dy,dx);h.phase+=dt*sp*7;return false;}
+function updateSkillFx(dt){
+  if(G.storms){for(const st of G.storms){st.t-=dt;st.tick-=dt;if(st.tick<=0){st.tick=.3;let tg=null;const c=G.enemies.filter(e=>!e.dead&&Math.hypot(e.x-st.x,e.y-st.y)<1.7);if(c.length)tg=c[(Math.random()*c.length)|0];
+      const px=tg?tg.x:st.x+(Math.random()-.5)*2,py=tg?tg.y:st.y+(Math.random()-.5)*2;G.bolts.push({pts:[[px+(Math.random()-.5)*.6,py,3.6],[px,py,.05]],life:.22});ringFx(px,py,'#d6c4ff',.1,.7,.3,.07);flashFx(px,py,.9,'#e2d6ff',.12,.3);lightFlash(px,py,'#b9a3ff',2.2);
+      if(tg){hurt(tg,st.dmg,'energy',{byHero:true,src:'shock'});tg.stunT=Math.max(tg.stunT,.3);}if(Math.random()<.5)sfx('zap',px);}}G.storms=G.storms.filter(st=>st.t>0);}
+  if(G.volleys){for(const v of G.volleys){v.t-=dt;if(canAdd()&&v.t<.3&&v.t>0)G.parts.push({k:'spark',x:v.x,y:v.y,h:v.t*9,vx:0,vy:0,vh:-9,g:0,life:.06,max:.06,size:.07,color:'#fff0b0',drag:0});
+      if(v.t<=0){v.done=1;for(const e of G.enemies)if(!e.dead&&Math.hypot(e.x-v.x,e.y-v.y)<.45+e.r*.5)hurt(e,v.dmg,'phys',{byHero:true,src:'arrow'});debris(v.x,v.y,'#c9b38a',2,1.2,.05);burst(v.x,v.y,'#ffe9a8',3,1.5,.05,.2,.1);}}G.volleys=G.volleys.filter(v=>!v.done);}
+  if(G.blizz){for(const b of G.blizz){b.t-=dt;b.tick-=dt;if(b.tick<=0){b.tick=.25;snowFx(b.x,b.y,10,1.8,3,.16);mistFx(b.x+(Math.random()-.5)*2,b.y+(Math.random()-.5)*2,1,.5,.1);
+      for(const e of G.enemies){if(e.dead||Math.hypot(e.x-b.x,e.y-b.y)>1.8+e.r*.5)continue;e.slowF=Math.max(e.slowF,ENEMIES[e.type].noSlow?.3:.6);e.slowT=Math.max(e.slowT,.5);hurt(e,b.dmg,'energy',{byHero:true,src:'ice',silent:true});}}}G.blizz=G.blizz.filter(b=>b.t>0);}
+  const eg=G.eagle;if(eg){eg.t-=dt;eg.cd-=dt;let tg=null,bd=4.5;for(const e of G.enemies){if(e.dead)continue;const d=Math.hypot(e.x-eg.x,e.y-eg.y)-(e.fly?2:0);if(d<bd){bd=d;tg=e;}}
+    const hx=G.hero?G.hero.x:eg.x,hy=G.hero?G.hero.y:eg.y,tx=tg?tg.x:hx+Math.cos(G.time*2)*1.2,ty=tg?tg.y:hy+Math.sin(G.time*2)*1.2,dx=tx-eg.x,dy=ty-eg.y,dd=Math.hypot(dx,dy)||1,spd=Math.min(dd,6*dt);eg.x+=dx/dd*spd;eg.y+=dy/dd*spd;eg.ang=Math.atan2(dy,dx);
+    if(tg&&dd<.35&&eg.cd<=0){eg.cd=.45;hurt(tg,eg.dmg,'phys',{byHero:true,src:'arrow'});burst(tg.x,tg.y,'#e0b070',5,2,.07,.25,tg.fly?.85:.4);}if(eg.t<=0)G.eagle=null;}
+}
 function updateHero(dt){
   const h=G.hero;if(!h)return;const D=HEROES[h.type],m=heroMult();
   for(let i=0;i<3;i++)h.cd[i]=Math.max(0,h.cd[i]-dt);
@@ -1019,17 +1085,20 @@ function updateHero(dt){
     const tg=engaged[0];
     if(!tg){let best=null,bd=1.5;for(const e of G.enemies){if(e.dead||e.fly||e.blocked||e.d<0)continue;const d=Math.hypot(e.x-h.rx,e.y-h.ry);if(d<bd){bd=d;best=e;}}
       if(best){heroMove(h,best.x,best.y,dt,D.speed);if(Math.hypot(best.x-h.x,best.y-h.y)<.48)best.blocked=h;}else heroMove(h,h.rx,h.ry,dt,D.speed*.8);}
-    else{h.ang=Math.atan2(tg.y-h.y,tg.x-h.x);if(h.atkCd<=0){h.atkCd=1/D.rate;h.atkAnim=1;hurt(tg,D.dmg*m*lvScale(),'phys',{byHero:true});debris(tg.x,tg.y,'#9a1d14',3,1.8,.45);sfx('swing',h.x);sfx('clang',h.x);}}
+    else{h.ang=Math.atan2(tg.y-h.y,tg.x-h.x);if(h.atkCd<=0){h.atkCd=1/D.rate;h.atkAnim=1;hurt(tg,D.dmg*m*lvScale(),'phys',{byHero:true,src:'blade'});debris(tg.x,tg.y,'#9a1d14',3,1.8,.45);sfx('swing',h.x);sfx('clang',h.x);}}
   }else{
     heroMove(h,h.rx,h.ry,dt,D.speed*.8);
     const tg=nearestEnemy(h.x,h.y,D.range);
-    if(tg){h.ang=Math.atan2(tg.y-h.y,tg.x-h.x);if(h.atkCd<=0){h.atkCd=1/D.rate;h.atkAnim=1;const ca=Math.cos(h.ang),sa=Math.sin(h.ang);G.projs.push({k:'magic',x:h.x+ca*.3,y:h.y+sa*.3,vx:ca*8,vy:sa*8,tgt:tg,dmg:D.dmg*m*lvScale(),life:1.4,sp:8});sfx('magic',h.x);}}
+    if(tg){h.ang=Math.atan2(tg.y-h.y,tg.x-h.x);if(h.atkCd<=0){h.atkCd=1/D.rate;h.atkAnim=1;const ca=Math.cos(h.ang),sa=Math.sin(h.ang),dm=D.dmg*m*lvScale();
+      if(D.src==='arrow'){G.projs.push({k:'arrow',hero:1,x:h.x+ca*.2,y:h.y+sa*.2,h0:.75,vx:ca*13,vy:sa*13,tgt:tg,dmg:dm,life:1.5,sp:13});sfx('arrow',h.x);}
+      else{G.projs.push({k:'magic',src:D.src,col:D.col,x:h.x+ca*.3,y:h.y+sa*.3,vx:ca*8,vy:sa*8,tgt:tg,dmg:dm,life:1.4,sp:8});sfx(D.src==='shock'?'zap':D.src==='ice'?'frost':'magic',h.x);}}}
   }
   let dmgIn=0;
   for(const e of engaged)if(e.stunT<=0&&e.frozenT<=0)dmgIn+=e.atk;
   if(!D.melee)for(const e of G.enemies)if(!e.dead&&!e.fly&&e.stunT<=0&&e.frozenT<=0&&Math.hypot(e.x-h.x,e.y-h.y)<.45)dmgIn+=e.atk*.6;
-  if(dmgIn>0){h.hp-=dmgIn*dt*(1-D.armor);h.hurtT=1.5;}else if(h.hurtT<=0)h.hp=Math.min(h.maxHp,h.hp+h.maxHp*.06*dt);
-  if(h.whirlT>0){h.whirlT-=dt;h.whirlTick-=dt;h.ang+=dt*18;if(h.whirlTick<=0){h.whirlTick=.2;for(const e of G.enemies){if(!e.dead&&!e.fly&&Math.hypot(e.x-h.x,e.y-h.y)<1.3)hurt(e,28*skillScale(),'phys',{byHero:true});}}}
+  h.shieldT=Math.max(0,(h.shieldT||0)-dt);
+  if(dmgIn>0&&h.shieldT<=0){h.hp-=dmgIn*dt*(1-D.armor);h.hurtT=1.5;}else if(h.hurtT<=0)h.hp=Math.min(h.maxHp,h.hp+h.maxHp*.06*dt);
+  if(h.whirlT>0){h.whirlT-=dt;h.whirlTick-=dt;h.ang+=dt*18;if(h.whirlTick<=0){h.whirlTick=.2;for(const e of G.enemies){if(!e.dead&&!e.fly&&Math.hypot(e.x-h.x,e.y-h.y)<1.3)hurt(e,28*skillScale(),'phys',{byHero:true,src:'blade'});}}}
   if(h.hp<=0&&!G.demo){h.dead=true;h.respawn=10;h.hp=0;engaged.forEach(e=>e.blocked=null);smokeFx(h.x,h.y,6,.25);debris(h.x,h.y,'#c0c8d0',8,2,.5);sfx('herodie',h.x);addText(h.x,h.y,t('heroFell'),'#ff8a7a',.3,1.2);}
   if(G.demo&&h.hp<h.maxHp*.3)h.hp=h.maxHp;
 }
@@ -1040,12 +1109,24 @@ function useSkill(i){
   h.cd[i]=sk.cd*G.bn.skill;const sc=skillScale();
   if(sk.id==='whirl'){h.whirlT=1.6;h.whirlTick=0;ringFx(h.x,h.y,'#ffd98a',.2,1.3,.4);sfx('whirl',h.x);}
   if(sk.id==='cry'){for(const e of G.enemies)if(!e.dead&&!e.fly&&Math.hypot(e.x-h.x,e.y-h.y)<2.4)e.stunT=Math.max(e.stunT,2.5);for(const tw of G.towers)if(Math.hypot(tw.x-h.x,tw.y-h.y)<3.2){tw.buffT=6;ringFx(tw.x,tw.y,'#ffb36b',.1,.7,.5);}h.hp=Math.min(h.maxHp,h.hp+h.maxHp*.35);ringFx(h.x,h.y,'#ffb36b',.2,2.4,.6,.1);shakeIt(.2);sfx('cry',h.x);banner(t('cryT'),t('cryS'));}
-  if(sk.id==='nova'){snowFx(h.x,h.y,40,2.6,1.4,.1);mistFx(h.x,h.y,8,.5,.2);for(const e of G.enemies)if(!e.dead&&Math.hypot(e.x-h.x,e.y-h.y)<2.8){e.frozenT=2.5;iceShards(e.x,e.y,5,.4);hurt(e,32*sc,'energy',{byHero:true});}ringFx(h.x,h.y,'#dff4ff',.2,2.8,.6,.12);for(let k=0;k<30&&canAdd();k++){const a=Math.random()*6.28,r=Math.random()*2.8;G.parts.push({k:'spark',x:h.x+Math.cos(a)*r,y:h.y+Math.sin(a)*r,h:.1,vx:0,vy:0,vh:1.2,g:0,life:.8,max:.8,size:.08,color:'#e8f7ff',drag:0});}sfx('freeze',h.x);}
+  if(sk.id==='chain'){let cur={x:h.x,y:h.y},prev=[h.x,h.y,.9];const hits=[];for(let k=0;k<8;k++){let nx=null,nd=k?1.9:3.4;for(const e of G.enemies){if(e.dead||hits.includes(e))continue;const d=Math.hypot(e.x-cur.x,e.y-cur.y);if(d<nd){nd=d;nx=e;}}if(!nx)break;hits.push(nx);const pt=[nx.x,nx.y,nx.fly?.85:.45];G.bolts.push({pts:[prev,pt],life:.25});hurt(nx,72*sc*Math.pow(.9,k),'energy',{byHero:true,src:'shock'});nx.stunT=Math.max(nx.stunT,.5);ringFx(nx.x,nx.y,'#d6c4ff',.1,.6,.3,.06);prev=pt;cur=nx;}lightFlash(h.x,h.y,'#b9a3ff',3);sfx('zap',h.x);if(!hits.length)h.cd[i]=1;}
+  if(sk.id==='surge'){h.shieldT=4;for(const tw of G.towers)if(Math.hypot(tw.x-h.x,tw.y-h.y)<3.4){tw.buffT=7;ringFx(tw.x,tw.y,'#ff9ff0',.1,.7,.5);}ringFx(h.x,h.y,'#ff9ff0',.2,3.4,.7,.12);burst(h.x,h.y,'#ffc8f8',24,3,.1,.6,.6);sfx('cry',h.x);}
+  if(sk.id==='pierce'){const tg=nearestEnemy(h.x,h.y,6);const a=tg?Math.atan2(tg.y-h.y,tg.x-h.x):h.ang;h.ang=a;h.atkAnim=1;const ca=Math.cos(a),sa=Math.sin(a),Lr=7;
+    for(const e of G.enemies){if(e.dead)continue;const dx=e.x-h.x,dy=e.y-h.y,along=dx*ca+dy*sa,off=Math.abs(-dx*sa+dy*ca);if(along>0&&along<Lr&&off<.5+e.r*.5){hurt(e,125*sc,'phys',{byHero:true,src:'arrow'});burst(e.x,e.y,'#fff0b0',6,2.5,.07,.3,e.fly?.85:.4);}}
+    for(let k=0;k<28&&canAdd();k++){const u=k/28*Lr;G.parts.push({k:'spark',x:h.x+ca*u,y:h.y+sa*u,h:.65,vx:0,vy:0,vh:0,g:0,life:.35,max:.35,size:.13,color:'#ffe9a0',drag:0});}sfx('bolt',h.x);}
+  if(sk.id==='eagle'){G.eagle={t:10,x:h.x,y:h.y,h:1.4,cd:0,dmg:30*sc,ang:0};burst(h.x,h.y,'#e0b070',12,2.5,.08,.4,1);sfx('arrow',h.x);}
+  if(sk.id==='nova'){snowFx(h.x,h.y,40,2.6,1.4,.1);mistFx(h.x,h.y,8,.5,.2);groundFx(h.x,h.y,2.6,'ice',3);for(const e of G.enemies)if(!e.dead&&Math.hypot(e.x-h.x,e.y-h.y)<2.8){e.frozenT=2.5;iceShards(e.x,e.y,5,.4);if(!e.fly)iceSpikes(e.x,e.y,4,e.r*1.2);hurt(e,36*sc,'energy',{byHero:true,src:'ice'});}ringFx(h.x,h.y,'#dff4ff',.2,2.8,.6,.12);for(let k=0;k<30&&canAdd();k++){const a=Math.random()*6.28,r=Math.random()*2.8;G.parts.push({k:'spark',x:h.x+Math.cos(a)*r,y:h.y+Math.sin(a)*r,h:.1,vx:0,vy:0,vh:1.2,g:0,life:.8,max:.8,size:.08,color:'#e8f7ff',drag:0});}sfx('freeze',h.x);}
 }
 function castTarget(x,y){
   const i=G.targeting;G.targeting=null;showHint(null);const h=G.hero,sk=HEROES[h.type].skills[i];if(h.dead)return;h.cd[i]=sk.cd*G.bn.skill;const sc=skillScale();
   if(sk.id==='sky'){G.meteors.push({x,y,t:0,dur:.55,kind:'sword',dmg:150*sc,rad:1.4,stun:1.3});sfx('sky',x);}
   if(sk.id==='fireball'){h.atkAnim=1;G.projs.push({k:'fireball',sx:h.x,sy:h.y,ex:x,ey:y,x:h.x,y:h.y,h0:.7,t:0,ft:.45,h:.9,dmg:85*sc,rad:1.1});sfx('fireball',h.x);}
+  if(sk.id==='storm'){if(!G.storms)G.storms=[];G.storms.push({x,y,t:2.6,tick:0,dmg:50*sc});ringFx(x,y,'#9f8cff',.2,1.7,.6,.1);sfx('zap',x);}
+  if(sk.id==='volley'){if(!G.volleys)G.volleys=[];for(let k=0;k<18;k++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*1.35;G.volleys.push({x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,t:.25+k*.06,dmg:24*sc});}sfx('arrow',x);}
+  if(sk.id==='blizzard'){if(!G.blizz)G.blizz=[];G.blizz.push({x,y,t:5,tick:0,dmg:8*sc});groundFx(x,y,1.8,'ice',5);sfx('freeze',x);}
+  if(sk.id==='prison'){let best=null,bd=1.8;for(const e of G.enemies){if(e.dead)continue;const d=Math.hypot(e.x-x,e.y-y);if(d<bd){bd=d;best=e;}}if(best){best.frozenT=ENEMIES[best.type].boss?3:4.5;hurt(best,140*sc,'energy',{byHero:true,src:'ice'});if(!best.fly){iceSpikes(best.x,best.y,10,best.r*1.6);groundFx(best.x,best.y,.8,'ice',3);}snowFx(best.x,best.y,16,.5,1.8,.15);ringFx(best.x,best.y,'#bfeaff',.1,1,.5,.1);sfx('freeze',x);}else h.cd[i]=2;}
+  if(sk.id==='firewall'){let bp=null;for(let pi=0;pi<G.paths.length;pi++){const P=G.paths[pi];for(let d=0;d<P.total;d+=.2){const q=posAt(d,pi),dd=Math.hypot(q.x-x,q.y-y);if(!bp||dd<bp.dd)bp={pi,d,dd};}}
+    if(bp&&bp.dd<1.6){for(let k=-2;k<=2;k++){const q=posAt(Math.max(0,bp.d+k*.45),bp.pi);groundFx(q.x,q.y,.42,'fire',5,{dmg:3.6*sc});fireFx(q.x,q.y,6,.1,.35,.2,1.6);}}else{groundFx(x,y,.9,'fire',5,{dmg:3.6*sc});}sfx('fireball',x);}
   if(sk.id==='rain'){for(let k=0;k<5;k++){const a=Math.random()*6.28,r=Math.random()*1.3;G.meteors.push({x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,t:-k*.25,dur:.5,kind:'rock',dmg:55*sc,rad:.85});}sfx('meteor',x);}
 }
 function update(dt){
@@ -1071,11 +1152,11 @@ function update(dt){
     if(!e.blocked){const p=posAt(e.d,e.pi);e.x=p.x;e.y=p.y;e.dx=p.dx;e.dy=p.dy;e.ang=undefined;}
     if(e.type==='shaman'&&!stop&&(e.healT-=dt)<=0){e.healT=.6;let any=false;for(const o of G.enemies){if(o!==e&&!o.dead&&o.hp<o.maxHp&&Math.hypot(o.x-e.x,o.y-e.y)<1.4){o.hp=Math.min(o.maxHp,o.hp+o.maxHp*.05);burst(o.x,o.y,'#7dff9a',2,1,.07,.4,.5);any=true;}}if(any)ringFx(e.x,e.y,'#7dff9a',.2,1.4,.5,.04);}
   }
-  updateHero(dt);
+  updateHero(dt);updateSkillFx(dt);
   for(const tw of G.towers)updateTower(tw,dt);
   if(!G.units)G.units=[];updateUnits(dt);
   updateProjs(dt);
-  for(const m of G.meteors){m.t+=dt;if(m.t>=m.dur&&!m.done){m.done=true;explode(m.x,m.y,m.rad,m.dmg,'energy',{air:m.kind==='rock',stun:m.stun,byHero:true,color:m.kind==='sword'?'#cfeaff':'#ff8a3d'});if(m.kind==='sword'){ringFx(m.x,m.y,'#dff4ff',.2,1.8,.5,.1);shakeIt(.4);}else shakeIt(.25);}}
+  for(const m of G.meteors){m.t+=dt;if(m.t>=m.dur&&!m.done){m.done=true;explode(m.x,m.y,m.rad,m.dmg,'energy',{src:m.kind==='sword'?'blade':'fire',burn:m.kind==='rock'?1.4:0,burnDmg:m.dmg*.01,air:m.kind==='rock',stun:m.stun,byHero:true,color:m.kind==='sword'?'#cfeaff':'#ff8a3d'});if(m.kind==='sword'){ringFx(m.x,m.y,'#dff4ff',.2,1.8,.5,.1);shakeIt(.4);}else shakeIt(.25);}}
   G.meteors=G.meteors.filter(m=>m.t<m.dur+(m.kind==='sword'?.6:.05));
   for(const b of G.bolts)b.life-=dt;G.bolts=G.bolts.filter(b=>b.life>0);
   for(const p of G.parts){if(p.vr)p.rot+=p.vr*dt;if(p.k==='snow'){p.x+=Math.sin(p.life*5+p.rot)*.25*dt;if(p.h<.02){p.h=.02;p.vh=0;}}p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.h+=p.vh*dt;p.vh-=p.g*dt;if(p.drag){const f=Math.exp(-p.drag*dt);p.vx*=f;p.vy*=f;}if(p.h<0&&p.k==='shard'){p.h=0;p.vh*=-.3;p.vx*=.5;p.vy*=.5;}}
@@ -1164,6 +1245,7 @@ function init3D(){
     dot:canvasTex(32,32,(g)=>{const r=g.createRadialGradient(16,16,0,16,16,16);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.6,'rgba(255,255,255,.9)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,32,32);}),
     uparrow:canvasTex(64,64,(g)=>{g.beginPath();g.arc(32,32,28,0,7);g.fillStyle='#2fbf4a';g.fill();g.lineWidth=4;g.strokeStyle='#e9ffe0';g.stroke();g.fillStyle='#ffffff';g.beginPath();g.moveTo(32,12);g.lineTo(50,32);g.lineTo(39,32);g.lineTo(39,50);g.lineTo(25,50);g.lineTo(25,32);g.lineTo(14,32);g.closePath();g.fill();}),
     banner:canvasTex(64,96,(g)=>{g.fillStyle='#167a74';g.beginPath();g.moveTo(0,0);g.lineTo(64,0);g.lineTo(64,80);g.lineTo(32,96);g.lineTo(0,80);g.closePath();g.fill();g.lineWidth=5;g.strokeStyle='#e9b44c';g.stroke();g.fillStyle='#7dffe0';g.beginPath();g.moveTo(32,18);g.lineTo(46,44);g.lineTo(32,72);g.lineTo(18,44);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.7)';g.beginPath();g.moveTo(32,18);g.lineTo(38,44);g.lineTo(32,44);g.closePath();g.fill();}),
+    eagle:canvasTex(64,64,(g)=>{g.translate(32,32);g.fillStyle='#7a4a1e';g.beginPath();g.moveTo(-30,-4);g.quadraticCurveTo(-12,-16,0,-2);g.quadraticCurveTo(12,-16,30,-4);g.quadraticCurveTo(14,2,6,4);g.lineTo(0,16);g.lineTo(-6,4);g.quadraticCurveTo(-14,2,-30,-4);g.fill();g.fillStyle='#f4ead0';g.beginPath();g.arc(0,-4,5,0,7);g.fill();g.fillStyle='#ffb020';g.beginPath();g.moveTo(-2,-1);g.lineTo(2,-1);g.lineTo(0,4);g.fill();}),
     ice:canvasTex(128,128,(g)=>{const r=g.createRadialGradient(64,64,0,64,64,64);r.addColorStop(0,'rgba(235,250,255,.85)');r.addColorStop(.55,'rgba(170,225,255,.6)');r.addColorStop(.85,'rgba(120,200,255,.35)');r.addColorStop(1,'rgba(120,200,255,0)');g.fillStyle=r;g.fillRect(0,0,128,128);
       g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=1.6;for(let i=0;i<14;i++){const a=i/14*6.283+Math.random()*.3;let x=64,y=64;g.beginPath();g.moveTo(x,y);for(let k=0;k<4;k++){x+=Math.cos(a+(Math.random()-.5)*.8)*14;y+=Math.sin(a+(Math.random()-.5)*.8)*14;g.lineTo(x,y);}g.stroke();}}),
     burn:canvasTex(128,128,(g)=>{const r=g.createRadialGradient(64,64,10,64,64,64);r.addColorStop(0,'rgba(255,200,80,.0)');r.addColorStop(.55,'rgba(255,120,30,.55)');r.addColorStop(.78,'rgba(255,60,10,.85)');r.addColorStop(1,'rgba(255,40,0,0)');g.fillStyle=r;g.fillRect(0,0,128,128);}),
@@ -1368,7 +1450,10 @@ const LOOK3={
   troll:{body:'#4a5a3a',skin:'#6f8f62',head:'goblin',weapon:'club'},
   darkknight:{body:'#24242c',skin:'#888888',head:'helmet',helm:'#2e2e38',plume:'#8a1a1a',weapon:'sword',shield:'#2a2a34',metal:true,pauldron:true},
   hknight:{body:'#aeb8c2',skin:'#e8c09a',head:'helmet',plume:'#2f6bd0',weapon:'sword',shield:'#2a4fa0',cape:'#b02a2a',pauldron:true,boots:'#3a3a40',metal:true},
-  hmage:{body:'#5b2d8a',skin:'#e8c09a',head:'hat',weapon:'staff',orb:'#ff9a3d',cape:'#3a1a5a',robe:true},
+  hmage:{body:'#5b2d8a',skin:'#e8c09a',head:'hat',weapon:'staff',orb:'#c9a6ff',cape:'#3a1a5a',robe:true},
+  harcher:{body:'#3f6b2a',skin:'#e0b48a',head:'hood',hood:'#2f5a1e',weapon:'bow',cape:'#2c4a1a',boots:'#4a2e16'},
+  hice:{body:'#bfe6ff',skin:'#f2d6c0',head:'hat',weapon:'staff',orb:'#9fe6ff',cape:'#7fc8f0',robe:true},
+  hfire:{body:'#c8401a',skin:'#e8b890',head:'horns',weapon:'staff',orb:'#ff8a2a',cape:'#7a1a0a',robe:true},
 };
 const EVARS={
   goblin:[{},{body:'#b03a2e'},{body:'#2e6db0',weapon:'axe'},{body:'#7b3fb0',skin:'#a8d14a',weapon:'spear'},{skin:'#5fa83a',head:'helmet',helm:'#b07a3a'},{body:'#d08a1e',skin:'#8fc23e',weapon:'club'}],
@@ -1521,7 +1606,7 @@ function projMesh(p){
   const g=new THREE.Group();
   if(p.k==='arrow'||p.k==='spear'){const sp=p.k==='spear'||p.jav,L0=sp?.5:.34,th=sp?.022:.014;g.add(M(CYL(),L(sp?'#6a4020':'#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),MET('#c8d0d6'),L0/2+.025,0,0,[sp?.04:.02,.06,sp?.04:.02],{rz:-Math.PI/2,nc:1}));g.add(M(BOX(),L('#f0ece0'),-L0/2+.03,0,0,[.05,.004,.035],NC));}
   else if(p.k==='shell'){g.add(M(SPH(),p.big?EM('#ff8a2a'):MET('#262626'),0,0,0,p.big?.11:.075,NC));const s=new THREE.Sprite(GLOWM(p.big?'#ff9a3a':'#ffd27a'));s.scale.setScalar(p.big?.7:.3);g.add(s);}
-  else{const big=p.k==='fireball';const s=new THREE.Sprite(GLOWM('#ff7a2a'));s.scale.setScalar(big?1:.45);g.add(s);const s2=new THREE.Sprite(GLOWM('#fff0c0'));s2.scale.setScalar(big?.45:.18);g.add(s2);}
+  else{const big=p.k==='fireball';const s=new THREE.Sprite(GLOWM(p.col||'#ff7a2a'));s.scale.setScalar(big?1:.45);g.add(s);const s2=new THREE.Sprite(GLOWM('#fff0c0'));s2.scale.setScalar(big?.45:.18);g.add(s2);}
   return{root:g};
 }
 function meteorMesh(m){
@@ -1552,15 +1637,21 @@ function render3D(T,dt){
     R.frost.visible=e.slowT>0&&e.frozenT<=0;if(R.frost.visible)R.frost.material.opacity=.22+Math.sin(T*6+e.id)*.06;
     if(e.frozenT>0){if(!R.ice){R.ice=M(SPH(),mt('icebox',()=>V.hq?STD({color:'#d6f3ff',emissive:'#3a9fd8',emissiveIntensity:.35,transparent:true,opacity:.6,roughness:.04,metalness:.1,flatShading:true,envMapIntensity:2.2}):new THREE.MeshPhongMaterial({color:'#cfefff',transparent:true,opacity:.55,shininess:100,specular:'#ffffff',flatShading:true})),0,e.r*1.1+(e.fly?.8:0),0,e.r*1.4,NC);rt.add(R.ice);}R.ice.visible=true;}else if(R.ice)R.ice.visible=false;
   }
-  if(h){const R=getMesh(h,()=>{const H=human(h.type==='knight'?'hknight':'hmage');const root=new THREE.Group();root.add(H.g);H.g.scale.setScalar(.8);H.root=root;
+  if(h){const R=getMesh(h,()=>{const gm=GLBM['h'+h.type];let H;
+      if(gm&&gm.ready){const g=new THREE.Group(),inner=THREE.SkeletonUtils.clone(gm.scene),sc=(h.type==='knight'?.82:.76)/gm.h;inner.scale.setScalar(sc);inner.position.y=-gm.y0*sc;inner.rotation.y=Math.PI/2;g.add(inner);H={g,glb:true};if(gm.clip){H.mixer=new THREE.AnimationMixer(inner);H.act=H.mixer.clipAction(gm.clip);H.act.play();}}
+      else{H=human('h'+h.type);H.g.scale.setScalar(.58);}
+      const root=new THREE.Group();root.add(H.g);H.root=root;
+      H.bubble=new THREE.Sprite(GLOWM('#ff9ff0').clone());H.bubble.position.y=.4;H.bubble.scale.setScalar(1.3);H.bubble.visible=false;root.add(H.bubble);
       root.add(M(DISC(),SHADM(),0,.012,0,[.3,.3,1],{rx:-Math.PI/2,nc:1}));H.ring=M(RING(),mt('hring',()=>new THREE.MeshBasicMaterial({color:'#ffd98a',transparent:true,opacity:.85,depthWrite:false,side:THREE.DoubleSide})),0,.03,0,[.36,.36,.36],{rx:-Math.PI/2,nc:1});root.add(H.ring);
       H.whirl=M(gg('whirl',()=>new THREE.RingGeometry(.75,1,40,1,0,Math.PI*1.3)),mt('wm',()=>new THREE.MeshBasicMaterial({color:'#ffe8b0',transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide})),0,.35,0,[1.2,1.2,1.2],{rx:-Math.PI/2,nc:1});root.add(H.whirl);H.g.traverse(o=>{if(o.isMesh)o.castShadow=true;});return H;});
     R.root.visible=!h.dead;R.root.position.set(h.x,0,h.y);R.g.rotation.y=-h.ang;
     const mv=h.moving||(h.phase%1e3)!==R.lp;R.lp=h.phase%1e3;const s=mv?Math.sin(h.phase)*.6:0;
-    if(R.legL){R.legL.rotation.z=s;R.legR.rotation.z=-s;}R.armL.rotation.z=-s*.5;R.armR.rotation.z=.25+h.atkAnim*1.6+s*.4;
+    if(R.legL){R.legL.rotation.z=s;R.legR.rotation.z=-s;}if(R.armL){R.armL.rotation.z=-s*.5;R.armR.rotation.z=.25+h.atkAnim*1.6+s*.4;}
+    if(R.mixer){R.mixer.timeScale=mv?1.1:.0001;R.mixer.update(dt);R.g.position.y=0;R.g.rotation.z=h.atkAnim*.15;}R.bubble.visible=(h.shieldT||0)>0;if(R.bubble.visible)R.bubble.material.opacity=.45+Math.sin(T*8)*.15;
     if(R.cape)R.cape.rotation.z=Math.sin(T*3)*.08+(mv?.25:0);
     R.ring.rotation.z=T;R.whirl.visible=h.whirlT>0;R.whirl.rotation.z=-T*14;
   }
+  {const eg=G.eagle;if(!V.eagleS){V.eagleS=new THREE.Sprite(new THREE.SpriteMaterial({map:V.tex.eagle,transparent:true,depthWrite:false}));V.eagleS.scale.set(.6,.6,1);V.fx.add(V.eagleS);}V.eagleS.visible=!!eg;if(eg){V.eagleS.position.set(eg.x,eg.h+Math.sin(T*9)*.08,eg.y);V.eagleS.material.rotation=-eg.ang+Math.PI/2;V.eagleS.scale.set(.6+Math.sin(T*18)*.08,.6,1);}}
   for(const tw of G.towers){
     let R=getMesh(tw,()=>towerMesh(tw));if(R.lvl!==tw.lvl){V.lv.remove(R.root);live.delete(tw);R=getMesh(tw,()=>towerMesh(tw));}
     {const canUp=!G.demo&&!G.over&&tw.lvl<2&&G.gold>=tUpg(tw)&&G.selected!==tw;if(canUp&&!R.upArrow){R.upArrow=new THREE.Sprite(new THREE.SpriteMaterial({map:V.tex.uparrow,depthTest:false,transparent:true}));R.upArrow.scale.set(.3,.3,1);R.upArrow.renderOrder=5;R.root.add(R.upArrow);}
@@ -1674,7 +1765,7 @@ function drawTowerIcon(g,type,x,y,k,ang){
   else if(type==='mortar'){drawShadow(g,k*.08,k*.1,k*.52,k*.48,.45);ell(g,0,0,k*.4,k*.38,'#6a4e30');for(let i=0;i<14;i++){const a=i/14*6.283;g.save();g.translate(Math.cos(a)*k*.37,Math.sin(a)*k*.35);g.rotate(a+Math.PI/2);ell(g,0,0,k*.1,k*.065,rgrad(g,0,0,k*.1,['#f0e4c0','#c4b089','#80704e']));g.restore();}const R=k*.2;ell(g,0,0,R,R,rgrad(g,0,0,R,['#9aa3ab','#4c545c','#1c2024']));ell(g,k*.03,0,R*.62,R*.6,'#0c0d0f');}
   g.restore();
 }
-function drawHeroArt(g,type,s){g.save();g.rotate(-Math.PI/2);if(type==='knight')humanoid(g,s,{body:'#9aa6b0',skin:'#e8c09a',head:'helmet',plume:'#2f6bd0',weapon:'sword',shield:'#2a4fa0',cape:'#b02a2a',pauldron:true});else humanoid(g,s,{body:'#5b2d8a',skin:'#e8c09a',head:'hat',weapon:'staff',orb:'#ff9a3d',cape:'#3a1a5a'});g.restore();}
+function drawHeroArt(g,type,s){g.save();g.rotate(-Math.PI/2);if(type==='knight')humanoid(g,s,{body:'#9aa6b0',skin:'#e8c09a',head:'helmet',plume:'#2f6bd0',weapon:'sword',shield:'#2a4fa0',cape:'#b02a2a',pauldron:true});else if(type==='archer')humanoid(g,s,{body:'#3f6b2a',skin:'#e0b48a',head:'hood',hood:'#2f5a1e',weapon:'bow',cape:'#2c4a1a'});else if(type==='ice')humanoid(g,s,{body:'#bfe6ff',skin:'#f2d6c0',head:'hat',weapon:'staff',orb:'#9fe6ff',cape:'#7fc8f0'});else if(type==='fire')humanoid(g,s,{body:'#c8401a',skin:'#e8b890',head:'hat',weapon:'staff',orb:'#ff8a2a',cape:'#7a1a0a'});else humanoid(g,s,{body:'#5b2d8a',skin:'#e8c09a',head:'hat',weapon:'staff',orb:'#c9a6ff',cape:'#3a1a5a'});g.restore();}
 
 /* ================= UI ================= */
 const hudCache={};let waveKey='',lastGold=-1;
@@ -1703,7 +1794,9 @@ function buildSkills(){
     b.addEventListener('click',()=>useSkill(i));box.appendChild(b);skillEls.push({el:b,lp:-1,ln:''});});
   paintFace($('#heroFace'),G.hero.type);
 }
-function paintFace(cv,type){const d=Math.min(2,devicePixelRatio||1),sz=cv.clientWidth||50;cv.width=cv.height=sz*d;const g=cv.getContext('2d');g.scale(d,d);g.translate(sz/2,sz/2+sz*.04);drawHeroArt(g,type,sz*.36);}
+function paintFace(cv,type){const d=Math.min(2,devicePixelRatio||1),sz=cv.clientWidth||50;cv.width=cv.height=sz*d;const g=cv.getContext('2d');g.scale(d,d);
+  if(window.HICON&&HICON[type]){const im=new Image();im.onload=()=>{g.clearRect(0,0,sz,sz);g.save();g.beginPath();g.arc(sz/2,sz/2,sz/2,0,7);g.clip();g.drawImage(im,0,0,sz,sz);g.restore();};im.src=HICON[type];return;}
+  g.translate(sz/2,sz/2+sz*.04);drawHeroArt(g,type,sz*.36);}
 function updateSkills(){
   const h=G.hero,sk=HEROES[h.type].skills;
   skillEls.forEach((o,i)=>{const p=h.dead?1:Math.min(1,h.cd[i]/(sk[i].cd*G.bn.skill)),pr=Math.round(p*100)/100;if(pr!==o.lp){o.lp=pr;o.el.style.setProperty('--p',pr);}
@@ -1823,10 +1916,11 @@ function applyLang(){
 /* levels screen */
 let curRegion=null,viewSel=null;
 function renderHeroes(){
-  const box=$('#heroPick');box.innerHTML='';
-  Object.keys(HEROES).forEach(id=>{const D=HEROES[id],b=document.createElement('button');b.className='hcard'+(S.hero===id?' on':'');
-    b.innerHTML=`<canvas></canvas><b>${tx(D.name)}</b><span class="hl">${t('levelOfHero',heroLevel(S.xp[id]||0))}</span><span class="hs">${tx(D.desc)}<br>${D.skills.map(s=>tx(s.name)).join(' · ')}</span>`;
-    b.addEventListener('click',()=>{S.hero=id;save();sfx('ui');renderHeroes();});box.appendChild(b);paintFace(b.querySelector('canvas'),id);});
+  const box=$('#heroPick');box.innerHTML='';const lv=getLevel(viewSel!==null?viewSel:S.sel);
+  HORDER.forEach(id=>{const D=HEROES[id],open=heroOpen(id),b=document.createElement('button');b.className='hcard'+(S.hero===id?' on':'')+(open?'':' locked');
+    const fit=open?heroFit(id,lv):0;
+    b.innerHTML=`<canvas></canvas><b>${tx(D.name)}</b><span class="hl">${open?t('levelOfHero',heroLevel(S.xp[id]||0)):'🔒 '+t('levelN',D.unlock+1)}</span>${open&&fit?`<span class="fit ${fit>0?'good':'bad'}">${fit>0?t('fitGood'):t('fitBad')}</span>`:''}<span class="hs">${tx(D.desc)}<br>${D.skills.map(s=>tx(s.name)).join(' · ')}</span>`;
+    b.addEventListener('click',()=>{if(!open){sfx('ui');return;}S.hero=id;save();sfx('ui');renderHeroes();});box.appendChild(b);paintFace(b.querySelector('canvas'),id);});
 }
 function renderLevels(){
   renderHeroes();$('#lvStars').textContent=totalStars();
@@ -1846,7 +1940,7 @@ function renderInfo(){
   const i=viewSel!==null?viewSel:S.sel,lv=getLevel(i),box=$('#lvlInfo'),inRegion=Math.floor(i/10)===curRegion,locked=i>=S.unlocked;
   if(!inRegion){box.hidden=true;return;}box.hidden=false;
   const mods=lv.mods.map(m=>`<span class="mod" title="${tx(MODS[m].desc)}">${tx(MODS[m].name)}: ${tx(MODS[m].desc)}</span>`).join('');
-  box.innerHTML=`<canvas></canvas><h3>${t('levelN',i+1)} · ${lv.name}</h3><div class="meta">${wavesLabel(lv.waves)} · ${t('plotsN',lv.maxP)} · ★ ${S.stars[i]||0}/3</div>${(lv.feat||[]).length?`<div class="meta feat">${t('featMon')} ${lv.feat.map(k=>tx(ENEMIES[k].name)).join(LANG==='ar'?'، ':', ')}</div>`:''}<div class="mods">${lv.boss?`<span class="mod boss">${t('bossLvl')}</span>`:''}${mods||(!lv.boss?`<span class="meta">${t('noMods')}</span>`:'')}</div><span></span><button class="btn go" id="goBtn"${locked?' disabled':''}>${locked?t('lockedLvl',S.unlocked):t('startBtn')}</button>${APP&&!locked?`<button class="btn ghost go2" id="goAdBtn">${t('goldBtn',bonusGold(i))}${adBadge()}</button>`:''}`;
+  box.innerHTML=`<canvas></canvas><h3>${t('levelN',i+1)} · ${lv.name}</h3><div class="meta">${wavesLabel(lv.waves)} · ${t('plotsN',lv.maxP)} · ★ ${S.stars[i]||0}/3</div>${lv.dom?`<div class="meta feat">${t('domMon',tx(ACLS[lv.dom].name))}</div>`:''}${(lv.feat||[]).length?`<div class="meta feat">${t('featMon')} ${lv.feat.map(k=>tx(ENEMIES[k].name)).join(LANG==='ar'?'، ':', ')}</div>`:''}<div class="mods">${lv.boss?`<span class="mod boss">${t('bossLvl')}</span>`:''}${mods||(!lv.boss?`<span class="meta">${t('noMods')}</span>`:'')}</div><span></span><button class="btn go" id="goBtn"${locked?' disabled':''}>${locked?t('lockedLvl',S.unlocked):t('startBtn')}</button>${APP&&!locked?`<button class="btn ghost go2" id="goAdBtn">${t('goldBtn',bonusGold(i))}${adBadge()}</button>`:''}`;
   drawPreview(box.querySelector('canvas'),i);
   if(locked)return;
   $('#goBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');startLevel(i);});
@@ -1884,9 +1978,21 @@ function startLevel(i){
   msgs.forEach(([a,b],k)=>setTimeout(()=>{if(G&&G.L===i&&!G.demo&&G.wave===0)banner(a,b);},2500*(k+1)));
   showHint(i===0&&!S.seenTut?t('tutBuild'):null);
 }
+function srcName(src){const tw=TORDER.find(k=>SRC_OF[k]===src);const hero=HORDER.find(k=>HEROES[k].src===src);return tw?tx(TOWERS[tw].name):hero?tx(HEROES[hero].name):src;}
+function adviceHTML(i,losses){const lv=getLevel(i),mix=levelMix(i),sep=LANG==='ar'?'، ':', ',out=[];
+  const hs=HORDER.filter(heroOpen).map(id=>[id,heroScore(id,i)]).sort((a,b)=>b[1]-a[1]);if(hs.length)out.push(t('hintHero',tx(HEROES[hs[0][0]].name)));
+  const ts=TORDER.filter(k=>TOWERS[k].unlock<=i).map(k=>[k,towerFit(k,i)]).sort((a,b)=>b[1]-a[1]);out.push(t('hintTowers',ts.slice(0,3).map(x=>tx(TOWERS[x[0]].name)).join(sep)));
+  const worst=ts[ts.length-1];if(worst&&worst[1]<.85)out.push(t('hintAvoid',tx(TOWERS[worst[0]].name)));
+  let air=0,all=0;for(const k in mix){all+=mix[k];if(ENEMIES[k].fly)air+=mix[k];}if(air/all>.18)out.push(t('hintAir'));
+  if(lv.paths.length>1)out.push(t('hintPaths',lv.paths.length));
+  const rm=REGMOD[lv.theme]||{},rk=Object.keys(rm);if(rk.length)out.push(t('hintRegion',rk.map(k=>srcName(k)+(rm[k]>1?' ▲':' ▼')).join(sep)));
+  if(losses>=5){out.push(t('hintShop'));if(lv.boss)out.push(t('hintBoss'));}
+  return `<b>${t('hintT')}</b><ul style="margin:6px 0 0;padding:0">${out.map(x=>`<li>${x}</li>`).join('')}</ul>`;}
 function endLevel(win){
   if(!G||G.demo)return;
   const stars=win?(G.lives>=G.maxLives?3:G.lives>=G.maxLives*.5?2:1):0,newStars=win?Math.max(0,stars-(S.stars[G.L]||0)):0;
+  S.loss=S.loss||{};if(win)delete S.loss[G.L];else S.loss[G.L]=(S.loss[G.L]||0)+1;const losses=S.loss[G.L]||0;
+  const before=S.unlocked;
   if(win){S.stars[G.L]=Math.max(S.stars[G.L]||0,stars);S.unlocked=Math.max(S.unlocked,Math.min(NLEV,G.L+2));S.sel=Math.min(NLEV-1,G.L+1);curRegion=Math.floor(S.sel/10);sfx('win');}else sfx('lose');
   save();closeSheets();G.targeting=null;showHint(null);
   const last=G.L===NLEV-1,tt=$('#endTitle');
@@ -1897,6 +2003,11 @@ function endLevel(win){
   $('#nextBtn').hidden=!(win&&!last);
   const xb=$('#xpAdBtn'),xg=Math.round(G.xpEarned||0);xb.hidden=!(APP&&win&&xg>0);xb.disabled=false;
   if(!xb.hidden){xb.innerHTML=t('xpBtn',xg)+adBadge();xb.onclick=()=>{xb.disabled=true;watchAd('xp',ok=>{if(ok){S.xp[G.hero.type]=(S.xp[G.hero.type]||0)+xg;save();xb.textContent=t('xpDone');sfx('level');}else xb.disabled=false;});};}
+  const eh=$('#endHint');eh.hidden=true;const nh=win?HORDER.find(id=>HEROES[id].unlock>0&&HEROES[id].unlock>=before&&HEROES[id].unlock<S.unlocked):null;
+  if(nh){eh.innerHTML=`<b>🎉 ${t('newHero')}</b><br>${tx(HEROES[nh].name)} — ${tx(HEROES[nh].desc)}`;eh.hidden=false;}
+  else if(!win&&losses>=3){eh.innerHTML=adviceHTML(G.L,losses);eh.hidden=false;}
+  const rab=$('#retryAdBtn');rab.hidden=!(APP&&!win&&losses>=3);rab.disabled=false;
+  if(!rab.hidden){const L=G.L,bg=bonusGold(L);rab.innerHTML=t('retryGold',bg)+adBadge();rab.onclick=()=>{rab.disabled=true;watchAd('gold',ok=>{if(!ok){rab.disabled=false;return;}startLevel(L);const go=()=>{if(G&&G.L===L){G.gold+=bg;banner(t('goldN',bg),'');}else setTimeout(go,200);};go();});};}
   const sbn=$('#starAdBtn');sbn.hidden=!(APP&&win&&newStars>0);sbn.disabled=false;
   if(!sbn.hidden){sbn.innerHTML=t('starBtn',newStars)+adBadge();sbn.onclick=()=>{sbn.disabled=true;watchAd('stars',ok=>{if(ok){S.bonusStars=(S.bonusStars||0)+newStars;save();sbn.textContent=t('starDone');sfx('level');}else sbn.disabled=false;});};}
   showScreen('endScr');

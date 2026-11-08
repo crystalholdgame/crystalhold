@@ -59,7 +59,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .skill .sk-ico svg{width:24px;height:24px;display:block}
 .skill .sk-cd{position:absolute;inset:-1px;border-radius:50%;background:conic-gradient(rgba(10,6,3,.82) calc(var(--p,0) * 360deg),transparent 0);pointer-events:none}
 .skill .sk-num{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;pointer-events:none;font-variant-numeric:tabular-nums}
-.skill .sk-name{position:absolute;top:calc(100% + 1px);left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:var(--dim);white-space:nowrap}
+.skill .sk-name{position:absolute;top:calc(100% + 1px);left:50%;transform:translateX(-50%);width:52px;font-size:9.5px;line-height:1.05;font-weight:700;color:var(--dim);text-align:center;white-space:normal;overflow:hidden;max-height:2.2em}
 .skill.ready{border-color:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 50%,transparent)}
 .skill.arming{animation:arm .45s infinite alternate}
 .skill.off{opacity:.35;filter:grayscale(1)}
@@ -1418,26 +1418,35 @@ function fitCamera(){
     const bounds=()=>{let x0=9,x1=-9,y0=9,y1=-9;for(const [x,z] of corners){_v.set(x,0,z).project(cam);x0=Math.min(x0,_v.x);x1=Math.max(x1,_v.x);y0=Math.min(y0,_v.y);y1=Math.max(y1,_v.y);}return{x0,x1,y0,y1};};
     let lo=4,hi=90;for(let i=0;i<22;i++){const d=(lo+hi)/2;place(d,MH/2);const b=bounds();if(b.x0<=-1||b.x1>=1||b.y0<=-1||b.y1>=1)lo=d;else hi=d;}
     place(lo,MH/2);V.camPos=cam.position.clone();V.camTarget=new THREE.Vector3(cx,0,MH/2);V.scene.fog.near=lo*.95;V.scene.fog.far=lo*2.4;V.view=null;return;}
-  /* battle camera: tilted side view (towers seen from the front), fills the screen, drag to pan, pinch to zoom */
-  const pitch=50*Math.PI/180;V.pitch=pitch;V.MH=MH;
-  const vis=d=>{const v=V.view;placeView(d,cx,MH/2);const g=(sx,sy)=>groundAt(sx,sy);const L=g(-1,0),R=g(1,0),T=g(0,1),B=g(0,-1),TL=g(-1,1),TR=g(1,1);
-    return{hw:L&&R?(R.x-L.x)/2:99,a:T?MH/2-T.z:99,b:B?B.z-MH/2:99,hwTop:TL&&TR?(TR.x-TL.x)/2:99};};
+  /* battle camera: tilted side view (towers seen from the front), fills the screen, drag to pan, pinch to zoom.
+     the maps are tall; on a wide (landscape) screen the camera turns 90deg so the map lies across the screen */
+  const pitch=50*Math.PI/180;V.pitch=pitch;V.MH=MH;V.yaw=W/H>1.15?-Math.PI/2:0;
+  const ax=viewAxes(MH);
+  const vis=d=>{placeView(d,cx,MH/2);const g=(sx,sy)=>groundAt(sx,sy);const L=g(-1,0),R=g(1,0),T=g(0,1),B=g(0,-1),TL=g(-1,1),TR=g(1,1);
+    return{hw:L&&R?ax.u(R)-ax.u(L):198,a:T?-ax.w(T):99,b:B?ax.w(B):99,hwTop:TL&&TR?ax.u(TR)-ax.u(TL):198};};
   // cover = map fills the whole screen; contain = whole map visible
-  let lo=2,hi=80;for(let i=0;i<24;i++){const d=(lo+hi)/2,q=vis(d);if(q.hwTop*2<=COLS+.2&&q.a+q.b<=MH+.4)lo=d;else hi=d;}const dCover=lo;
-  lo=2;hi=80;for(let i=0;i<24;i++){const d=(lo+hi)/2,q=vis(d);if(q.hw*2>=COLS+.4&&q.a+q.b>=MH+.8)hi=d;else lo=d;}const dContain=hi;
+  const MW=2*ax.HU,MV=2*ax.HV;
+  let lo=2,hi=80;for(let i=0;i<24;i++){const d=(lo+hi)/2,q=vis(d);if(q.hwTop<=MW+.2&&q.a+q.b<=MV+.4)lo=d;else hi=d;}const dCover=lo;
+  lo=2;hi=80;for(let i=0;i<24;i++){const d=(lo+hi)/2,q=vis(d);if(q.hw>=MW+.4&&q.a+q.b>=MV+.8)hi=d;else lo=d;}const dContain=hi;
   V.dMin=dCover*.8;V.dMax=Math.max(dCover,dContain);
-  const keep=V.view&&V.view.MH===MH&&V.view.L===(G&&G.L);
-  const d0=keep?Math.min(V.dMax,Math.max(V.dMin,V.view.d)):(W/H<1?Math.min(dCover*1.16,Math.max(dCover,dContain)):dCover+(Math.max(dCover,dContain)-dCover)*.3);
-  V.view={d:d0,tx:keep?V.view.tx:cx,tz:keep?V.view.tz:MH*.62,MH,L:G&&G.L};clampView();
+  const keep=V.view&&V.view.MH===MH&&V.view.L===(G&&G.L)&&V.view.yaw===V.yaw;
+  const d0=keep?Math.min(V.dMax,Math.max(V.dMin,V.view.d)):dCover;
+  V.view={d:d0,tx:keep?V.view.tx:cx,tz:keep?V.view.tz:(V.yaw?MH/2:MH*.62),MH,L:G&&G.L,yaw:V.yaw};clampView();
   V.scene.fog.near=V.dMax*1.2;V.scene.fog.far=V.dMax*3;
 }
-function placeView(d,tx,tz){const cam=V.cam,p=V.pitch;cam.position.set(tx,Math.sin(p)*d,tz+Math.cos(p)*d);cam.lookAt(tx,0,tz);cam.updateMatrixWorld();}
+/* screen-aligned axes on the ground: u = to the right of the screen, w = toward the bottom of the screen (toward the camera) */
+function viewAxes(MH){const y=V.yaw||0,rx=Math.cos(y),rz=-Math.sin(y),dx=Math.sin(y),dz=Math.cos(y),cx=COLS/2,cz=MH/2;
+  return{rx,rz,dx,dz,cx,cz,HU:Math.abs(rx)*COLS/2+Math.abs(rz)*MH/2,HV:Math.abs(dx)*COLS/2+Math.abs(dz)*MH/2,
+    u:p=>(p.x-cx)*rx+(p.z-cz)*rz,w:p=>(p.x-cx)*dx+(p.z-cz)*dz};}
+function placeView(d,tx,tz){const cam=V.cam,p=V.pitch,y=V.yaw||0;cam.position.set(tx+Math.sin(y)*Math.cos(p)*d,Math.sin(p)*d,tz+Math.cos(y)*Math.cos(p)*d);cam.lookAt(tx,0,tz);cam.updateMatrixWorld();}
 function groundAt(nx,ny){V.ray.setFromCamera(new THREE.Vector2(nx,ny),V.cam);const pt=new THREE.Vector3();return V.ray.ray.intersectPlane(V.gp,pt)?pt:null;}
-function clampView(){const v=V.view;if(!v)return;const MH=v.MH,cx=COLS/2;v.d=Math.min(V.dMax,Math.max(V.dMin,v.d));
-  placeView(v.d,cx,MH/2);const L=groundAt(-1,0),R=groundAt(1,0),T=groundAt(0,1),B=groundAt(0,-1);
-  const hw=L&&R?(R.x-L.x)/2:99,a=T?MH/2-T.z:99,b=B?B.z-MH/2:99,m=.25;
-  v.tx=hw*2>=COLS+2*m?cx:Math.min(COLS+m-hw,Math.max(hw-m,v.tx));
-  v.tz=a+b>=MH+2*m?(-m+a+MH+m-b)/2:Math.min(MH+m-b,Math.max(a-m,v.tz));
+function clampView(){const v=V.view;if(!v)return;const MH=v.MH,ax=viewAxes(MH);v.d=Math.min(V.dMax,Math.max(V.dMin,v.d));
+  placeView(v.d,ax.cx,ax.cz);const L=groundAt(-1,0),R=groundAt(1,0),T=groundAt(0,1),B=groundAt(0,-1);
+  const hw=L&&R?(ax.u(R)-ax.u(L))/2:99,a=T?-ax.w(T):99,b=B?ax.w(B):99,m=.25,HU=ax.HU,HV=ax.HV;
+  let u=ax.u({x:v.tx,z:v.tz}),w=ax.w({x:v.tx,z:v.tz});
+  u=hw>=HU+m?0:Math.min(HU+m-hw,Math.max(-(HU+m)+hw,u));
+  w=a+b>=2*HV+2*m?(a-b)/2:Math.min(HV+m-b,Math.max(a-m-HV,w));
+  v.tx=ax.cx+u*ax.rx+w*ax.dx;v.tz=ax.cz+u*ax.rz+w*ax.dz;
   placeView(v.d,v.tx,v.tz);V.camPos=V.cam.position.clone();V.camTarget=new THREE.Vector3(v.tx,0,v.tz);}
 const LOOK3={
   spearman:{body:'#b0452a',skin:'#c99068',head:'helmet',helm:'#d9a43a',plume:'#ffd23a',weapon:'spear',shield:'#e0892a',boots:'#4a2a16'},
@@ -1531,7 +1540,7 @@ function towerMesh(t){
   const lvl=t.lvl,gold=lvl>=2?METP('#ffc63a',.14):MET('#d9a43a'),acc=TACC[t.type];
   const gm=GLBM['t_'+t.type+(lvl+1)];
   if(gm&&gm.ready){const inner=gm.scene.clone(true),fw=.98+lvl*.08,sc=fw/gm.w;inner.scale.setScalar(sc);inner.position.set(-gm.cx*sc,-gm.y0*sc,-gm.cz*sc);
-    const piv=new THREE.Group();piv.rotation.y=-.38;piv.add(inner);root.add(piv);const top=gm.h*sc;R.glb=true;R.top=top;
+    const piv=new THREE.Group();piv.rotation.y=-.38+(V.yaw||0);piv.add(inner);root.add(piv);R.piv=piv;const top=gm.h*sc;R.glb=true;R.top=top;
     tur.position.y=top*.82;root.add(tur);R.barrel=new THREE.Group();R.bx=0;R.by=0;tur.add(R.barrel);R.bolt=new THREE.Group();
     if(t.type==='frost'||t.type==='lightning'){R.glow=new THREE.Sprite(GLOWM(t.type==='frost'?'#9fe6ff':'#c8a6ff').clone());R.glow.position.y=top*.12;R.glow.scale.setScalar(.7+lvl*.15);tur.add(R.glow);}
     if(lvl>=2){R.gem=new THREE.Object3D();R.gem.position.y=top;root.add(R.gem);R.glint=new THREE.Sprite(GLOWM('#ffffff').clone());R.glint.position.set(0,top*.92,0);R.glint.scale.setScalar(.3);root.add(R.glint);
@@ -1657,6 +1666,7 @@ function render3D(T,dt){
     {const canUp=!G.demo&&!G.over&&tw.lvl<2&&G.gold>=tUpg(tw)&&G.selected!==tw;if(canUp&&!R.upArrow){R.upArrow=new THREE.Sprite(new THREE.SpriteMaterial({map:V.tex.uparrow,depthTest:false,transparent:true}));R.upArrow.scale.set(.3,.3,1);R.upArrow.renderOrder=5;R.root.add(R.upArrow);}
      if(R.upArrow){R.upArrow.visible=canUp;R.upArrow.position.y=(R.top||1)+.28+Math.abs(Math.sin(T*3.5+tw.x))*.08;}}
     const age=G.time-tw.born,u=Math.min(1,age/.35),pop=age<.35?1+2.7*Math.pow(u-1,3)+1.7*Math.pow(u-1,2):1;R.root.scale.setScalar(R.base*Math.max(.05,pop));
+    if(R.piv)R.piv.rotation.y=-.38+(V.yaw||0);
     if(tw.type==='frost'){R.tur.rotation.y=T*.5;R.glow.material.opacity=.55+Math.sin(T*2)*.15;}
     else if(tw.type==='lightning'){R.glow.scale.setScalar(.75+Math.random()*.35);}
     else R.tur.rotation.y=-tw.ang;
@@ -1824,9 +1834,12 @@ function ringPos(i,n,R,start){const a=(start===undefined?-Math.PI/2:start)+i/n*M
 function towerInfo(type,lvl,tw){const D=TOWERS[type],l=lvl,mul=G.bn.dmg;const st=[t('st_dmg')+' '+Math.round(D.dmg[l]*mul),t('st_range')+' '+(D.range[l]*G.bn.range).toFixed(1),t('st_rate')+' '+D.rate[l].toFixed(2)];
   const vs=strongVs(SRC_OF[type]).map(c=>tx(ACLS[c].name)).join(LANG==='ar'?'، ':', ');
   return `<b>${tx(D.name)}</b> · ${t('lvlOf',l+1)}${D.air?t('hitsAir'):t('groundOnly')}<br><span class="st">${st.join(' · ')}</span>${vs?`<br><span class="vs">▲ ${vs}</span>`:''}`;}
+let RING_T=-1e9;
 function openRing(){const r=$('#ring');r.innerHTML='';r.hidden=false;const info=$('#tinfo');
   const add=(cls,html,x,y,fn)=>{const b=document.createElement('button');b.className='ring-b '+cls;b.innerHTML=html;b.style.left=x+'px';b.style.top=y+'px';
-    b.addEventListener('pointerdown',ev=>ev.stopPropagation());b.addEventListener('click',ev=>{ev.stopPropagation();ensureAudio();fn(b);});r.appendChild(b);return b;};
+    let down=false;b.addEventListener('pointerdown',ev=>{ev.stopPropagation();down=true;});b.addEventListener('pointerleave',()=>{down=false;});
+    b.addEventListener('pointerup',ev=>{ev.stopPropagation();ev.preventDefault();if(!down)return;down=false;RING_T=performance.now();ensureAudio();fn(b);});
+    b.addEventListener('click',ev=>{ev.stopPropagation();if(performance.now()-RING_T<700)return;ensureAudio();fn(b);});r.appendChild(b);return b;};
   if(G.buildCell){TORDER.forEach((type,i)=>{const [x,y]=ringPos(i,TORDER.length,78);const D=TOWERS[type],lock=G.L<D.unlock;
       const b=add('t',`<img src="${TICON[type+'1']}" alt=""><span class="pr">${lock?t('levelN',D.unlock+1):COINS+tCost(type)}</span>`,x,y,btn=>{
         if(lock){btn.classList.remove('nope');void btn.offsetWidth;btn.classList.add('nope');return;}
@@ -1834,14 +1847,14 @@ function openRing(){const r=$('#ring');r.innerHTML='';r.hidden=false;const info=
       b.dataset.type=type;b.classList.toggle('lock',lock);});
     info.innerHTML=t('pickTower');info.hidden=false;}
   else if(G.selected){const tw=G.selected,n=tw.lvl<2?tw.lvl+1:null;
-    if(n!==null)add('up',`<img src="${TICON[tw.type+(n+1)]}" alt=""><span class="pr">${COINS}${tUpg(tw)}</span>`,0,-78,btn=>{if(G.gold<tUpg(tw)){btn.classList.remove('nope');void btn.offsetWidth;btn.classList.add('nope');return;}$('#tsUp').click();openRing();});
+    if(n!==null)add('up',`<img src="${TICON[tw.type+(n+1)]}" alt=""><span class="pr">${COINS}${tUpg(tw)}</span>`,0,-78,btn=>{if(G.gold<tUpg(tw)){btn.classList.remove('nope');void btn.offsetWidth;btn.classList.add('nope');return;}upgradeSel();openRing();});
     else add('max','<span style="font-size:24px">★</span><span class="pr">MAX</span>',0,-78,()=>{});
-    add('sell','$<span class="pr">+'+Math.floor(tw.invested*.6)+'</span>',0,78,()=>$('#tsSell').click());
-    if(tw.type!=='frost')add('mode','🎯',-74,0,()=>{$('#tsMode').click();openRing();});
+    add('sell','$<span class="pr">+'+Math.floor(tw.invested*.6)+'</span>',0,78,()=>sellSel());
+    if(tw.type!=='frost')add('mode','🎯',-74,0,()=>{modeSel();openRing();});
     info.innerHTML=towerInfo(tw.type,tw.lvl)+(tw.type!=='frost'?'<br>'+t('targetL',t(MODES[tw.mode])):'');info.hidden=false;}
   placeRing();refreshRing();}
 function placeRing(){const r=$('#ring');if(!r||r.hidden||!G)return;let x,y;if(G.selected){x=G.selected.x;y=G.selected.y;}else if(G.buildCell){const q=plotXY(G.buildCell.c,G.buildCell.r);x=q.x;y=q.y;}else return;
-  const [sx,sy]=proj(x,.35,y),m=108;r.style.left=Math.max(m,Math.min(W-m,sx))+'px';r.style.top=Math.max(158,Math.min(H-175,sy))+'px';}
+  const [sx,sy]=proj(x,.35,y),m=108;const sm=H<600;r.style.left=Math.max(m,Math.min(W-m,sx))+'px';r.style.top=Math.max(sm?112:158,Math.min(H-(sm?96:175),sy))+'px';}
 function refreshRing(){const r=$('#ring');if(!r||r.hidden)return;r.querySelectorAll('.ring-b.t').forEach(b=>b.classList.toggle('poor',G.gold<tCost(b.dataset.type)));const up=r.querySelector('.ring-b.up');if(up&&G.selected)up.classList.toggle('poor',G.gold<tUpg(G.selected));}
 function refreshTowerSheet(){
   const tw=G.selected;if(!tw)return;const D=TOWERS[tw.type],l=tw.lvl,n=l<2?l+1:null;
@@ -1862,11 +1875,14 @@ function build(type,card){
   closeSheets();
   if(G.L===0&&!S.seenTut&&G.wave===0)showHint(t('tutWave'));
 }
-$('#tsUp').addEventListener('click',()=>{const tw=G.selected;if(!tw||tw.lvl>=2)return;const c=tUpg(tw);if(G.gold<c)return;G.gold-=c;tw.lvl++;tw.invested+=c;tw.born=G.time;
-  burst(tw.x,tw.y,'#ffd98a',16,3.5,.1,.6,.6);ringFx(tw.x,tw.y,'#ffffff',.2,1,.45,.05);smokeFx(tw.x,tw.y,4,.2,false,.1);addText(tw.x,tw.y,t('upgradeFx'),'#ffd98a',.3,1.2);sfx('upgrade',tw.x);refreshTowerSheet();});
-$('#tsSell').addEventListener('click',()=>{const tw=G.selected;if(!tw)return;const v=Math.floor(tw.invested*.6);G.gold+=v;G.towers=G.towers.filter(x=>x!==tw);delete G.tmap[tw.r*COLS+tw.c];
-  smokeFx(tw.x,tw.y,10,.3,false,.2);debris(tw.x,tw.y,'#8a7a62',10,3,.3);addText(tw.x,tw.y,'+'+v,'#ffd36a',.3,.9);sfx('sell',tw.x);closeSheets();});
-$('#tsMode').addEventListener('click',()=>{const tw=G.selected;if(!tw)return;tw.mode=(tw.mode+1)%3;sfx('ui');refreshTowerSheet();});
+function upgradeSel(){const tw=G.selected;if(!tw||tw.lvl>=2)return;const c=tUpg(tw);if(G.gold<c)return;G.gold-=c;tw.lvl++;tw.invested+=c;tw.born=G.time;
+  burst(tw.x,tw.y,'#ffd98a',16,3.5,.1,.6,.6);ringFx(tw.x,tw.y,'#ffffff',.2,1,.45,.05);smokeFx(tw.x,tw.y,4,.2,false,.1);addText(tw.x,tw.y,t('upgradeFx'),'#ffd98a',.3,1.2);sfx('upgrade',tw.x);refreshTowerSheet();}
+$('#tsUp').addEventListener('click',upgradeSel);
+function sellSel(){const tw=G.selected;if(!tw)return;const v=Math.floor(tw.invested*.6);G.gold+=v;G.towers=G.towers.filter(x=>x!==tw);delete G.tmap[tw.r*COLS+tw.c];
+  smokeFx(tw.x,tw.y,10,.3,false,.2);debris(tw.x,tw.y,'#8a7a62',10,3,.3);addText(tw.x,tw.y,'+'+v,'#ffd36a',.3,.9);sfx('sell',tw.x);closeSheets();}
+$('#tsSell').addEventListener('click',sellSel);
+function modeSel(){const tw=G.selected;if(!tw)return;tw.mode=(tw.mode+1)%3;sfx('ui');refreshTowerSheet();}
+$('#tsMode').addEventListener('click',modeSel);
 $('#closeBuild').addEventListener('click',closeSheets);$('#closeTower').addEventListener('click',closeSheets);
 $('#heroBtn').addEventListener('click',()=>{if(!G||G.demo)return;sfx('ui');showHint(G.hero.dead?t('heroBack'):t('tutHero'));setTimeout(()=>showHint(null),2600);});
 /* touch: tap = build/select/move hero, drag = pan the map, two fingers = zoom */

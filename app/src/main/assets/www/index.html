@@ -365,9 +365,9 @@ const COIN='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="curre
 /* ================= i18n ================= */
 const LANGS={ar:{dir:'rtl',label:'العربية'},en:{dir:'ltr',label:'English'},no:{dir:'ltr',label:'Norsk'}};
 const STR={
-  trialBtn:['جرّب مجانًا 24 ساعة','Free 24 h trial','Prøv gratis i 24 t'],trialLeft:['تجربة: {0} ساعة متبقية','Trial: {0} h left','Prøve: {0} t igjen'],trialEnded:['انتهت التجربة','Trial ended','Prøven er over'],
+  trialBtn:['جرّب مجانًا مرحلة واحدة','Try free for one level','Prøv gratis ett brett'],trialLeft:['جاهز للتجربة: مرحلة واحدة','Trial ready: one level','Prøve klar: ett brett'],trialBuy:['أعجبك {0}؟ اشترِه من شاشة الأبطال لتحتفظ به!','Liked {0}? Buy him on the hero screen to keep him!','Likte du {0}? Kjøp helten for å beholde den!'],trialEnded:['انتهت التجربة','Trial ended','Prøven er over'],
   buyHero:['اشترِ','Buy','Kjøp'],unlockNow:['افتح الآن','Unlock now','Lås opp nå'],heroPack:['👑 الأبطال الستة الجدد','👑 All 6 new heroes','👑 Alle 6 nye helter'],heroPackD:['سيد الرعد، الحارس الطائر، التنين التوأم، سيد الذئاب، نجم السلة، نجم الكرة','Thunder Lord, Sky Guardian, Twin Dragon, Wolf Master, Hoop Star, Goal Star','Tordenherre, Himmelvokter, Tvillingdrage, Ulvemester, Kurvstjerne, Målstjerne'],
-  paidHero:['بطل خاص','Special hero','Spesialhelt'],trialStarted:['بدأت التجربة المجانية لمدة 24 ساعة!','Your free 24 hour trial has started!','Gratis prøve i 24 timer har startet!'],
+  paidHero:['بطل خاص','Special hero','Spesialhelt'],trialStarted:['جرّب البطل مجانًا في المرحلة التالية التي تلعبها!','Try the hero free in the next level you play!','Prøv helten gratis på neste brett du spiller!'],
   shop:['المتجر','Shop','Butikk'],shopHint:['أدوات تساعدك في المراحل الصعبة. يمكنك استعمال كل أداة مرتين في المرحلة.','Tools for the hard levels. Each tool can be used twice per level.','Verktøy for vanskelige brett. Hvert verktøy kan brukes to ganger per brett.'],
   getGems:['احصل على جواهر','Get gems','Få edelsteiner'],buyN:['شراء','Buy','Kjøp'],ownN:['لديك {0}','You have {0}','Du har {0}'],
   it_lives:['+5 أرواح','+5 lives','+5 liv'],it_livesD:['يضيف 5 أرواح للكريستال فورًا','Adds 5 lives to the crystal at once','Gir krystallen 5 liv med en gang'],
@@ -527,9 +527,11 @@ const HEROES={
     skills:[{id:'shot',name:N3('التسديدة النارية','Power Shot','Kraftskudd'),cd:9,c:'#ff7a2a'},{id:'bicycle',name:N3('المقصّية','Bicycle Kick','Saksespark'),cd:15,c:'#7dffd8'},{id:'goalx',name:N3('هدف!','GOAL!','MÅL!'),cd:28,c:'#ffe066',target:true}]},
 };
 const HORDER=['knight','mage','archer','ice','fire','thunder','laser','dragon','wolfm','hoop','goal'];
-const HERO_SKU=id=>'hero_'+id,PACK_SKU='heroes_pack',TRIAL_MS=24*3600*1000;
+const HERO_SKU=id=>'hero_'+id,PACK_SKU='heroes_pack';
 const heroOwned=id=>!!(window.STORE&&STORE.owned&&(STORE.owned.includes(HERO_SKU(id))||(HEROES[id].paid&&STORE.owned.includes(PACK_SKU))));
-const heroTrial=id=>{const t0=(S.trial||{})[id];return t0&&Date.now()-t0<TRIAL_MS;};
+/* free trial = one level: 1 ready, 2 playing that level, 3 used */
+const heroTrial=id=>{const v=(S.trial||{})[id];return v===1||v===2;};
+function endTrial(){if(!G||G.demo||!G.hero)return;const id=G.hero.type;if(HEROES[id].paid&&S.trial&&S.trial[id]===2&&!heroOwned(id)){S.trial[id]=3;save();}}
 const heroOpen=id=>{const D=HEROES[id];if(D.paid)return heroOwned(id)||heroTrial(id);return (D.unlock||0)<S.unlocked||D.unlock===0||heroOwned(id);};
 const SKILL_ICO={
   slam:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="11" height="7" rx="1.5"/><rect x="9.5" y="9" width="2.5" height="10"/><path d="M2 21h20M4 18l3-2M20 18l-3-2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
@@ -2095,13 +2097,13 @@ function heroPrice(id){return (STORE.prices||{})[HERO_SKU(id)]||(HEROES[id].paid
 function renderHeroes(){
   const box=$('#heroPick');box.innerHTML='';const lv=getLevel(viewSel!==null?viewSel:S.sel);S.trial=S.trial||{};
   HORDER.forEach(id=>{const D=HEROES[id],open=heroOpen(id),b=document.createElement('div');b.className='hcard'+(S.hero===id?' on':'')+(open?'':' locked')+(D.paid?' paid':'');b.setAttribute('role','button');
-    const fit=open?heroFit(id,lv):0,owned=heroOwned(id),trial=D.paid&&!owned&&heroTrial(id),trialUsed=D.paid&&S.trial[id]&&!trial;
-    let status;if(D.paid){status=owned?t('levelOfHero',heroLevel(S.xp[id]||0)):trial?'⏳ '+t('trialLeft',Math.max(1,Math.ceil((TRIAL_MS-(Date.now()-S.trial[id]))/3600000))):trialUsed?t('trialEnded'):'👑 '+t('paidHero');}
+    const fit=open?heroFit(id,lv):0,owned=heroOwned(id),trial=D.paid&&!owned&&heroTrial(id),trialUsed=D.paid&&S.trial[id]===3;
+    let status;if(D.paid){status=owned?t('levelOfHero',heroLevel(S.xp[id]||0)):trial?'⏳ '+t('trialLeft'):trialUsed?t('trialEnded'):'👑 '+t('paidHero');}
     else status=open?t('levelOfHero',heroLevel(S.xp[id]||0)):'🔒 '+t('levelN',D.unlock+1);
     let btns='';if(!owned&&(D.paid||!open)){if(D.paid&&!S.trial[id])btns+=`<button class="hb trial">${t('trialBtn')}</button>`;if(APP)btns+=`<button class="hb buy">${D.paid?t('buyHero'):t('unlockNow')} · ${heroPrice(id)}</button>`;}
     b.innerHTML=`<canvas></canvas><b>${tx(D.name)}</b><span class="hl">${status}</span>${open&&fit?`<span class="fit ${fit>0?'good':'bad'}">${fit>0?t('fitGood'):t('fitBad')}</span>`:''}<span class="hs">${tx(D.desc)}<br>${D.skills.map(s=>tx(s.name)).join(' · ')}</span>${btns}`;
     b.addEventListener('click',()=>{if(!open){sfx('ui');return;}S.hero=id;save();sfx('ui');renderHeroes();});
-    const tb=b.querySelector('.trial');if(tb)tb.addEventListener('click',ev=>{ev.stopPropagation();S.trial[id]=Date.now();S.hero=id;save();sfx('level');showHint(t('trialStarted'));setTimeout(()=>showHint(null),2500);renderHeroes();});
+    const tb=b.querySelector('.trial');if(tb)tb.addEventListener('click',ev=>{ev.stopPropagation();S.trial[id]=1;S.hero=id;save();sfx('level');showHint(t('trialStarted'));setTimeout(()=>showHint(null),2500);renderHeroes();});
     const bb=b.querySelector('.buy');if(bb)bb.addEventListener('click',ev=>{ev.stopPropagation();sfx('ui');appCall(()=>APP.buy(HERO_SKU(id)));});
     box.appendChild(b);paintFace(b.querySelector('canvas'),id);});
   if(APP&&HORDER.some(id=>HEROES[id].paid&&!heroOwned(id))){const b=document.createElement('div');b.className='hcard paid pack';b.innerHTML=`<b>${t('heroPack')}</b><span class="hs">${t('heroPackD')}</span><button class="hb buy">${t('buyHero')} · ${(STORE.prices||{})[PACK_SKU]||'149 kr'}</button>`;
@@ -2156,6 +2158,7 @@ function startLevel(i){
   newGame(i,false);closeSheets();showScreen(null);
   for(const k in hudCache)delete hudCache[k];waveKey='';lastGold=-1;lastHeroKey='';
   buildSkills();buildTowerList();setSpeed(1);G.itemUse={};renderItemBar();
+  {const id=G.hero.type;if(HEROES[id].paid&&!heroOwned(id)&&S.trial&&S.trial[id]===1){S.trial[id]=2;save();}}
   const lv=G.lv;
   banner(lv.name,`${t('levelN',i+1)} · ${wavesLabel(lv.waves)}${G.assist?' · '+t('assistOn'):''}`);
   const msgs=[];const nt=TORDER.find(k=>TOWERS[k].unlock===i&&i>0);if(nt)msgs.push([t('newDef'),tx(TOWERS[nt].name)+' — '+tx(TOWERS[nt].desc)]);
@@ -2176,6 +2179,7 @@ function adviceHTML(i,losses){const lv=getLevel(i),mix=levelMix(i),sep=LANG==='a
   return `<b>${t('hintT')}</b><ul style="margin:6px 0 0;padding:0">${out.map(x=>`<li>${x}</li>`).join('')}</ul>`;}
 function endLevel(win){
   if(!G||G.demo)return;
+  const trialHero=HEROES[G.hero.type].paid&&!heroOwned(G.hero.type)&&S.trial&&S.trial[G.hero.type]===2;endTrial();
   const prevStars=S.stars[G.L]||0;
   const stars=win?Math.min(G.assist?2:3,(G.lives>=G.maxLives?3:G.lives>=G.maxLives*.5?2:1)):0,newStars=win?Math.max(0,stars-(S.stars[G.L]||0)):0;
   S.loss=S.loss||{};if(win)delete S.loss[G.L];else S.loss[G.L]=(S.loss[G.L]||0)+1;const losses=S.loss[G.L]||0;
@@ -2193,6 +2197,7 @@ function endLevel(win){
   const xb=$('#xpAdBtn'),xg=Math.round(G.xpEarned||0);xb.hidden=!(APP&&win&&xg>0);xb.disabled=false;
   if(!xb.hidden){xb.innerHTML=t('xpBtn',xg)+adBadge();xb.onclick=()=>{xb.disabled=true;watchAd('xp',ok=>{if(ok){S.xp[G.hero.type]=(S.xp[G.hero.type]||0)+xg;save();xb.textContent=t('xpDone');sfx('level');}else xb.disabled=false;});};}
   const eh=$('#endHint');eh.hidden=true;const nh=win?HORDER.find(id=>HEROES[id].unlock>0&&HEROES[id].unlock>=before&&HEROES[id].unlock<S.unlocked):null;
+  if(trialHero&&!nh){eh.innerHTML=`<b>👑 ${t('trialBuy',tx(HEROES[G.hero.type].name))}</b>`;eh.hidden=false;}
   if(nh){eh.innerHTML=`<b>🎉 ${t('newHero')}</b><br>${tx(HEROES[nh].name)} — ${tx(HEROES[nh].desc)}`;eh.hidden=false;}
   else if(!win&&losses>=3){eh.innerHTML=adviceHTML(G.L,losses);eh.hidden=false;}
   const asb=$('#assistBtn');asb.hidden=!(!win&&losses>=2);if(!asb.hidden){const L=G.L;asb.textContent=t('assistBtn');asb.onclick=()=>{S.assistL=L;startLevel(L);};}
@@ -2222,7 +2227,7 @@ $('#speed1').addEventListener('click',()=>{if(!G||G.demo)return;ensureAudio();sf
 $('#pauseBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');pauseGame();});
 $('#resumeBtn').addEventListener('click',()=>{G.paused=false;sfx('ui');showScreen(null);});
 $('#restartBtn').addEventListener('click',()=>{sfx('ui');startLevel(G.L);});
-$('#toLevelsBtn').addEventListener('click',()=>{sfx('ui');toMenu('levels');});
+$('#toLevelsBtn').addEventListener('click',()=>{sfx('ui');endTrial();toMenu('levels');});
 $('#retryBtn').addEventListener('click',()=>{sfx('ui');const L=G.L;maybeInterstitial();startLevel(L);});
 $('#nextBtn').addEventListener('click',()=>{sfx('ui');const L=G.L;maybeInterstitial();startLevel(Math.min(NLEV-1,L+1));});
 $('#endLevelsBtn').addEventListener('click',()=>{sfx('ui');maybeInterstitial();toMenu('levels');});
@@ -2349,7 +2354,7 @@ new ResizeObserver(resize).observe($('#stage'));
 newGame(demoLevel(),true);
 showScreen('menu');
 requestAnimationFrame(frame);
-try{gemInit();updGems();}catch(e){}
+try{gemInit();updGems();if(S.trial)for(const k in S.trial)if(S.trial[k]===2)S.trial[k]=3;}catch(e){}
 window.__booted=true;
 </script>
 

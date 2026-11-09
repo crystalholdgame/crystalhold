@@ -1586,7 +1586,8 @@ function fitCamera(){
   const MW=2*ax.HU,MV=2*ax.HV;
   let lo=2,hi=240;for(let i=0;i<30;i++){const d=(lo+hi)/2,q=vis(d);if(q.hwTop<=MW+.2&&q.a+q.b<=MV+.4)lo=d;else hi=d;}const dCover=lo;
   lo=2;hi=240;for(let i=0;i<30;i++){const d=(lo+hi)/2,q=vis(d);if(q.hw>=MW+.4&&q.a+q.b>=MV+.8)hi=d;else lo=d;}const dContain=hi;
-  V.dMin=dCover*.8;V.dMax=Math.max(dCover,dContain);
+  /* zooming out stops when the map fills the screen: no empty borders around the map */
+  V.dMin=dCover*.7;V.dMax=wide?dCover:Math.max(dCover,dContain);
   const keep=V.view&&V.view.MH===MH&&V.view.L===(G&&G.L)&&V.view.yaw===V.yaw;
   const d0=keep?Math.min(V.dMax,Math.max(V.dMin,V.view.d)):dCover;
   V.view={d:d0,tx:keep?V.view.tx:cx,tz:keep?V.view.tz:(V.yaw?MH/2:MH*.62),MH,L:G&&G.L,yaw:V.yaw};clampView();
@@ -1599,8 +1600,8 @@ function viewAxes(MH){const y=V.yaw||0,rx=Math.cos(y),rz=-Math.sin(y),dx=Math.si
 function placeView(d,tx,tz){const cam=V.cam,p=V.pitch,y=V.yaw||0;cam.position.set(tx+Math.sin(y)*Math.cos(p)*d,Math.sin(p)*d,tz+Math.cos(y)*Math.cos(p)*d);cam.lookAt(tx,0,tz);cam.updateMatrixWorld();}
 function groundAt(nx,ny){V.ray.setFromCamera(new THREE.Vector2(nx,ny),V.cam);const pt=new THREE.Vector3();return V.ray.ray.intersectPlane(V.gp,pt)?pt:null;}
 function clampView(){const v=V.view;if(!v)return;const MH=v.MH,ax=viewAxes(MH);v.d=Math.min(V.dMax,Math.max(V.dMin,v.d));
-  placeView(v.d,ax.cx,ax.cz);const L=groundAt(-1,0),R=groundAt(1,0),T=groundAt(0,1),B=groundAt(0,-1);
-  const hw=L&&R?(ax.u(R)-ax.u(L))/2:99,a=T?-ax.w(T):99,b=B?ax.w(B):99,m=.25,HU=ax.HU,HV=ax.HV;
+  placeView(v.d,ax.cx,ax.cz);const L=groundAt(-1,COLS>9?1:0),R=groundAt(1,COLS>9?1:0),T=groundAt(0,1),B=groundAt(0,-1);
+  const hw=L&&R?(ax.u(R)-ax.u(L))/2:99,a=T?-ax.w(T):99,b=B?ax.w(B):99,m=COLS>9?0:.25,HU=ax.HU,HV=ax.HV;
   let u=ax.u({x:v.tx,z:v.tz}),w=ax.w({x:v.tx,z:v.tz});
   u=hw>=HU+m?0:Math.min(HU+m-hw,Math.max(-(HU+m)+hw,u));
   w=a+b>=2*HV+2*m?(a-b)/2:Math.min(HV+m-b,Math.max(a-m-HV,w));

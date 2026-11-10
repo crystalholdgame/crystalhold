@@ -59,10 +59,19 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .skill .sk-ico svg{width:24px;height:24px;display:block}
 .skill .sk-cd{position:absolute;inset:-1px;border-radius:50%;background:conic-gradient(rgba(10,6,3,.82) calc(var(--p,0) * 360deg),transparent 0);pointer-events:none}
 .skill .sk-num{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;pointer-events:none;font-variant-numeric:tabular-nums}
-.skill .sk-name{position:absolute;top:calc(100% + 1px);left:50%;transform:translateX(-50%);width:58px;font-size:9px;line-height:1.2;font-weight:800;color:#f3e6cc;text-shadow:0 1px 2px #000,0 0 3px #000;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skill .sk-name{position:absolute;top:calc(100% + 1px);left:50%;transform:translateX(-50%);width:50px;font-size:8.5px;line-height:1.2;font-weight:800;color:#f3e6cc;text-shadow:0 1px 2px #000,0 0 3px #000;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .skill.ready{border-color:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 50%,transparent)}
 .skill.arming{animation:arm .45s infinite alternate}
 .skill.off{opacity:.35;filter:grayscale(1)}
+ #gates{position:absolute;inset:0;pointer-events:none;z-index:5}
+.gate{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;margin:-46px 0 0 -40px;width:80px}
+.gate .gt{background:rgba(160,30,20,.92);color:#fff;font-weight:900;font-size:15px;padding:3px 10px;border-radius:999px;border:2px solid #ffd27a;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.5)}
+.gate .ga{color:#ff5a3a;font-size:22px;line-height:1;text-shadow:0 0 6px #000;}
+@keyframes gateBob{50%{transform:translateY(6px)}}
+#nextCard{position:absolute;right:max(10px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 56px);z-index:6;width:200px;padding:6px 8px;border-radius:12px;background:rgba(24,16,10,.88);border:1.5px solid #6e5434;color:#fff;font-size:11.5px;pointer-events:none}
+#nextCard .nh{font-weight:900;color:var(--gold-2);font-size:12px;margin-bottom:3px}
+#nextCard .nr{display:grid;grid-template-columns:24px 1fr auto;gap:4px;align-items:center;line-height:1.5}#nextCard .nr b{color:#ffd27a}#nextCard .nr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nextCard .nr i{font-style:normal;font-weight:800;font-size:10.5px;padding:0 6px;border-radius:999px;background:var(--tc);white-space:nowrap}
 .wave-btn{flex:none;margin-inline-start:auto;min-width:128px;max-width:46%;padding-inline:12px;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffdc8f,#e39a34 60%,#c4781f);color:#2a1300;box-shadow:inset 0 1px 0 #fff3c8,0 5px 0 #7d4610,0 8px 18px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;padding-inline:6px}
 .wave-btn .wb-main{font-family:var(--f-display);font-size:18px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .wave-btn .wb-sub{font-size:11.5px;font-weight:800;opacity:.85;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -324,7 +333,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <main id="stage">
     <canvas id="game"></canvas>
     <canvas id="fx"></canvas>
-    <div id="banner"></div>
+    <div id="banner"></div><div id="gates" hidden></div><div id="nextCard" hidden></div>
     <div id="hint" hidden></div>
     <div id="ring" hidden></div>
     <div id="tinfo" hidden></div>
@@ -427,7 +436,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 <script src="three.min.js"></script>
 <script src="GLTFLoader.js"></script>
 <script src="SkeletonUtils.js"></script>
-<script src="icons.js"></script><script src="bodies.js"></script><script src="maps/auto.js"></script>
+<script src="icons.js"></script><script src="bodies.js"></script><script src="vfx.js"></script><script src="maps/auto.js"></script>
 <script src="models/goblin.js"></script><script src="models/orc.js"></script><script src="models/knight.js"></script><script src="models/shaman.js"></script><script src="models/wolf.js"></script><script src="models/bat.js"></script><script src="models/slime.js"></script><script src="models/frog.js"></script><script src="models/drake.js"></script><script src="models/dragon.js"></script><script src="models/icewolf.js"></script><script src="models/direwolf.js"></script><script src="models/troll.js"></script><script src="models/ogre.js"></script><script src="models/hknight.js"></script><script src="models/hmage.js"></script><script src="models/harcher.js"></script><script src="models/hice.js"></script><script src="models/hfire.js"></script><script src="models/hthunder.js"></script><script src="models/hlaser.js"></script><script src="models/hdragon.js"></script><script src="models/hwolfm.js"></script><script src="models/hhoop.js"></script><script src="models/hgoal.js"></script><script src="models/t_archer1.js"></script><script src="models/t_archer2.js"></script><script src="models/t_archer3.js"></script><script src="models/t_cannon1.js"></script><script src="models/t_cannon2.js"></script><script src="models/t_cannon3.js"></script><script src="models/t_frost1.js"></script><script src="models/t_frost2.js"></script><script src="models/t_frost3.js"></script><script src="models/t_lightning1.js"></script><script src="models/t_lightning2.js"></script><script src="models/t_lightning3.js"></script><script src="models/t_ballista1.js"></script><script src="models/t_ballista2.js"></script><script src="models/t_ballista3.js"></script><script src="models/t_mortar1.js"></script><script src="models/t_mortar2.js"></script><script src="models/t_mortar3.js"></script>
 <script>
 'use strict';
@@ -480,7 +489,7 @@ const STR={
   adFreeThanks:['شكراً لدعمك! أُزيلت الإعلانات','Thank you for your support! Ads removed','Takk for støtten! Reklame er fjernet'],
   tagline:['قُد بطلك، ابنِ الأبراج والمدافع، واحمِ القلعة من جحافل الغزاة.','Lead your hero, raise towers and cannons, and defend the castle against the invading hordes.','Led helten din, bygg tårn og kanoner, og forsvar slottet mot inntrengerhordene.'],
   play:['العب','Play','Spill'],upgrades:['التطويرات','Upgrades','Oppgraderinger'],
-  gfxQ:['الجرافيك: {0}','Graphics: {0}','Grafikk: {0}'],gfx_high:['أفضل','Best','Best'],setRestart:['تغيير الصعوبة أو الجودة يعيد بدء المرحلة','Changing difficulty or quality restarts the level','Endring av vanskelighetsgrad eller grafikk starter brettet på nytt'],diffEasy:['😊 سهل','😊 Easy','😊 Lett'],diffHard:['🔥 صعب','🔥 Hard','🔥 Vanskelig'],diffQ:['اختر مستوى الصعوبة','Choose difficulty','Velg vanskelighetsgrad'],diffEasyD:['للمبتدئين والعائلة: وحوش أضعف وأرواح أكثر','For beginners and families: weaker monsters, more lives','For nybegynnere og familier: svakere monstre, flere liv'],diffHardD:['للمتمرسين: تحدٍّ حقيقي وجواهر مضاعفة 💎×2','For experienced players: a real challenge and double gems 💎×2','For erfarne: ekte utfordring og doble edelsteiner 💎×2'],diffNote:['يمكنك تغييره في أي وقت','You can change it any time','Du kan endre det når som helst'],diffRestart:['تغيير الصعوبة يعيد بدء المرحلة','Changing difficulty restarts the level','Endring av vanskelighetsgrad starter brettet på nytt'],gfxRestart:['تغيير الجودة يعيد بدء المرحلة','Changing quality restarts the level','Endring av grafikk starter brettet på nytt'],worldT:['خريطة العالم · 10 أراضٍ','World map · 10 lands','Verdenskart · 10 land'],worldHint:['اضغط على أرض لترى مراحلها العشر','Tap a land to see its 10 levels','Trykk på et land for å se de 10 brettene'],landLock:['تُفتح بعد المرحلة {0}','Unlocks after level {0}','Åpnes etter brett {0}'],landOf:['الأرض {0} من {1}','Land {0} of {1}','Land {0} av {1}'],changeHero:['اضغط لتغيير البطل','Tap to change hero','Trykk for å bytte helt'],heroesT:['الأبطال','Heroes','Helter'],gfx_med:['متوسط','Medium','Middels'],gfx_low:['منخفض','Low','Lav'],
+  gfxQ:['الجرافيك: {0}','Graphics: {0}','Grafikk: {0}'],gfx_high:['أفضل','Best','Best'],nextWaveT:['الموجة {0} القادمة','Next: wave {0}','Neste: bølge {0}'],setRestart:['تغيير الصعوبة أو الجودة يعيد بدء المرحلة','Changing difficulty or quality restarts the level','Endring av vanskelighetsgrad eller grafikk starter brettet på nytt'],diffEasy:['😊 سهل','😊 Easy','😊 Lett'],diffHard:['🔥 صعب','🔥 Hard','🔥 Vanskelig'],diffQ:['اختر مستوى الصعوبة','Choose difficulty','Velg vanskelighetsgrad'],diffEasyD:['للمبتدئين والعائلة: وحوش أضعف وأرواح أكثر','For beginners and families: weaker monsters, more lives','For nybegynnere og familier: svakere monstre, flere liv'],diffHardD:['للمتمرسين: تحدٍّ حقيقي وجواهر مضاعفة 💎×2','For experienced players: a real challenge and double gems 💎×2','For erfarne: ekte utfordring og doble edelsteiner 💎×2'],diffNote:['يمكنك تغييره في أي وقت','You can change it any time','Du kan endre det når som helst'],diffRestart:['تغيير الصعوبة يعيد بدء المرحلة','Changing difficulty restarts the level','Endring av vanskelighetsgrad starter brettet på nytt'],gfxRestart:['تغيير الجودة يعيد بدء المرحلة','Changing quality restarts the level','Endring av grafikk starter brettet på nytt'],worldT:['خريطة العالم · 10 أراضٍ','World map · 10 lands','Verdenskart · 10 land'],worldHint:['اضغط على أرض لترى مراحلها العشر','Tap a land to see its 10 levels','Trykk på et land for å se de 10 brettene'],landLock:['تُفتح بعد المرحلة {0}','Unlocks after level {0}','Åpnes etter brett {0}'],landOf:['الأرض {0} من {1}','Land {0} of {1}','Land {0} av {1}'],changeHero:['اضغط لتغيير البطل','Tap to change hero','Trykk for å bytte helt'],heroesT:['الأبطال','Heroes','Helter'],gfx_med:['متوسط','Medium','Middels'],gfx_low:['منخفض','Low','Lav'],
   sfxOn:['الأصوات: تعمل','Sounds: on','Lyder: på'],sfxOff:['الأصوات: مكتومة','Sounds: off','Lyder: av'],
   musOn:['الموسيقى: تعمل','Music: on','Musikk: på'],musOff:['الموسيقى: مكتومة','Music: off','Musikk: av'],
   foot:['100 مرحلة · 10 عوالم · بطلان · 6 أبراج','100 levels · 10 realms · 2 heroes · 6 towers','100 brett · 10 riker · 2 helter · 6 tårn'],
@@ -696,7 +705,7 @@ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ================= save ================= */
 const S={stars:[],unlocked:1,sound:true,music:true,seenTut:false,hero:'knight',xp:{knight:0,mage:0},upg:{},seenEn:{},lang:null,sel:0};
 try{const d=JSON.parse(localStorage.getItem('kristal-td-2')||'null');if(d){Object.assign(S,d);S.xp=Object.assign({knight:0,mage:0},d.xp||{});}}catch(e){}
-while(S.stars.length<NLEV)S.stars.push(0);if((S.gfxAuto||0)<2){S.gfxAuto=2;S.gfx='high';}S.music=false;S.upg=S.upg||{};S.seenEn=S.seenEn||{};
+while(S.stars.length<NLEV)S.stars.push(0);if((S.gfxAuto||0)<3){S.gfxAuto=3;S.gfx='high';S.gfxCheck=1;}S.music=false;S.upg=S.upg||{};S.seenEn=S.seenEn||{};
 if(!S.lang){const nl=(navigator.language||'').toLowerCase();S.lang=nl.startsWith('ar')?'ar':(nl.startsWith('nb')||nl.startsWith('no')||nl.startsWith('nn'))?'no':nl.startsWith('en')?'en':'ar';}
 LANG=S.lang;
 function save(){try{localStorage.setItem('kristal-td-2',JSON.stringify(S));}catch(e){}}
@@ -855,7 +864,7 @@ function makeSamples(c){
       const rum=L3(L2(R()))*Math.exp(-t/(.55+v*.1))*9;
       const body=L1(R())*Math.exp(-t/.09)*.9;
       d[i]=crack*.45+thump*.75+rum*.7+body*.5+(ch?R()*Math.exp(-t/.004)*.1:0);}},2);
-  const boom=(v)=>buf(2.2,(d,n,ch)=>{const L2=lp(.01),L3=lp(.003),L1=lp(.05);let ph=0;const pops=[];for(let k=0;k<26;k++)pops.push([.06+Math.random()*1.1,.3+Math.random()*.7]);
+  const boom=(v)=>buf(1.3,(d,n,ch)=>{const L2=lp(.01),L3=lp(.003),L1=lp(.05);let ph=0;const pops=[];/* no crackle tail after the blast: it read as noise */
       for(let i=0;i<n;i++){const t=i/sr;const f=30+55*Math.exp(-t/.1);ph+=2*Math.PI*f/sr;
       const thump=Math.tanh(2*Math.sin(ph)*Math.exp(-t/.35));const rum=L3(L2(R()))*Math.exp(-t/(.9+v*.15))*11;const blast=L1(R())*Math.exp(-t/.16)*1.2;
       let cr=0;for(const [pt,pa] of pops){const u=t-pt;if(u>0&&u<.012)cr+=R()*pa*Math.exp(-u/.003)*Math.exp(-t/.8);}
@@ -893,7 +902,7 @@ function brass(t,f,dur,vol){[0,7].forEach(d=>os({t,type:'sawtooth',f0:f,det:d,du
 const TH={arrow:.07,cannon:.1,mortar:.15,boom:.08,zap:.09,frost:.18,bolt:.1,swing:.1,clang:.1,magic:.1,die:.06,coin:.12,brk:.1,leak:.25,ui:.04};
 /* only a few meaningful sounds; constant shots, hits and deaths are left silent so the game never turns into noise */
 const SFX_KEEP=new Set(['boom','build','upgrade','sell','wave','ogre','meteor','sky','whirl','cry','fireball','freeze','level','herodie','win','lose','ui','leak']);
-const TH0={boom:.4};
+const TH0={boom:.6};
 function sfx(n,x,arg){
   if(!AU.ctx||!S.sound||(G&&G.demo&&n!=='ui'))return;
   const now=AU.ctx.currentTime,tk=n==='die'?'die'+arg:n,th=Math.max(TH[n]||0,TH0[n]||0);if(th&&AU.last[tk]&&now-AU.last[tk]<th)return;AU.last[tk]=now;
@@ -904,7 +913,7 @@ function sfx(n,x,arg){
     case 'arrow':if(!playS('arrow',pan,.16)){nz({type:'bandpass',f0:3200,f1:900,q:1.4,dur:.14,vol:.06,pan});os({type:'triangle',f0:240,f1:170,dur:.07,vol:.03,pan});}break;
     case 'cannon':if(playS('cannon',pan,.55,1,.25))break;nz({type:'lowpass',f0:1400,f1:70,dur:.9,vol:.5,pan,wet:.3,brown:true});os({f0:90,f1:34,dur:.5,vol:.42,pan});nz({type:'highpass',f0:2500,dur:.035,vol:.14,pan});break;
     case 'mortar':if(playS('cannon',pan,.6,.78,.3)){os({t:.15,f0:1400,f1:500,dur:.9,vol:.012,pan,wet:.3});break;}nz({type:'lowpass',f0:700,f1:60,dur:.8,vol:.45,pan,wet:.3,brown:true});os({f0:70,f1:30,dur:.6,vol:.45,pan});os({t:.15,f0:1400,f1:500,dur:.9,vol:.012,pan,wet:.3});break;
-    case 'boom':if(playS('boom',pan,.5,1,.3))break;nz({type:'lowpass',f0:1000,f1:60,dur:1.3,vol:.5,pan,wet:.35,brown:true});nz({type:'bandpass',f0:1800,f1:300,q:.8,dur:.35,vol:.12,pan,wet:.3});os({f0:60,f1:28,dur:.7,vol:.35,pan});for(let i=0;i<4;i++)nz({t:.08+R()*.35,type:'bandpass',f0:2500+R()*2000,q:4,dur:.03,vol:.04,pan});break;
+    case 'boom':if(playS('boom',pan,.4,1,.2))break;nz({type:'lowpass',f0:1000,f1:60,dur:1.3,vol:.5,pan,wet:.35,brown:true});nz({type:'bandpass',f0:1800,f1:300,q:.8,dur:.35,vol:.12,pan,wet:.3});os({f0:60,f1:28,dur:.7,vol:.35,pan});break;
     case 'zap':if(playS('zap',pan,.32,1,.25))break;for(let i=0;i<6;i++)nz({t:i*.022+R()*.01,type:'bandpass',f0:2500+R()*4000,q:2.5,dur:.035,vol:.1,pan,wet:.2});os({type:'square',f0:140,f1:60,dur:.18,vol:.025,pan});nz({t:.05,type:'lowpass',f0:300,f1:80,dur:.5,vol:.12,pan,wet:.4,brown:true});break;
     case 'frost':if(playS('frost',pan,.3,1,.45))break;bell({f:1800+R()*400,dur:.8,vol:.05,parts:[1,2.4,3.9],pan,wet:.5});nz({type:'highpass',f0:6000,dur:.35,vol:.03,pan,att:.05});break;
     case 'bolt':os({f0:150,f1:60,dur:.16,vol:.3,pan});nz({type:'bandpass',f0:900,q:2,dur:.08,vol:.18,pan});nz({t:.02,type:'bandpass',f0:2200,f1:500,q:1.2,dur:.22,vol:.06,pan});break;
@@ -1021,7 +1030,8 @@ function newGame(i,demo=false){
   const lives=(lv.mods.includes('fragile')?8:15)+(demo?0:2*upr('walls'))+(assist?5:0)+(easy?EZ.lives:0);
   G={L:i,lv,path,paths,grid,painted:!!lv.pmap,mapH:lv.pmap?COLS*lv.pmap.aspect:ROWS,plots,demo,bn,gold:Math.round((180+9*Math.min(i,60)+45*(paths.length-1))*(scarce?.75:1)*(easy?EZ.gold:1))+(demo?0:40*upr('gold')),easy,lives,maxLives:lives,wave:0,waves:lv.waves,queue:[],enemies:[],towers:[],tmap:{},projs:[],parts:[],texts:[],bolts:[],decals:[],meteors:[],
      assist,time:0,speed:1,paused:false,over:false,shake:0,castleHit:0,selected:null,buildCell:null,targeting:null,cleared:0,kills:0,nextId:1,demoT:0,flag:null};
-  if(!HEROES[S.hero]||!heroOpen(S.hero))S.hero='knight';
+  if(!demo&&(!HEROES[S.hero]||!heroOpen(S.hero)))S.hero=(S.ownHero&&HEROES[S.ownHero]&&heroOpen(S.ownHero))?S.ownHero:'knight';
+  if(!demo&&HEROES[S.hero]&&(!HEROES[S.hero].paid||heroOwned(S.hero)))S.ownHero=S.hero;
   G.hero=makeHero(demo?'knight':S.hero);
   if(demo)G.plots.slice(0,5).forEach((p,k)=>addTower(['archer','cannon','frost','lightning','ballista'][k],p.c,p.r,k%3));
   buildWorld();
@@ -1087,7 +1097,7 @@ function startWave(){
   if(G.wave>=G.waves)return;
   if(G.enemies.length>0||G.queue.length>0)G.gold+=earlyBonus();
   G.autoT=null;G.wave++;
-  const list=makeWave(G.lv,G.wave,G.waves);
+  const list=(G.nextW===G.wave&&G.nextList)?G.nextList:makeWave(G.lv,G.wave,G.waves);G.nextList=null;
   for(const s of list)G.queue.push({t:G.time+s.t+.3,type:s.type,pi:s.pi||0});
   G.queue.sort((a,b)=>a.t-b.t);
   banner(G.wave===G.waves?t('lastWave'):t('waveN',G.wave),list.some(s=>ENEMIES[s.type].boss)?t('bossWarn'):'');
@@ -1102,6 +1112,7 @@ function burst(x,y,color,n,speed=3,size=.12,life=.5,h=.35){size*=FXS();speed*=FX
 function ringFx(x,y,color,r0,r1,life=.4,w=.06){G.parts.push({k:'ring',x,y,h:0,r0,r1,life,max:life,color,w,vx:0,vy:0,vh:0,g:0,drag:0});}
 function smokeFx(x,y,n,size=.22,dark=false,h=.25){size*=FXS();for(let i=0;i<n&&canAdd();i++)G.parts.push({k:'smoke',dark,x:x+(Math.random()-.5)*.3,y:y+(Math.random()-.5)*.3,h:h+Math.random()*.2,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,vh:.5+Math.random()*.6,g:0,life:.9+Math.random()*.6,max:1.3,size:size*(.7+Math.random()*.6),drag:1.5});}
 function debris(x,y,color,n,sp=3,h=.3){for(let i=0;i<n&&canAdd();i++){const a=Math.random()*6.283,s=sp*(.3+Math.random()*.6);G.parts.push({k:'shard',x,y,h,vx:Math.cos(a)*s,vy:Math.sin(a)*s,vh:1.5+Math.random()*sp,g:9,life:.8,max:.8,size:.05+Math.random()*.05,color,drag:1});}}
+function vfx(kind,x,y,size,life){if(!G)return;G.vfx=G.vfx||[];if(G.vfx.length>=10)G.vfx.shift();G.vfx.push({kind,x,y,size,life,t:0,rot:Math.random()*6.28});}
 function flashFx(x,y,r,color='#ffb84a',life=.18,h=.35){r*=FXS();G.parts.push({k:'flash',x,y,h,size:r,color,life,max:life,vx:0,vy:0,vh:0,g:0,drag:0});}
 function snowFx(x,y,n,rad=.3,h=1.1,size=.13){n=Math.round(n*FXQ());for(let i=0;i<n&&canAdd();i++){const a=Math.random()*6.283,r=Math.sqrt(Math.random())*rad;G.parts.push({k:'snow',x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,h:h*(.7+Math.random()*.6),vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,vh:-.35-Math.random()*.35,g:0,life:1+Math.random()*.8,max:1.6,size:size*(.6+Math.random()*.8),rot:Math.random()*6,vr:(Math.random()-.5)*4,drag:.5});}}
 function mistFx(x,y,n,size=.3,h=.15){n=Math.max(1,Math.round(n*FXQ()));for(let i=0;i<n&&canAdd();i++)G.parts.push({k:'mist',x:x+(Math.random()-.5)*.4,y:y+(Math.random()-.5)*.4,h:h+Math.random()*.15,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,vh:.08,g:0,life:.8+Math.random()*.6,max:1.4,size:size*(.7+Math.random()*.6),drag:2});}
@@ -1111,8 +1122,8 @@ function iceShards(x,y,n,h=.4){n=Math.round(n*FXQ());for(let i=0;i<n&&canAdd();i
 function fireFx(x,y,n,h=.3,size=.22,spread=.25,up=1,dir){n=Math.max(1,Math.round(n*FXQ()));for(let i=0;i<n&&canAdd();i++){const a=Math.random()*6.283,s=Math.random()*spread*3;const fx=dir?dir[0]*(1.2+Math.random()*1.5):Math.cos(a)*s,fy=dir?dir[1]*(1.2+Math.random()*1.5):Math.sin(a)*s;G.parts.push({k:'fire',x:x+(Math.random()-.5)*spread*.5,y:y+(Math.random()-.5)*spread*.5,h:h+Math.random()*.1,vx:fx,vy:fy,vh:up*(.4+Math.random()*.9),g:-.6,life:.35+Math.random()*.35,max:.7,size:size*(.6+Math.random()*.7),drag:3.5});}}
 function emberFx(x,y,n,h=.3,sp=2.5,dir){n=Math.round(n*FXQ());for(let i=0;i<n&&canAdd();i++){const a=Math.random()*6.283,s=sp*(.3+Math.random()*.7);let vx=Math.cos(a)*s,vy=Math.sin(a)*s;if(dir){vx=dir[0]*sp*(.6+Math.random())+(Math.random()-.5)*1.2;vy=dir[1]*sp*(.6+Math.random())+(Math.random()-.5)*1.2;}G.parts.push({k:'ember',x,y,h,vx,vy,vh:1+Math.random()*sp,g:4.5,life:.6+Math.random()*.7,max:1.3,size:.035+Math.random()*.03,drag:1.2,seed:Math.random()*9});}}
 function lightFlash(x,y,col,I){if(V.boomLight){V.boomLight.color.set(col);V.boomLight.position.set(x,.7,y);V.boomI=Math.max(V.boomI,I);}}
-function addComic(x,y,s){if(G.texts.filter(q=>q.comic).length>(V.hq?1:0))return;G.texts.push({x:x+(Math.random()-.5)*.3,y,h:.9,s,color:'#ffd23a',size:.46,life:.9,comic:1,rot:(Math.random()-.5)*.4});}
-function addText(x,y,s,color,size=.3,h=.95){const cap=V.ultra?24:V.hq?14:6;if(G.texts.length>=cap)return;G.texts.push({x:x+(Math.random()-.5)*.2,y,h,s,color,size,life:.9});}
+function addComic(x,y,s){return;if(G.texts.filter(q=>q.comic).length>(V.hq?1:0))return;G.texts.push({x:x+(Math.random()-.5)*.3,y,h:.9,s,color:'#ffd23a',size:.46,life:.9,comic:1,rot:(Math.random()-.5)*.4});}
+function addText(x,y,s,color,size=.3,h=.95){return;const cap=V.ultra?24:V.hq?14:6;if(G.texts.length>=cap)return;G.texts.push({x:x+(Math.random()-.5)*.2,y,h,s,color,size,life:.9});}
 function shakeIt(v){if(!reduceMotion)G.shake=Math.min(.8,Math.max(G.shake,v));}
 /* combat */
 function hurt(e,amt,kind,o={}){
@@ -1138,7 +1149,7 @@ function kill(e,byHero){
 }
 function explode(x,y,rad,dmg,kind='phys',o={}){
   for(const e of G.enemies){if(e.dead||(e.fly&&!o.air))continue;const d=Math.hypot(e.x-x,e.y-y);if(d<=rad+e.r){hurt(e,dmg*(1-.5*Math.min(1,d/rad)),kind,o);if(o.stun)e.stunT=Math.max(e.stunT,o.stun);}}
-  if(G.flashN<4){G.flashN++;flashFx(x,y,rad*.55,o.color||'#ffb84a',.14,.4);}fireFx(x,y,6,.15,.3+rad*.12,rad*.45,1);emberFx(x,y,6,.25,2.6);burst(x,y,'#ffcf6a',4,3.5,.09,.35,.3);debris(x,y,'#5a4026',5,3,.1);smokeFx(x,y,3,.28,true,.4);ringFx(x,y,'#fff0c8',.1,rad*.8,.25,.04);
+  vfx('boom',x,y,rad*2.2,.42);smokeFx(x,y,2,.26,true,.35);
   if(G.decals.length>24)G.decals.shift();G.decals.push({x,y,r:rad*.8,life:7});
   if(o.burn)groundFx(x,y,rad*.95,'fire',o.burn,{dmg:o.burnDmg||0});
   if(!G.demo&&Math.random()<.55){const ws=t('boomW').split('|');addComic(x,y,ws[(Math.random()*ws.length)|0]);}
@@ -1155,7 +1166,7 @@ function updateTower(t,dt){
   t.cd=Math.max(0,t.cd-dt*(t.buffT>0?1.6:1));
   if(t.type==='frost'){
     if(t.cd<=0){let any=false;for(const e of G.enemies){if(e.dead||Math.hypot(e.x-t.x,e.y-t.y)>range+e.r*.5)continue;any=true;if(!ENEMIES[e.type].noSlow){e.slowF=Math.max(e.slowF,D.slow[l]);e.slowT=1.4;}hurt(e,dmg,'energy',{silent:true,src:'ice'});if(!e.fly)iceSpikes(e.x,e.y,3+l,e.r*1.2);snowFx(e.x,e.y,4,.25,e.fly?1.2:.75);mistFx(e.x,e.y,1,.26,e.fly?.8:.12);if(Math.random()<.35)iceShards(e.x,e.y,3,e.fly?.85:.35);}
-      if(any){t.cd=1/D.rate[l];groundFx(t.x,t.y,range*.92,'ice',1.8,{key:t});snowFx(t.x,t.y,4+l*2,range*.8,2.2,.12);ringFx(t.x,t.y,'#cdeeff',.2,range,.45,.035);for(let i=0;i<2&&canAdd();i++){const a=Math.random()*6.28,r=Math.random()*range;G.parts.push({k:'spark',x:t.x+Math.cos(a)*r,y:t.y+Math.sin(a)*r,h:.8,vx:0,vy:0,vh:-.6,g:0,life:.8,max:.8,size:.06,color:'#e8f7ff',drag:0});}sfx('frost',t.x);}}
+      if(any){t.cd=1/D.rate[l];groundFx(t.x,t.y,range*.92,'ice',1.8,{key:t});vfx('frost',t.x,t.y,range*1.85,.45);for(let i=0;i<0&&canAdd();i++){const a=Math.random()*6.28,r=Math.random()*range;G.parts.push({k:'spark',x:t.x+Math.cos(a)*r,y:t.y+Math.sin(a)*r,h:.8,vx:0,vy:0,vh:-.6,g:0,life:.8,max:.8,size:.06,color:'#e8f7ff',drag:0});}sfx('frost',t.x);}}
     return;
   }
   if(t.type==='javelin'&&l>=2){t.elCd=(t.elCd===undefined?3:t.elCd)-dt;if(t.elCd<=0&&G.enemies.some(o=>!o.dead&&!o.fly&&Math.hypot(o.x-t.x,o.y-t.y)<range+1.5)){t.elCd=13;spawnElephant(t);}}
@@ -1472,7 +1483,7 @@ function ballTex(kind){if(BALLTEX[kind])return BALLTEX[kind];const W=512,H=256,c
     const k=(j*W+i)*4;d[k]=r;d[k+1]=gg;d[k+2]=b;d[k+3]=255;}
   g.putImageData(im,0,0);const t=new THREE.CanvasTexture(c);return BALLTEX[kind]=t;}
 /* the sport heroes always carry their ball: model parts that looked like a ball are cut away and a real ball is added */
-const HERO_BALL={goal:{kind:'soccer',cut:[.06,.1,.1,.095,0]},hoop:{kind:'basket',cut:[0,.36,.14,.12,.06]}};
+const HERO_BALL={goal:{kind:'soccer',cut:[.06,.1,.1,.115,0]},hoop:{kind:'basket',cut:[0,.34,.14,.16,.04]}};
 function cutGeom(inner,c){inner.traverse(o=>{if(!o.isMesh||!o.geometry.index)return;const g=o.geometry.clone(),pos=g.attributes.position,idx=g.index,keep=[];const [X,Y,Z,R,zmin]=c;
   for(let t=0;t<idx.count/3;t++){let cx=0,cy=0,cz=0;for(let k=0;k<3;k++){const i=idx.getX(t*3+k);cx+=pos.getX(i);cy+=pos.getY(i);cz+=pos.getZ(i);}cx/=3;cy/=3;cz/=3;if(Math.hypot(cx-X,cy-Y,cz-Z)<R&&cz>zmin)continue;keep.push(idx.getX(t*3),idx.getX(t*3+1),idx.getX(t*3+2));}
   g.setIndex(keep);o.geometry=g;});}
@@ -1513,13 +1524,14 @@ function init3D(){
   if(typeof THREE==='undefined'){$('#nogl').hidden=false;return false;}
   try{V.r=new THREE.WebGLRenderer({canvas:cvs,antialias:true,powerPreference:'high-performance'});}catch(e){$('#nogl').hidden=false;return false;}
   _v=new THREE.Vector3();_d=new THREE.Object3D();
+  if(S.gfxCheck){delete S.gfxCheck;try{const c=document.createElement('canvas').getContext('webgl'),ext=c&&c.getExtension('WEBGL_debug_renderer_info'),gpu=ext?c.getParameter(ext.UNMASKED_RENDERER_WEBGL):'';if(/Mali-(G31|G51|G52|G57|G68|T)|Adreno \(TM\) ([1-5]\d\d|6[01]\d)|PowerVR/i.test(gpu))S.gfx='med';S.gpu=gpu;save();}catch(e){}}
   V.q=S.gfx||'high';V.hq=V.q!=='low';V.ultra=V.q==='high';
-  V.r.setPixelRatio(Math.min(V.ultra?1.75:V.hq?1.25:.85,window.devicePixelRatio||1));
-  V.r.shadowMap.enabled=V.hq;V.r.shadowMap.type=V.ultra?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;
+  V.r.setPixelRatio(Math.min(V.ultra?1.75:1.5,window.devicePixelRatio||1));
+  V.r.shadowMap.enabled=false;V.r.shadowMap.type=V.ultra?THREE.PCFSoftShadowMap:THREE.PCFShadowMap;
   V.scene=new THREE.Scene();V.scene.background=new THREE.Color('#a8c4a0');V.scene.fog=new THREE.Fog('#a8c4a0',17,36);
   V.cam=new THREE.PerspectiveCamera(30,1,.1,140);
   V.hemi=new THREE.HemisphereLight('#e6f2ff','#5b4a2c',.78);V.scene.add(V.hemi);
-  const sun=new THREE.DirectionalLight('#fff0d6',.92);sun.position.set(COLS/2-6,15,ROWS/2+4);sun.target.position.set(COLS/2,0,ROWS/2);sun.castShadow=V.hq;sun.shadow.mapSize.set(V.ultra?1024:512,V.ultra?1024:512);
+  const sun=new THREE.DirectionalLight('#fff0d6',.92);sun.position.set(COLS/2-6,15,ROWS/2+4);sun.target.position.set(COLS/2,0,ROWS/2);sun.castShadow=false;sun.shadow.mapSize.set(V.ultra?1024:512,V.ultra?1024:512);
   const sc=sun.shadow.camera;sc.left=-12;sc.right=12;sc.top=12;sc.bottom=-12;sc.near=1;sc.far=45;sun.shadow.bias=-.0006;sun.shadow.normalBias=.02;V.scene.add(sun,sun.target);V.sun=sun;
   V.tex={
     glow:canvasTex(64,64,(g)=>{const r=g.createRadialGradient(32,32,0,32,32,32);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.3,'rgba(255,255,255,.5)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,64,64);}),
@@ -1541,6 +1553,9 @@ function init3D(){
   if(V.hq){V.boomLight=new THREE.PointLight('#ffb060',0,4.5,1.6);V.scene.add(V.boomLight);V.boomI=0;}
   const outer=M(PLANE(),V.outerMat,COLS/2,-.03,ROWS/2,[160,160,1],{rx:-Math.PI/2,nc:1});outer.receiveShadow=true;V.scene.add(outer);
   V.fx=new THREE.Group();V.scene.add(V.fx);
+  /* painted VFX: one flat glowing quad per effect (like classic TD games), cheap on phones */
+  V.vfxTex={};V.vfxPool=[];if(window.VFXIMG)for(const k in VFXIMG){const im=new Image();const tx=new THREE.Texture(im);im.onload=()=>{tx.needsUpdate=true;};im.src=VFXIMG[k];V.vfxTex[k]=tx;}
+  const vt0=V.vfxTex.frost||new THREE.Texture();for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:vt0,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:1}));m.rotation.x=-Math.PI/2;m.visible=false;m.renderOrder=5;V.fx.add(m);V.vfxPool.push(m);}
   V.addPool=[];V.normPool=[];V.ringPool=[];V.decalPool=[];V.beamPool=[];
   for(let i=0;i<(V.ultra?200:V.hq?140:70);i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:V.tex.glow,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));s.visible=false;V.fx.add(s);V.addPool.push(s);}
   for(let i=0;i<(V.ultra?160:V.hq?110:60);i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:V.tex.smoke,depthWrite:false,transparent:true}));s.visible=false;V.fx.add(s);V.normPool.push(s);}
@@ -1915,7 +1930,10 @@ function meteorMesh(m){
 function getMesh(o,mk){let m=live.get(o);if(!m){m=mk();V.lv.add(m.root);live.set(o,m);}m._f=frameId;return m;}
 function sweep(){for(const [o,m] of live){if(m._f!==frameId){V.lv.remove(m.root);live.delete(o);}}}
 function setBeam(m,a,b,w){const dx=b[0]-a[0],dy=b[2]-a[2],dz=b[1]-a[1],l=Math.hypot(dx,dy,dz);m.position.set((a[0]+b[0])/2,(a[2]+b[2])/2,(a[1]+b[1])/2);m.scale.set(w,w,l);m.lookAt(b[0],b[2],b[1]);m.visible=true;}
-function render3D(T,dt){
+function vfxRender(dt){const P=V.vfxPool;if(!P)return;P.forEach(m=>m.visible=false);if(!G||!G.vfx)return;let i=0;
+  G.vfx=G.vfx.filter(v=>(v.t+=dt)<v.life);for(const v of G.vfx){const m=P[i++];if(!m)break;const u=v.t/v.life,tx=V.vfxTex[v.kind];if(!tx)continue;m.material.map=tx;
+   const sc=v.size*(v.kind==='frost'?(.35+.75*(1-Math.pow(1-u,3))):(.45+.7*(1-Math.pow(1-u,2))));m.scale.set(sc,sc,1);m.position.set(v.x,.06,v.y);m.rotation.z=v.rot+u*(v.kind==='frost'?.4:.8);m.material.opacity=u<.15?u/.15:Math.pow(1-(u-.15)/.85,1.4);m.visible=true;}}
+function render3D(T,dt){vfxRender(dt||1/60);
   if(!V.ready||!G)return;frameId++;
   const h=G.hero;
   for(const e of G.enemies){
@@ -2075,12 +2093,23 @@ function drawHeroArt(g,type,s){g.save();g.rotate(-Math.PI/2);if(type==='knight')
 const hudCache={};let waveKey='',lastGold=-1;
 function setText(id,v){if(hudCache[id]!==v){hudCache[id]=v;document.getElementById(id).textContent=v;}}
 function uiTick(){
-  setText('lives',String(G.lives));setText('gold',String(Math.floor(G.gold)));setText('wave',`${G.wave}/${G.waves}`);
+  updateNextInfo();setText('lives',String(G.lives));setText('gold',String(Math.floor(G.gold)));setText('wave',`${G.wave}/${G.waves}`);
   $('#livesBox').classList.toggle('low',G.lives>0&&G.lives<=4);
   {const sb=$('#sosBtn'),show=!!(APP&&!G.demo&&!G.over&&!G.sosUsed&&G.L>=4&&G.wave>=1&&G.lives<=G.maxLives*.5);if(sb.hidden===show){sb.hidden=!show;if(show){sb.innerHTML=t('sosBtn',sosGold(G.L))+adBadge();sb.disabled=false;}}}
   updateWaveBtn();updateSkills();updateHeroBtn();
   placeRing();const gnow=Math.floor(G.gold);if(gnow!==lastGold){lastGold=gnow;refreshRing();}
 }
+function nextWave(){if(!G||G.wave>=G.waves)return null;if(G.nextW!==G.wave+1||!G.nextList){G.nextW=G.wave+1;G.nextList=makeWave(G.lv,G.nextW,G.waves);}return G.nextList;}
+function bestTowerFor(type){const E=ENEMIES[type],c=ACLS[E.ac];let best=null,bv=-1;for(const k of TORDER){if(TOWERS[k].unlock>G.L)continue;if(E.fly&&!TOWERS[k].air)continue;const v=(c&&c.m[SRC_OF[k]])||1;if(v>bv){bv=v;best=k;}}return best;}
+let nextKey='';
+function updateNextInfo(){const card=$('#nextCard'),gw=$('#gates');const show=!G.demo&&!G.over&&G.wave<G.waves&&G.queue.length===0&&G.enemies.length===0;
+  if(!show){if(!card.hidden)card.hidden=true;gw.hidden=true;nextKey='';return;}
+  const list=nextWave();const left=G.autoT&&G.wave>=1?Math.max(0,Math.ceil(G.autoT-G.time)):null;
+  const key=G.wave+'|'+LANG;if(key!==nextKey){nextKey=key;const cnt={};for(const q of list)cnt[q.type]=(cnt[q.type]||0)+1;
+    const rows=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k,n])=>{const bt=bestTowerFor(k),tc=TCOL[bt]||['#666',''];return `<div class="nr"><b>${n}×</b><span>${tx(ENEMIES[k].name)}${ENEMIES[k].fly?' 🦇':''}</span><i style="--tc:${tc[0]}">${tc[1]} ${bt?tx(TOWERS[bt].name):''}</i></div>`;}).join('');
+    card.innerHTML=`<div class="nh">${t('nextWaveT',G.wave+1)}</div>${rows}`;card.hidden=false;
+    const pis=[...new Set(list.map(q=>q.pi||0))];gw.innerHTML=pis.map(pi=>`<div class="gate" data-pi="${pi}"><span class="gt"></span><span class="ga">▼</span></div>`).join('');}
+  gw.hidden=false;gw.querySelectorAll('.gate').forEach(g=>{const pi=+g.dataset.pi,p=posAt(.6,pi);_v.set(p.x,.9,p.y).project(V.cam);const x=(_v.x*.5+.5)*W,y=(-_v.y*.5+.5)*H;g.style.transform=`translate(${Math.round(Math.max(40,Math.min(W-40,x)))}px,${Math.round(Math.max(70,Math.min(H-90,y))+3*Math.sin(G.time*7))}px)`;g.querySelector('.gt').textContent=left!==null?'⚔️ '+left+'s':'⚔️';});}
 function updateWaveBtn(){
   const b=$('#waveBtn'),spawning=G.queue.length>0;let key,main,sub,dis=false,pulse=false;
   if(G.wave>=G.waves){key='done';main=t('lastStand');sub=t('ofN',G.waves,G.waves);dis=true;}

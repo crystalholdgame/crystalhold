@@ -36,9 +36,9 @@ android {
         release {
             minifyEnabled false
             if (keystoreFile.exists()) signingConfig signingConfigs.release
-            manifestPlaceholders = [admobAppId: cfg('ADMOB_APP_ID', TEST_APP_ID)]
-            buildConfigField 'String', 'ADMOB_REWARDED', "\"${cfg('ADMOB_REWARDED_ID', TEST_REWARDED)}\""
-            buildConfigField 'String', 'ADMOB_INTERSTITIAL', "\"${cfg('ADMOB_INTERSTITIAL_ID', TEST_INTERSTITIAL)}\""
+            manifestPlaceholders = [admobAppId: cfg('ADMOB_APP_ID', 'ca-app-pub-4109864973183823~8381024567')]
+            buildConfigField 'String', 'ADMOB_REWARDED', "\"${cfg('ADMOB_REWARDED_ID', 'ca-app-pub-4109864973183823/2342229829')}\""
+            buildConfigField 'String', 'ADMOB_INTERSTITIAL', "\"${cfg('ADMOB_INTERSTITIAL_ID', 'ca-app-pub-4109864973183823/5754861222')}\""
         }
         debug {
             manifestPlaceholders = [admobAppId: TEST_APP_ID]

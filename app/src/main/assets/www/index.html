@@ -393,6 +393,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @keyframes cpop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1.15)}}
 @keyframes crays{0%{opacity:0;transform:rotate(0) scale(.6)}15%{opacity:1}100%{opacity:.8;transform:rotate(90deg) scale(1)}}
 @keyframes cin{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:none}}
+#endStats .chip.rew{background:linear-gradient(180deg,#ffdc8f,#e39a34);color:#2a1300;border-color:#ffd98a}#endStats .chip.rew span,#endStats .chip.rew b{color:#2a1300;font-size:17px}
 </style>
 
 </head>
@@ -2457,7 +2458,7 @@ function placeRP(){const L=$('#levels');L.classList.remove('swap');const P=$('#l
 function renderInfo(){
   const i=viewSel!==null?viewSel:S.sel,lv=getLevel(i),hardLv=lv.boss||((window.AUTOMAPS&&AUTOMAPS[i]&&AUTOMAPS[i].diff)||0)>=.8,box=$('#lvlInfo'),locked=i>=S.unlocked;
   const mods=lv.mods.map(m=>`<span class="mod" title="${tx(MODS[m].desc)}">${tx(MODS[m].name)}</span>`).join('');
-  box.innerHTML=`<div class="gseg dseg rdseg" id="diffLv"></div><h3>${t('levelN',i+1)} · ${lv.name}</h3><div class="meta">${lv.boss?'👑 '+t('bossLvl')+' · ':''}${wavesLabel(lv.waves)} · ★ ${S.stars[i]||0}/3${lv.mods.length?' · '+lv.mods.map(m=>tx(MODS[m].name)).join(', '):''}</div><button class="btn go" id="goBtn"${locked?' disabled':''}>${locked?t('lockedLvl',S.unlocked):t('startBtn')}</button>${APP&&!locked?`<button class="btn ghost go2" id="goAdBtn">${t('goldBtn',bonusGold(i))}${adBadge()}</button>`:''}${hardLv&&!locked?`<button class="btn ghost shop-open" id="lvShopBtn">${t('recItems')} · 💎 <span class="gemCount">${S.gems||0}</span></button>`:''}`;
+  box.innerHTML=`<div class="gseg dseg rdseg" id="diffLv"></div><h3>${t('levelN',i+1)} · ${lv.name}</h3><div class="meta">${lv.boss?'👑 '+t('bossLvl')+' · ':''}${wavesLabel(lv.waves)} · ★ ${S.stars[i]||0}/3 · 💎 ${(S.lgem||{})[i]||0}${lv.mods.length?' · '+lv.mods.map(m=>tx(MODS[m].name)).join(', '):''}</div><button class="btn go" id="goBtn"${locked?' disabled':''}>${locked?t('lockedLvl',S.unlocked):t('startBtn')}</button>${APP&&!locked?`<button class="btn ghost go2" id="goAdBtn">${t('goldBtn',bonusGold(i))}${adBadge()}</button>`:''}${hardLv&&!locked?`<button class="btn ghost shop-open" id="lvShopBtn">${t('recItems')} · 💎 <span class="gemCount">${S.gems||0}</span></button>`:''}`;
   renderDiffSeg($('#diffLv'),()=>{});
   if(locked)return;
   $('#goBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');startLevel(i);});
@@ -2535,7 +2536,7 @@ function adviceHTML(i,losses){const lv=getLevel(i),mix=levelMix(i),sep=LANG==='a
   if(losses>=2){if(upgStars()-spentStars()>=3)out.push(t('hintUpg'));if(!G||!G.easy)out.push(t('hintEasy'));}
   if(losses>=3){out.push(t('hintShop'));if(lv.boss)out.push(t('hintBoss'));}
   return `<b>${t('hintT')}</b>${chips}<ul style="margin:6px 0 0;padding:0">${out.slice(0,losses>=2?4:2).map(x=>`<li>${x}</li>`).join('')}</ul>`;}
-function endLevel(win){
+function endLevel(win){try{TIPQ.length=0;clearTimeout(tipTimer);$('#tipCard').hidden=true;tipBusy=false;}catch(e){}
   if(!G||G.demo)return;
   const trialHero=HEROES[G.hero.type].paid&&!heroOwned(G.hero.type)&&S.trial&&S.trial[G.hero.type]===2;endTrial();
   const prevStars=S.stars[G.L]||0;
@@ -2549,8 +2550,8 @@ function endLevel(win){
   $('#endStars').innerHTML=[0,1,2].map(j=>`<svg class="${j<stars?'on':''}" viewBox="0 0 24 24"><path d="${STAR}"/></svg>`).join('');
   $('#endSub').textContent=win?(last?t('winAllSub'):stars<3?t('win12'):t('win3')):t('loseSub',G.wave,G.waves);
   $('#endStats').innerHTML=`<div class="chip"><span>${t('kills')}</span><b>${G.kills}</b></div><div class="chip"><span>${t('livesL')}</span><b>${G.lives}/${G.maxLives}</b></div><div class="chip"><span>${tx(HEROES[G.hero.type].name)}</span><b>${t('heroLv',G.hero.lvl)}</b></div>`;
-  let gemGain=0;if(win&&!G.easy){S.hard=S.hard||{};const firstHard=!S.hard[G.L];S.hard[G.L]=1;save();}if(win){gemGain=(newStars+(G.lv.boss&&prevStars===0?5:0))*(G.easy?1:2);if(gemGain){gemInit();S.gems+=gemGain;save();}}
-  if(gemGain)$('#endStats').innerHTML+=`<div class="chip"><span>💎</span><b>+${gemGain}</b></div>`;
+  let gemGain=0;if(win&&!G.easy){S.hard=S.hard||{};const firstHard=!S.hard[G.L];S.hard[G.L]=1;save();}if(win){gemGain=(newStars+(G.lv.boss&&prevStars===0?5:0))*(G.easy?1:2);if(gemGain){gemInit();S.gems+=gemGain;S.lgem=S.lgem||{};S.lgem[G.L]=(S.lgem[G.L]||0)+gemGain;save();}}
+  if(win)$('#endStats').innerHTML=`<div class="chip rew"><span>★</span><b>+${newStars}</b></div><div class="chip rew"><span>💎</span><b>+${gemGain}</b></div>`+$('#endStats').innerHTML;
   $('#nextBtn').hidden=!win;$('#endLevelsBtn').hidden=win;
   const xb=$('#xpAdBtn'),xg=Math.round(G.xpEarned||0);xb.hidden=!(APP&&win&&xg>0);xb.disabled=false;
   if(!xb.hidden){xb.innerHTML=t('xpBtn',xg)+adBadge();xb.onclick=()=>{xb.disabled=true;watchAd('xp',ok=>{if(ok){S.xp[G.hero.type]=(S.xp[G.hero.type]||0)+xg;save();xb.textContent=t('xpDone');sfx('level');}else xb.disabled=false;});};}

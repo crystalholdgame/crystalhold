@@ -34,7 +34,7 @@
 .ut img{width:100%;height:100%;object-fit:cover}.ut .ue{font-size:22px}
 .ut em{position:absolute;bottom:1px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10.5px;font-weight:900;color:#fff;background:rgba(0,0,0,.6);border-radius:6px;padding:0 4px;white-space:nowrap}
 .ut.lock{filter:grayscale(1) brightness(.55)}.ut.own{border-color:#ffd98a;box-shadow:0 0 10px color-mix(in srgb,var(--c) 80%,#fff)}.ut.sel{outline:3px solid #fff;outline-offset:1px}
-.ut .pips{position:absolute;top:2px;left:0;right:0;display:flex;gap:2px;justify-content:center}.ut .pips u{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.5)}.ut .pips u.on{background:#ffd98a}
+.ut .pips{position:absolute;top:2px;z-index:1;left:0;right:0;display:flex;gap:2px;justify-content:center}.ut .pips u{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.5)}.ut .pips u.on{background:#ffd98a}
 .ucard{flex:0 0 210px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px;border-radius:16px;background:linear-gradient(180deg,#f3e2bd,#d9c08e);color:#3a2410;text-align:center}
 .ucard .ubig{width:76px;height:76px;border-radius:14px;overflow:hidden;display:grid;place-items:center;background:#5a3e22;border:3px solid #c99a3a}.ucard .ubig img{width:100%;height:100%;object-fit:cover}.ucard .ubig .ue{font-size:38px}
 .ucard b{font-family:var(--f-display);font-weight:400;font-size:17px;line-height:1.15}.ucard p{margin:0;font-size:12.5px;font-weight:700;line-height:1.35}
@@ -368,6 +368,14 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #tipCard b{display:block;font-family:var(--f-display);font-weight:400;font-size:16px;color:var(--gold-2);line-height:1.15}#tipCard p{margin:3px 0 0;font-size:12.5px;font-weight:700;line-height:1.35}
 #tipCard .best span{display:inline-flex;align-items:center;gap:4px;margin-inline-start:4px;padding:1px 8px 1px 2px;border-radius:10px;background:var(--c);font-weight:900}#tipCard .best span img{width:22px;height:22px}
 #tipCard small{display:block;text-align:end;font-size:10px;color:var(--dim);margin-top:4px}
+#upgScr .uh.hpick{position:relative;cursor:pointer;outline:2px solid #fff6;outline-offset:1px}#upgScr .uh.hpick i{position:absolute;right:-6px;bottom:-6px;font-style:normal;font-size:11px;background:#fff;color:#3a2410;border-radius:8px;padding:0 3px;font-weight:900}
+.ut .ue.sk{width:70%;height:70%;display:grid;place-items:center;color:#fff}.ut .ue.sk svg{width:100%;height:100%;fill:currentColor;stroke:currentColor}.ucard .ubig .ue.sk{width:60%;height:60%;display:grid;place-items:center;color:#fff}.ucard .ubig .ue.sk svg{width:100%;height:100%}
+#upHeroPick{position:absolute;inset:0;z-index:30;background:rgba(0,0,0,.6);display:grid;place-items:center}#upHeroPick[hidden]{display:none}
+#upHeroPick .hpbox{background:linear-gradient(180deg,#3a2a1b,#24180f);border:2px solid #c99a3a;border-radius:18px;padding:12px;max-width:min(680px,94vw)}#upHeroPick .hpbox>b{font-family:var(--f-display);font-weight:400;color:var(--gold-2);font-size:20px}
+#upHeroPick .hplist{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px;max-height:70vh;overflow:auto}#upHeroPick button{width:92px;padding:6px 4px;border-radius:12px;border:2px solid #6e5434;background:rgba(0,0,0,.3);color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px}
+#upHeroPick button.on{border-color:#ffd98a;box-shadow:0 0 10px #ffd98a88}#upHeroPick button img{width:64px;height:76px;object-fit:contain}#upHeroPick button span{font-weight:900;font-size:13px}#upHeroPick button small{font-size:9px;color:#ffd98a;letter-spacing:1px}
+.ut.part{border-color:#ffd98a88}.ucard .ulv{font-size:11.5px;font-weight:900;color:#7a5a3a}
+#menu .btn .bico{width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-inline-end:8px;margin-block:-6px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
 </style>
 
 </head>
@@ -418,11 +426,11 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
    </div>
    <div class="mright">
     <button class="btn" id="playBtn" data-t="play"></button>
-    <button class="btn ghost" id="upgBtn" data-t="upgrades"></button>
+    <button class="btn ghost" id="upgBtn"><img class="bico" alt="" id="upgIco"><span data-t="upgrades"></span></button>
     <button class="btn ghost shop-open" id="shopBtn"><span data-t="shop"></span> <b class="gem-n">💎 <span class="gemCount">0</span></b></button>
     <div class="row"><button class="btn ghost" id="soundBtn"></button><button class="btn ghost" id="musicBtn" hidden></button></div>
     <div class="row" hidden><button class="btn ghost" id="gfxBtn"></button></div>
-    <div class="row"><button class="btn ghost" id="removeAdsBtn" hidden></button><button class="btn ghost" id="privacyBtn" data-t="privacy" hidden></button></div>
+    <div class="row"><button class="btn ghost" id="removeAdsBtn" hidden></button><button class="btn ghost" id="privacyBtn" data-t="privacy" hidden></button><button class="btn ghost" id="resetBtn" data-t="resetProg"></button></div>
     <div class="row lang-row" id="langRow"></div>
    </div>
   </section>
@@ -577,7 +585,7 @@ const STR={
   kills:['أعداء سقطوا','Enemies defeated','Fiender beseiret'],livesL:['الأرواح','Lives','Liv'],locked:['مقفلة','Locked','Låst'],
   startBtn:['ابدأ المعركة','Start battle','Start kampen'],wavesN:['{0} موجة','{0} waves','{0} bølger'],wavesNs:['{0} موجات','{0} waves','{0} bølger'],plotsN:['{0} قاعدة بناء','{0} build sites','{0} byggeplasser'],
   bossLvl:['معركة زعيم','Boss battle','Sjefskamp'],noMods:['بدون تحديات إضافية','No extra challenges','Ingen ekstra utfordringer'],
-  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ التطوير السابق أولاً','Buy the previous upgrade first','Kjøp forrige oppgradering først'],
+  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],resetProg:['البدء من جديد','Restart progress','Restart progress'],resetQ:['البدء من المرحلة 1 من جديد؟','Start again from level 1?','Start again from level 1?'],resetD:['ستُمسح المراحل والنجوم وتطويرات المملكة. الجواهر والأبطال المشتراة وتطوير مهاراتهم تبقى.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.'],resetYes:['نعم، ابدأ من جديد','Yes, start over','Yes, start over'],cancel:['إلغاء','Cancel','Cancel'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ مستوى واحداً من التطوير السابق أولاً','Buy at least one level of the upgrade above first','Kjøp forrige oppgradering først'],
   upgHint:['اكسب النجوم في المراحل واستخدمها لتقوية جيشك. يمكنك استرجاعها وإعادة توزيعها في أي وقت.','Earn stars in levels and spend them to strengthen your army. You can refund and redistribute them anytime.','Tjen stjerner på brettene og bruk dem til å styrke hæren. Du kan refundere og fordele dem på nytt når som helst.'],
   maxed:['مكتمل','Maxed','Fullt'],resetUpg:['استرجاع كل النجوم','Refund all stars','Refunder alle stjerner'],
   noGL:['تعذّر تشغيل الرسومات ثلاثية الأبعاد على هذا الجهاز. جرّب متصفح Chrome محدّثاً.','3D graphics could not start on this device. Try an up-to-date Chrome browser.','3D-grafikken kunne ikke starte på denne enheten. Prøv en oppdatert Chrome-nettleser.'],
@@ -733,23 +741,22 @@ const UPGS=[
   {id:'skill',name:N3('التأمل','Meditation','Meditasjon'),desc:N3('-8% وقت انتظار المهارات','-8% skill cooldown','-8 % nedkjøling for ferdigheter')},
 ];
 const UPG_MAX=5;
-const UPT_COST=[3,5,8],UPK_COST=[4,6,8],HSK_COST=[20,35,60];
+const UPT_COST=[2,4,6],UPK_COST=[3,5,7],HSK_COST=[50,50,50],UMAX=3;
 const UPT={
- archer:[['dmg',.12],['range',.1],['rate',.15]],
- cannon:[['dmg',.12],['range',.08],['splash',.2]],
- frost:[['range',.1],['slow',.08],['dmg',.3]],
- lightning:[['dmg',.12],['range',.1],['chain',1]],
- ballista:[['dmg',.12],['range',.1],['pierce',1]],
- mortar:[['dmg',.12],['range',.08],['splash',.2]]};
-const UPK=[['gold',60],['walls',3],['cost',.08]];
+ archer:[['dmg',.1],['range',.06],['rate',.1]],
+ cannon:[['dmg',.1],['range',.05],['splash',.12]],
+ frost:[['range',.06],['slow',.05],['dmg',.2]],
+ lightning:[['dmg',.1],['range',.06],['chain',1]],
+ ballista:[['dmg',.1],['range',.06],['pierce',1]],
+ mortar:[['dmg',.1],['range',.05],['splash',.12]]};
+const UPK=[['gold',50],['walls',2],['cost',.05]];
 const UPN={dmg:N3('ضرر أقوى','Sharper damage','Mer skade'),range:N3('مدى أبعد','Longer range','Lengre rekkevidde'),rate:N3('رمي أسرع','Faster shots','Raskere skudd'),splash:N3('انفجار أوسع','Bigger blast','Større eksplosjon'),slow:N3('تجميد أقوى','Deeper chill','Sterkere frost'),chain:N3('سلسلة إضافية','Extra chain','Ekstra kjede'),pierce:N3('اختراق إضافي','Extra pierce','Ekstra gjennomslag'),gold:N3('خزينة الحرب','War chest','Krigskasse'),walls:N3('أسوار القلعة','Castle walls','Slottsmurer'),cost:N3('المهندسون','Engineers','Ingeniører')};
 function upDesc(k,v,type){const P=Math.round(v*100);return ({dmg:N3('+'+P+'% ضرر','+'+P+'% damage','+'+P+' % skade'),range:N3('+'+P+'% مدى','+'+P+'% range','+'+P+' % rekkevidde'),rate:N3('+'+P+'% سرعة الرمي','+'+P+'% fire rate','+'+P+' % skuddtakt'),splash:N3('+'+P+'% حجم الانفجار','+'+P+'% blast size','+'+P+' % eksplosjonsstørrelse'),slow:N3('إبطاء أقوى للوحوش','Slows enemies more','Bremser fiender mer'),chain:N3('البرق يقفز لوحش إضافي','Lightning jumps to one more enemy','Lynet hopper til én fiende til'),pierce:N3('الرمح يخترق وحشاً إضافياً','The bolt pierces one more enemy','Spydet går gjennom én fiende til'),gold:N3('+'+v+' ذهب في بداية كل مرحلة','+'+v+' gold at the start of every level','+'+v+' gull ved start av hvert nivå'),walls:N3('+'+v+' أرواح','+'+v+' lives','+'+v+' liv'),cost:N3('-'+P+'% تكلفة البناء والترقية','-'+P+'% build and upgrade cost','-'+P+' % bygge- og oppgraderingskostnad')})[k];}
 function mkBn(){const bn={dmg:1,range:1,cost:1-ukB('cost'),hero:1,skill:1,t:{}};for(const k of TORDER)bn.t[k]={dmg:1+utB(k,'dmg'),range:1+utB(k,'range'),rate:1+utB(k,'rate'),splash:1+utB(k,'splash'),slow:utB(k,'slow'),chain:utB(k,'chain'),pierce:utB(k,'pierce')};bn.dmg=TORDER.reduce((a,k)=>a+bn.t[k].dmg*(1+(bn.t[k].rate-1)),0)/TORDER.length;bn.range=TORDER.reduce((a,k)=>a+bn.t[k].range,0)/TORDER.length;return bn;}
 function newBn(){if(!G||G.demo)return;const nb=mkBn();nb.cost=G.bn.cost;G.bn=nb;}
-const utl=type=>((S.upt||{})[type]||0);
-function utB(type,k){const tr=UPT[type];let v=0;if(!tr)return 0;for(let j=0;j<utl(type);j++)if(tr[j][0]===k)v+=tr[j][1];return v;}
-const ukl=()=>((S.upt||{}).kingdom||0);
-function ukB(k){let v=0;for(let j=0;j<ukl();j++)if(UPK[j][0]===k)v+=UPK[j][1];return v;}
+const uL=(col,j)=>(((S.upl||{})[col]||[])[j]||0);const uCost=(col,j,l)=>(col==='kingdom'?UPK_COST:UPT_COST)[j]*(l+1);
+function utB(type,k){const tr=UPT[type];let v=0;if(!tr)return 0;for(let j=0;j<3;j++)if(tr[j][0]===k)v+=tr[j][1]*uL(type,j);return v;}
+function ukB(k){let v=0;for(let j=0;j<3;j++)if(UPK[j][0]===k)v+=UPK[j][1]*uL('kingdom',j);return v;}
 const skL=(h,i)=>((S.hsk||{})[h]||[])[i]||0;
 const REGIONS=[
   {name:N3('وادي الفجر','Dawn Valley','Morgendalen'),theme:'meadow'},
@@ -790,7 +797,7 @@ const heroLevel=xp=>Math.min(20,1+Math.floor(Math.sqrt(xp/260)));
 const upr=id=>S.upg[id]||0;
 const totalStars=()=>S.stars.reduce((a,b)=>a+b,0);
 const upgStars=()=>totalStars()+(S.bonusStars||0);
-const spentStars=()=>{const u=S.upt||{};let a=0;for(const k in UPT)for(let j=0;j<(u[k]||0);j++)a+=UPT_COST[j];for(let j=0;j<(u.kingdom||0);j++)a+=UPK_COST[j];return a;};
+const spentStars=()=>{let a=0;for(const k of [...Object.keys(UPT),'kingdom'])for(let j=0;j<3;j++)for(let l=0;l<uL(k,j);l++)a+=uCost(k,j,l);return a;};
 
 /* ================= levels ================= */
 const BASE_PATHS=[[[4,-1],[4,2],[1,2],[1,6],[7,6],[7,10],[4,10],[4,12]],[[1,-1],[1,3],[7,3],[7,5],[1,5],[1,8],[7,8],[7,11],[4,11],[4,12]],[[-1,1],[6,1],[6,4],[2,4],[2,8],[7,8],[7,11],[4,11]],[[7,-1],[7,2],[1,2],[1,10],[7,10],[7,5],[4,5],[4,7]],[[0,-1],[0,3],[3,3],[3,0],[6,0],[6,6],[2,6],[2,9],[8,9],[8,12]],[[4,-1],[4,1],[0,1],[0,4],[8,4],[8,7],[0,7],[0,10],[5,10],[5,12]]];
@@ -884,7 +891,7 @@ const LVCACHE={};
 /* measured with test bots that play like a real player (star upgrades, hero level, skills): keeps every region a real fight */
 const HPT=[[0,1],[5,1.0],[9,1.2],[14,2.0],[24,2.05],[39,2.3],[49,1.8],[59,1.18],[69,1.03],[79,.86],[89,.72],[99,.66]];
 /* per-level fine tune from a full 100-level bot test (each map plays differently) */
-var LVT=[1,1,1,2.329,2.495,2.492,2.731,2.548,2.791,1.039,1.944,1.735,2.64,1.708,1.55,2.054,1.378,1.225,1.978,0.941,0.605,1.159,0.833,2.074,0.94,1.07,0.69,1.178,0.773,0.972,1.47,1.299,1.437,1.44,1.225,1.145,1,3.0,1.517,1.053,3.0,1.449,0.652,1,1.045,2.019,0.791,0.92,0.991,0.773,1.349,2.76,0.831,1.07,1,1.849,1.213,1,0.877,1.128,3.0,1.456,1.838,1.525,1.541,2.512,1.062,2.987,2.663,1.374,3.0,1.354,0.778,2.718,2.219,1.541,1.817,0.884,1.301,1.927,3.0,2.849,2.219,2.489,1.418,1.011,2.116,2.374,0.5,1.2,2.054,3.0,2.074,1.386,0.813,1.354,1.2,2.219,0.753,0.876];
+var LVT=[1,1,1,2.329,2.495,2.791,3.0,2.548,2.791,1.039,2.177,1.943,2.64,1.708,1.457,1.89,1.295,1.47,1.978,0.941,0.5,1.159,0.736,2.219,0.884,1.284,0.69,1.178,0.635,0.73,1.888,1.371,1.332,1.978,1.764,1.145,1,3.0,1.517,1.053,3.0,1.449,0.652,1,1.045,1.746,0.791,0.92,0.991,0.928,1.094,2.381,1.067,1.374,1,2.374,1.213,1,0.877,1.354,3.0,1.747,2.647,1.782,1.541,3.0,1.062,3.0,2.849,1.374,3.0,1.354,0.832,2.488,2.219,2.219,1.817,0.884,1.561,2.062,3.0,3.0,2.849,2.663,1.821,1.389,2.422,2.374,0.5,1.649,2.054,3.0,2.748,1.663,0.976,2.584,1.728,3.0,0.753,1.261];
 function hpTune(i){for(let k=1;k<HPT.length;k++)if(i<=HPT[k][0]){const [a,x]=HPT[k-1],[b,y]=HPT[k];return x+(y-x)*(i-a)/(b-a);}return .8;}
 function getLevel(i){
   if(LVCACHE[i])return LVCACHE[i];
@@ -1929,7 +1936,7 @@ function enemyMesh(e){
 function towerMesh(t){
   const root=new THREE.Group(),tur=new THREE.Group(),R={root,tur,lvl:t.lvl};root.position.set(t.x,0,t.y);root.userData.tower=t;
   const lvl=t.lvl,gold=lvl>=2?METP('#ffc63a',.14):MET('#d9a43a'),acc=TACC[t.type];
-  const gm=GLBM['t_'+t.type+(lvl+1)];
+  const gm=GLBM['t_'+t.type+(lvl+1)];if(gm&&gm.ready&&!gm.lit){gm.lit=1;gm.scene.traverse(o=>{if(o.isMesh&&o.material){const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>{if(m.color)m.color.multiplyScalar(1.3);if(m.emissive&&m.map){m.emissive.setRGB(.12,.12,.12);m.emissiveMap=m.map;}m.needsUpdate=true;});}});}
   if(gm&&gm.ready){const inner=gm.scene.clone(true),fw=(.98+lvl*.08)*(COLS>9?.9:1),sc=fw/gm.w;inner.scale.setScalar(sc);inner.position.set(-gm.cx*sc,-gm.y0*sc,-gm.cz*sc);
     const piv=new THREE.Group();piv.rotation.y=-.38+(V.yaw||0);piv.add(inner);root.add(piv);R.piv=piv;
     const hn=inner.getObjectByName('HEAD');if(hn&&HEADDIR[t.type+(lvl+1)]!==undefined){const hold=new THREE.Group();hold.scale.copy(inner.scale);hold.position.copy(inner.position);hold.add(hn);const hg=new THREE.Group();hg.add(hold);piv.add(hg);R.hg=hg;R.hdir=HEADDIR[t.type+(lvl+1)];}const top=gm.h*sc;R.glb=true;R.top=top;
@@ -2437,35 +2444,40 @@ function drawPreview(cv,i){
 }
 /* upgrades screen */
 let upSel=null;
-function upIcon(col,tier){const ic=(window.UPICON&&UPICON[col+tier])||null;return ic?`<img alt="" src="${ic}">`:`<span class="ue">${col==='kingdom'?['💰','🏰','🛠️'][tier]:col==='hero'?['①','②','③'][tier]:TCOL[col][1]}</span>`;}
-function renderUpg(){S.upt=S.upt||{};S.hsk=S.hsk||{};gemInit();
+function upIcon(col,tier){if(col==='hero'){const sk=HEROES[S.hero].skills[tier];return `<span class="ue sk" style="--c:${sk.c}">${SKILL_ICO[sk.id]||'⭐'}</span>`;}const ic=(window.UPICON&&UPICON[col+tier])||null;return ic?`<img alt="" src="${ic}">`:`<span class="ue">${col==='kingdom'?['💰','🏰','🛠️'][tier]:col==='hero'?['①','②','③'][tier]:TCOL[col][1]}</span>`;}
+function openHeroPick(){let m=$('#upHeroPick');if(!m){m=document.createElement('div');m.id='upHeroPick';$('#upgScr').appendChild(m);}
+  m.innerHTML=`<div class="hpbox"><b>${t('heroesT')}</b><div class="hplist">${HORDER.filter(id=>heroOpen(id)&&(!HEROES[id].paid||heroOwned(id))).map(id=>`<button data-h="${id}" class="${id===S.hero?'on':''}"><img alt="" src="${heroImg(id)}"><span>${tx(HEROES[id].name).split(' ')[0]}</span><small>${[0,1,2].map(j=>'●'.repeat(skL(id,j))+'○'.repeat(3-skL(id,j))).join(' ')}</small></button>`).join('')}</div></div>`;
+  m.hidden=false;m.onclick=e=>{const b=e.target.closest('button[data-h]');if(b){S.hero=b.dataset.h;save();sfx('ui');upSel={c:'hero',j:0};}m.hidden=true;renderUpg();};}
+function renderUpg(){S.upl=S.upl||{};S.hsk=S.hsk||{};gemInit();
   const avail=upgStars()-spentStars();$('#upStars').textContent=avail;$('#upGems').textContent=S.gems||0;
   const box=$('#upgList');box.innerHTML='';const H=HEROES[S.hero];
-  const cols=[...TORDER.map(k=>({id:k,col:TCOL[k][0],name:tx(TOWERS[k].name),n:3,lvl:utl(k),open:S.unlocked>TOWERS[k].unlock||TOWERS[k].unlock===0})),{id:'kingdom',col:'#c99a3a',name:t('kingdomCol'),n:3,lvl:ukl(),open:true},{id:'hero',col:'#e9b44c',name:tx(H.name).split(' ')[0],n:3,lvl:-1,open:true}];
+  const cols=[...TORDER.map(k=>({id:k,col:TCOL[k][0],open:S.unlocked>TOWERS[k].unlock||TOWERS[k].unlock===0})),{id:'kingdom',col:'#c99a3a',open:true},{id:'hero',col:'#e9b44c',open:true}];
   if(!upSel)upSel={c:'archer',j:0};
+  const lvOf=(c,j)=>c==='hero'?skL(S.hero,j):uL(c,j);
+  const isLocked=(c,j,open)=>c!=='hero'&&(!open||(j>0&&uL(c,j-1)<1));
   for(const c of cols){const d=document.createElement('div');d.className='ucol';d.style.setProperty('--c',c.col);
-    d.innerHTML=`<div class="uh">${c.id==='hero'?`<img alt="" src="${heroImg(S.hero)}">`:c.id==='kingdom'?'👑':TCOL[c.id][1]}</div>`;
-    for(let j=0;j<c.n;j++){let st;if(c.id==='hero'){st=skL(S.hero,j)>=3?'own':'can';}else st=j<c.lvl?'own':j===c.lvl&&c.open?'can':'lock';
-      const b=document.createElement('button');b.className='ut '+st+(upSel.c===c.id&&upSel.j===j?' sel':'');
-      const cost=c.id==='hero'?(skL(S.hero,j)>=3?'':'💎'+HSK_COST[skL(S.hero,j)]):st==='own'?'✓':(c.id==='kingdom'?UPK_COST[j]:UPT_COST[j]);
-      b.innerHTML=`${upIcon(c.id,j)}${c.id==='hero'?`<i class="pips">${[0,1,2].map(q=>`<u class="${q<skL(S.hero,j)?'on':''}"></u>`).join('')}</i>`:''}<em>${cost}</em>`;
+    d.innerHTML=`<div class="uh${c.id==='hero'?' hpick':''}">${c.id==='hero'?`<img alt="" src="${heroImg(S.hero)}"><i>⇄</i>`:c.id==='kingdom'?'👑':TCOL[c.id][1]}</div>`;if(c.id==='hero')d.querySelector('.uh').addEventListener('click',()=>{sfx('ui');openHeroPick();});
+    for(let j=0;j<3;j++){const lv=lvOf(c.id,j),max=lv>=UMAX,lock=isLocked(c.id,j,c.open);
+      const b=document.createElement('button');b.className='ut '+(lock?'lock':max?'own':lv?'part':'can')+(upSel.c===c.id&&upSel.j===j?' sel':'');
+      const cost=max?'MAX':c.id==='hero'?'💎'+HSK_COST[lv]:'★'+uCost(c.id,j,lv);
+      b.innerHTML=`${upIcon(c.id,j)}<i class="pips">${[0,1,2].map(q=>`<u class="${q<lv?'on':''}"></u>`).join('')}</i><em>${cost}</em>`;
       b.addEventListener('click',()=>{sfx('ui');upSel={c:c.id,j};renderUpg();});d.appendChild(b);}
     box.appendChild(d);}
-  // detail card
-  const {c,j}=upSel,card=$('#upCard');let title,desc,btn='',can=false,price='';
-  if(c==='hero'){const sk=H.skills[j],lv=skL(S.hero,j);title=tx(sk.name)+` · ${lv}/3`;desc=t('skillUpD');if(lv<3){price='💎 '+HSK_COST[lv];can=(S.gems||0)>=HSK_COST[lv];}}
-  else if(c==='kingdom'){const [k,v]=UPK[j];title=tx(UPN[k]);desc=tx(upDesc(k,v));const lv=ukl();if(j===lv){price=STARSVG+UPK_COST[j];can=avail>=UPK_COST[j];}}
-  else{const [k,v]=UPT[c][j];title=tx(TOWERS[c].name)+' · '+tx(UPN[k]);desc=tx(upDesc(k,v,c));const lv=utl(c);if(j===lv){price=STARSVG+UPT_COST[j];can=avail>=UPT_COST[j];}}
-  const owned=c==='hero'?skL(S.hero,j)>=3:c==='kingdom'?j<ukl():j<utl(c),locked=!owned&&!price;
-  card.innerHTML=`<div class="ubig">${upIcon(c,j)}</div><b>${title}</b><p>${desc}</p>${owned?`<span class="uok">✓ ${t('maxed')}</span>`:locked?`<span class="ulock">🔒 ${t('upPrev')}</span>`:`<button class="btn ubuy" ${can?'':'disabled'}>${price}</button>`}`;
+  const {c,j}=upSel,card=$('#upCard'),lv=lvOf(c,j),colOpen=(cols.find(x=>x.id===c)||{}).open,lock=isLocked(c,j,colOpen);let title,desc,price='',can=false;
+  if(c==='hero'){const sk=H.skills[j];title=tx(sk.name);desc=t('skillUpD');if(lv<UMAX){price='💎 '+HSK_COST[lv];can=(S.gems||0)>=HSK_COST[lv];}}
+  else{const [k,v]=c==='kingdom'?UPK[j]:UPT[c][j];title=(c==='kingdom'?'':tx(TOWERS[c].name)+' · ')+tx(UPN[k]);desc=tx(upDesc(k,v,c))+' ×'+UMAX;if(lv<UMAX&&!lock){const cs=uCost(c,j,lv);price=STARSVG+cs;can=avail>=cs;}}
+  card.innerHTML=`<div class="ubig">${upIcon(c,j)}</div><b>${title}</b><span class="ulv">${t('lvlOf',lv).replace(/3/,UMAX)}</span><p>${desc}</p>${lv>=UMAX?`<span class="uok">✓ ${t('maxed')}</span>`:lock?`<span class="ulock">🔒 ${t('upPrev')}</span>`:`<button class="btn ubuy" ${can?'':'disabled'}>${price}</button>`}`;
   const bb=card.querySelector('.ubuy');if(bb)bb.addEventListener('click',()=>{
-    if(c==='hero'){const lv=skL(S.hero,j);if((S.gems||0)<HSK_COST[lv])return;S.gems-=HSK_COST[lv];S.hsk[S.hero]=S.hsk[S.hero]||[0,0,0];S.hsk[S.hero][j]=lv+1;}
-    else{const cost=c==='kingdom'?UPK_COST[j]:UPT_COST[j];if(upgStars()-spentStars()<cost)return;S.upt[c]=(S.upt[c]||0)+1;}
+    if(c==='hero'){const l=skL(S.hero,j);if((S.gems||0)<HSK_COST[l])return;S.gems-=HSK_COST[l];S.hsk[S.hero]=S.hsk[S.hero]||[0,0,0];S.hsk[S.hero][j]=l+1;}
+    else{const l=uL(c,j),cs=uCost(c,j,l);if(upgStars()-spentStars()<cs)return;S.upl[c]=S.upl[c]||[0,0,0];S.upl[c][j]=l+1;}
     save();sfx('upgrade');updGems();renderUpg();});
   $('#upgReset').disabled=spentStars()===0;
 }
+$('#resetBtn').addEventListener('click',()=>{sfx('ui');let m=$('#resetAsk');if(!m){m=document.createElement('div');m.id='resetAsk';m.className='diffask';$('#menu').appendChild(m);}
+  m.innerHTML=`<div class="dbox"><h3>${t('resetQ')}</h3><p style="margin:0;font-size:13px;font-weight:700;max-width:40ch">${t('resetD')}</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn ghost" data-a="no">${t('cancel')}</button><button class="btn" data-a="yes" style="background:linear-gradient(180deg,#ff9a8a,#d9442a)">${t('resetYes')}</button></div></div>`;m.hidden=false;
+  m.onclick=e=>{const a=e.target.closest('[data-a]');if(!a)return;if(a.dataset.a==='yes'){S.stars=S.stars.map(()=>0);S.unlocked=1;S.sel=0;S.hard={};S.loss={};S.upl={};S.seenTw={};S.seenEn={};S.seenTut=false;curRegion=0;viewSel=null;save();sfx('sell');$('#menuStars').textContent=`0/${NLEV*3}`;}m.hidden=true;};});
 $('#tipCard').addEventListener('click',()=>{clearTimeout(tipTimer);nextTip();});
-$('#upgReset').addEventListener('click',()=>{S.upt={};save();sfx('sell');renderUpg();});
+$('#upgReset').addEventListener('click',()=>{S.upl={};save();sfx('sell');renderUpg();});
 function startLevel(i){
   if(needMap(i)&&!startLevel.wait){startLevel.wait=1;ensureMap(i,()=>{startLevel.wait=0;startLevel(i);});return;}
   newGame(i,false);closeSheets();showScreen(null);
@@ -2535,6 +2547,7 @@ function renderGfxSeg(box,reopen){box.innerHTML=['low','med','high'].map(q=>`<bu
 function pauseGame(){if(!G||G.demo||G.over||G.paused)return;G.paused=true;closeSheets();save();renderGfxSeg($('#gfxPause'),'gfx');renderDiffSeg($('#diffPause'),()=>{startLevel(G.L);});updGems();showScreen('pauseScr');}
 $('#playBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');curRegion=null;openWorld();});
 let upgFrom='menu';
+try{$('#upgIco').src=TICON.archer3;}catch(e){}
 $('#upgBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');upgFrom='menu';renderUpg();showScreen('upgScr');});
 $('#pauseUpg').addEventListener('click',()=>{sfx('ui');upgFrom='pauseScr';renderUpg();showScreen('upgScr');});
 $('#shopBtn').addEventListener('click',()=>{ensureAudio();sfx('ui');shopFrom='menu';renderShop();showScreen('shopScr');});

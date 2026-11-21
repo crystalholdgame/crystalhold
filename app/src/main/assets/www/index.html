@@ -362,6 +362,12 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #shopScr .shop-card b{font-size:14px;line-height:1.1}#shopScr .shop-card .d{font-size:10.5px;min-height:0;line-height:1.25}#shopScr .shop-card button{min-width:0;width:100%;height:32px;font-size:13.5px;margin-top:2px}
 #shopScr .shop-card .himg{max-height:70px}
 #app .item-btn img{width:100%;height:100%;border-radius:10px;object-fit:cover}#app .item-btn{overflow:visible}
+#menu .mright .lang-row{flex-wrap:wrap;gap:5px}#menu .lang-row button{padding:4px 8px;font-size:12px}
+#tipCard{position:absolute;z-index:6;left:max(10px,env(safe-area-inset-left,0px));top:64px;max-width:min(360px,46vw);padding:10px 12px 6px;border-radius:16px;background:linear-gradient(180deg,rgba(40,28,18,.96),rgba(24,16,10,.96));border:2px solid var(--c);box-shadow:0 8px 24px rgba(0,0,0,.5);color:#fff;text-align:start;pointer-events:auto;transform:translateX(-12px);opacity:0;transition:transform .3s,opacity .3s}
+#tipCard.in{transform:none;opacity:1}#tipCard .tw{display:flex;gap:10px;align-items:flex-start}#tipCard .tw>img{width:64px;height:64px;object-fit:contain;flex:none;border-radius:12px;background:rgba(255,255,255,.06)}
+#tipCard b{display:block;font-family:var(--f-display);font-weight:400;font-size:16px;color:var(--gold-2);line-height:1.15}#tipCard p{margin:3px 0 0;font-size:12.5px;font-weight:700;line-height:1.35}
+#tipCard .best span{display:inline-flex;align-items:center;gap:4px;margin-inline-start:4px;padding:1px 8px 1px 2px;border-radius:10px;background:var(--c);font-weight:900}#tipCard .best span img{width:22px;height:22px}
+#tipCard small{display:block;text-align:end;font-size:10px;color:var(--dim);margin-top:4px}
 </style>
 
 </head>
@@ -380,7 +386,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <main id="stage">
     <canvas id="game"></canvas>
     <canvas id="fx"></canvas>
-    <div id="banner"></div><div id="gates" hidden></div><div id="nextCard" hidden></div>
+    <div id="banner"></div><div id="tipCard" hidden></div><div id="gates" hidden></div><div id="nextCard" hidden></div>
     <div id="hint" hidden></div>
     <div id="ring" hidden></div>
     <div id="tinfo" hidden></div>
@@ -489,7 +495,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 <script src="three.min.js"></script>
 <script src="GLTFLoader.js"></script>
 <script src="SkeletonUtils.js"></script>
-<script src="icons.js"></script><script src="bodies.js"></script><script src="vfx.js"></script><script src="upicons.js"></script><script src="maps/auto.js"></script>
+<script src="icons.js"></script><script src="bodies.js"></script><script src="vfx.js"></script><script src="lang.js"></script><script src="upicons.js"></script><script src="maps/auto.js"></script>
 <script src="models/goblin.js"></script><script src="models/orc.js"></script><script src="models/knight.js"></script><script src="models/shaman.js"></script><script src="models/wolf.js"></script><script src="models/bat.js"></script><script src="models/slime.js"></script><script src="models/frog.js"></script><script src="models/drake.js"></script><script src="models/dragon.js"></script><script src="models/icewolf.js"></script><script src="models/direwolf.js"></script><script src="models/troll.js"></script><script src="models/ogre.js"></script><script src="models/hknight.js"></script><script src="models/hmage.js"></script><script src="models/harcher.js"></script><script src="models/hice.js"></script><script src="models/hfire.js"></script><script src="models/hthunder.js"></script><script src="models/hlaser.js"></script><script src="models/hdragon.js"></script><script src="models/hwolfm.js"></script><script src="models/hhoop.js"></script><script src="models/hgoal.js"></script><script src="models/t_archer1.js"></script><script src="models/t_archer2.js"></script><script src="models/t_archer3.js"></script><script src="models/t_cannon1.js"></script><script src="models/t_cannon2.js"></script><script src="models/t_cannon3.js"></script><script src="models/t_frost1.js"></script><script src="models/t_frost2.js"></script><script src="models/t_frost3.js"></script><script src="models/t_lightning1.js"></script><script src="models/t_lightning2.js"></script><script src="models/t_lightning3.js"></script><script src="models/t_ballista1.js"></script><script src="models/t_ballista2.js"></script><script src="models/t_ballista3.js"></script><script src="models/t_mortar1.js"></script><script src="models/t_mortar2.js"></script><script src="models/t_mortar3.js"></script>
 <script>
 'use strict';
@@ -502,7 +508,7 @@ const CROWN='<svg class="crown" viewBox="0 0 24 24"><path d="M3 7l4.5 4L12 4l4.5
 const COIN='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor"/><path d="M12 8.5l3 3.5-3 3.5-3-3.5z" fill="#7a4d0c"/></svg>';
 
 /* ================= i18n ================= */
-const LANGS={ar:{dir:'rtl',label:'العربية'},en:{dir:'ltr',label:'English'},no:{dir:'ltr',label:'Norsk'}};
+const LANGS={en:{dir:'ltr',label:'English'},es:{dir:'ltr',label:'Español'},fr:{dir:'ltr',label:'Français'},pt:{dir:'ltr',label:'Português'},de:{dir:'ltr',label:'Deutsch'},ar:{dir:'rtl',label:'العربية'}};
 const STR={
   trialBtn:['جرّب مجانًا مرحلة واحدة','Try free for one level','Prøv gratis ett brett'],trialLeft:['جاهز للتجربة: مرحلة واحدة','Trial ready: one level','Prøve klar: ett brett'],trialBuy:['أعجبك {0}؟ اشترِه من شاشة الأبطال لتحتفظ به!','Liked {0}? Buy him on the hero screen to keep him!','Likte du {0}? Kjøp helten for å beholde den!'],trialEnded:['انتهت التجربة','Trial ended','Prøven er over'],
   buyHero:['اشترِ','Buy','Kjøp'],unlockNow:['افتح الآن','Unlock now','Lås opp nå'],heroPack:['👑 الأبطال الستة الجدد','👑 All 6 new heroes','👑 Alle 6 nye helter'],heroPackD:['سيد الرعد، الحارس الطائر، التنين التوأم، سيد الذئاب، نجم السلة، نجم الكرة','Thunder Lord, Sky Guardian, Twin Dragon, Wolf Master, Hoop Star, Goal Star','Tordenherre, Himmelvokter, Tvillingdrage, Ulvemester, Kurvstjerne, Målstjerne'],
@@ -571,16 +577,16 @@ const STR={
   kills:['أعداء سقطوا','Enemies defeated','Fiender beseiret'],livesL:['الأرواح','Lives','Liv'],locked:['مقفلة','Locked','Låst'],
   startBtn:['ابدأ المعركة','Start battle','Start kampen'],wavesN:['{0} موجة','{0} waves','{0} bølger'],wavesNs:['{0} موجات','{0} waves','{0} bølger'],plotsN:['{0} قاعدة بناء','{0} build sites','{0} byggeplasser'],
   bossLvl:['معركة زعيم','Boss battle','Sjefskamp'],noMods:['بدون تحديات إضافية','No extra challenges','Ingen ekstra utfordringer'],
-  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ التطوير السابق أولاً','Buy the previous upgrade first','Kjøp forrige oppgradering først'],
+  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ التطوير السابق أولاً','Buy the previous upgrade first','Kjøp forrige oppgradering først'],
   upgHint:['اكسب النجوم في المراحل واستخدمها لتقوية جيشك. يمكنك استرجاعها وإعادة توزيعها في أي وقت.','Earn stars in levels and spend them to strengthen your army. You can refund and redistribute them anytime.','Tjen stjerner på brettene og bruk dem til å styrke hæren. Du kan refundere og fordele dem på nytt når som helst.'],
   maxed:['مكتمل','Maxed','Fullt'],resetUpg:['استرجاع كل النجوم','Refund all stars','Refunder alle stjerner'],
   noGL:['تعذّر تشغيل الرسومات ثلاثية الأبعاد على هذا الجهاز. جرّب متصفح Chrome محدّثاً.','3D graphics could not start on this device. Try an up-to-date Chrome browser.','3D-grafikken kunne ikke starte på denne enheten. Prøv en oppdatert Chrome-nettleser.'],
   heroLv:['م{0}','Lv{0}','Nv{0}'],levelOfHero:['المستوى {0}','Level {0}','Nivå {0}'],
 };
 const N3=(a,e,n)=>[a,e,n];
-let LANG='ar';const LI=()=>LANG==='ar'?0:LANG==='en'?1:2;
-function t(k,...a){let s=(STR[k]||[k])[LI()];a.forEach((v,i)=>s=s.split('{'+i+'}').join(v));return s;}
-const tx=arr=>arr[LI()];
+let LANG='en';const LI=()=>LANG==='ar'?0:1;const XTC={};const XT=s=>{const m=window.XL&&XL[LANG];if(!m||typeof s!=='string')return s;if(m[s])return m[s];const ck=LANG+'|'+s;if(ck in XTC)return XTC[ck];XTC[ck]=s;const ps=window.XLP&&XLP[LANG];if(ps)for(const [re,r] of ps){const R=new RegExp(re);if(R.test(s))return XTC[ck]=s.replace(R,r);}return s;};
+function t(k,...a){let s=XT((STR[k]||[k])[LI()]);a.forEach((v,i)=>s=s.split('{'+i+'}').join(v));return s;}
+const tx=arr=>XT(arr[LI()]);
 function wavesLabel(n){return t(LANG==='ar'&&n<=10?'wavesNs':'wavesN',n);}
 
 /* ================= data ================= */
@@ -777,7 +783,7 @@ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const S={stars:[],unlocked:1,sound:true,music:true,seenTut:false,hero:'knight',xp:{knight:0,mage:0},upg:{},seenEn:{},lang:null,sel:0};
 try{const d=JSON.parse(localStorage.getItem('kristal-td-2')||'null');if(d){Object.assign(S,d);S.xp=Object.assign({knight:0,mage:0},d.xp||{});}}catch(e){}
 while(S.stars.length<NLEV)S.stars.push(0);if((S.gfxAuto||0)<3){S.gfxAuto=3;S.gfx='high';S.gfxCheck=1;}S.music=false;S.upg=S.upg||{};S.seenEn=S.seenEn||{};
-if(!S.lang){const nl=(navigator.language||'').toLowerCase();S.lang=nl.startsWith('ar')?'ar':(nl.startsWith('nb')||nl.startsWith('no')||nl.startsWith('nn'))?'no':nl.startsWith('en')?'en':'ar';}
+if(!S.lang||!LANGS[S.lang]){const nl=(navigator.language||'').toLowerCase().slice(0,2);S.lang=LANGS[nl]?nl:'en';}
 LANG=S.lang;
 function save(){try{localStorage.setItem('kristal-td-2',JSON.stringify(S));}catch(e){}}
 const heroLevel=xp=>Math.min(20,1+Math.floor(Math.sqrt(xp/260)));
@@ -1161,7 +1167,7 @@ function spawnEnemy(type,d=-2,pi=0){
     d,x:p.x,y:p.y,dx:p.dx,dy:p.dy,slowT:0,slowF:0,stunT:0,frozenT:0,flash:0,dead:false,healT:0,blocked:null,phase:Math.random()*6,atkA:0,atk:b.atk*(1+(lv.hp-1)*.8)};
   if(G.demo){e.armor=b.armor;e.regen=0;}
   G.enemies.push(e);
-  if(!G.demo){if(b.boss)sfx('ogre');if(b.desc&&!S.seenEn[type]){S.seenEn[type]=1;save();banner(t('newEnemy',tx(b.name)),tx(b.desc)+' — '+enLine(type));}}
+  if(!G.demo){if(b.boss)sfx('ogre');if(b.desc&&!S.seenEn[type]){S.seenEn[type]=1;save();if(G.L<10)tipEnemy(type);else banner(t('newEnemy',tx(b.name)),tx(b.desc)+' — '+enLine(type));}}
   return e;
 }
 const earlyBonus=()=>8+2*G.wave;
@@ -2396,6 +2402,14 @@ function renderLevels(){
   const hb=$('#rHero'),H=HEROES[S.hero];hb.querySelector('img').src=heroImg(S.hero);hb.querySelector('b').textContent=tx(H.name).split(' ')[0]+' · Lv'+heroLevel(S.xp[S.hero]||0);
   renderInfo();requestAnimationFrame(()=>{layoutMap($('#rBox'),'region');placeRP();});
 }
+
+const TIPQ=[];let tipBusy=false,tipTimer=0;
+function showTip(html,col){TIPQ.push([html,col]);if(!tipBusy)nextTip();}
+function nextTip(){const el=$('#tipCard');const it=TIPQ.shift();if(!it){tipBusy=false;el.hidden=true;return;}tipBusy=true;el.style.setProperty('--c',it[1]||'#e9b44c');el.innerHTML=it[0]+`<small>${t('tipClose')}</small>`;el.hidden=false;el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(tipTimer);tipTimer=setTimeout(nextTip,8000);}
+function tipEnemy(type){const E=ENEMIES[type],bt=bestTowerFor(type),c=ACLS[E.ac];
+  showTip(`<div class="tw">${window.EICON&&EICON[type]?`<img src="${EICON[type]}" alt="">`:''}<div><b>${t('newEnemy',tx(E.name))}</b><p>${tx(E.desc||E.name)}${c?' · '+tx(c.name):''}</p>${bt?`<p class="best">${t('tipBest','')}<span style="--c:${TCOL[bt][0]}"><img src="${TICON[bt+'1']}" alt="">${tx(TOWERS[bt].name)}</span></p>`:''}</div></div>`,'#ff8a6a');}
+function tipTower(k){const D=TOWERS[k],st=strongVs(SRC_OF[k]||'').map(c=>tx(ACLS[c].name)).join(', ');
+  showTip(`<div class="tw"><img src="${TICON[k+'1']}" alt=""><div><b>${tx(D.name)}</b><p>${tx(D.desc)}${D.air?t('hitsAir'):t('groundOnly')}</p>${st?`<p class="best">${t('strongVs',st)}</p>`:''}</div></div>`,TCOL[k][0]);}
 function placeRP(){const L=$('#levels');L.classList.remove('swap');const P=$('#lvlInfo').getBoundingClientRect(),Hc=$('#rHero').getBoundingClientRect(),W=L.clientWidth;
   const nodes=[...document.querySelectorAll('#rNodes .rnode')].map(n=>n.getBoundingClientRect());
   const hit=(r,x0,x1,y0,y1)=>nodes.filter(n=>n.right>x0&&n.left<x1&&n.bottom>y0&&n.top<y1).length;
@@ -2450,6 +2464,7 @@ function renderUpg(){S.upt=S.upt||{};S.hsk=S.hsk||{};gemInit();
     save();sfx('upgrade');updGems();renderUpg();});
   $('#upgReset').disabled=spentStars()===0;
 }
+$('#tipCard').addEventListener('click',()=>{clearTimeout(tipTimer);nextTip();});
 $('#upgReset').addEventListener('click',()=>{S.upt={};save();sfx('sell');renderUpg();});
 function startLevel(i){
   if(needMap(i)&&!startLevel.wait){startLevel.wait=1;ensureMap(i,()=>{startLevel.wait=0;startLevel(i);});return;}
@@ -2464,6 +2479,7 @@ function startLevel(i){
   lv.mods.forEach(m=>msgs.push([tx(MODS[m].name),tx(MODS[m].desc)]));
   msgs.forEach(([a,b],k)=>setTimeout(()=>{if(G&&G.L===i&&!G.demo&&G.wave===0)banner(a,b);},2500*(k+1)));
   showHint(i===0&&!S.seenTut?t('tutBuild'):null);
+  if(i<10){S.seenTw=S.seenTw||{};TORDER.filter(k=>TOWERS[k].unlock<=i&&!S.seenTw[k]).forEach((k,n)=>{S.seenTw[k]=1;setTimeout(()=>{if(G&&G.L===i&&!G.demo)tipTower(k);},1800+n*300);});save();}
 }
 function srcName(src){const tw=TORDER.find(k=>SRC_OF[k]===src);const hero=HORDER.find(k=>HEROES[k].src===src);return tw?tx(TOWERS[tw].name):hero?tx(HEROES[hero].name):src;}
 function adviceHTML(i,losses){const lv=getLevel(i),mix=levelMix(i),sep=LANG==='ar'?'، ':', ',out=[];

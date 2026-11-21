@@ -376,6 +376,23 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #upHeroPick button.on{border-color:#ffd98a;box-shadow:0 0 10px #ffd98a88}#upHeroPick button img{width:64px;height:76px;object-fit:contain}#upHeroPick button span{font-weight:900;font-size:13px}#upHeroPick button small{font-size:9px;color:#ffd98a;letter-spacing:1px}
 .ut.part{border-color:#ffd98a88}.ucard .ulv{font-size:11.5px;font-weight:900;color:#7a5a3a}
 #menu .btn .bico{width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-inline-end:8px;margin-block:-6px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+#chestRow .chest{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:14px;border:1.5px solid #c99a3a;background:rgba(24,16,10,.85);color:#fff;text-align:start}
+#chestRow .chest img{width:38px;height:38px;border-radius:9px}#chestRow .chest b{display:block;font-size:12.5px;font-weight:900;color:var(--gold-2)}
+#chestRow .cbar{display:block;width:130px;height:7px;border-radius:6px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:3px}#chestRow .cbar u{display:block;height:100%;background:linear-gradient(90deg,#ffd98a,#e39a34)}
+#chestRow .chest.ready{border-color:#ffd98a;box-shadow:0 0 14px #ffd98a99;animation:cbounce .6s ease-in-out 6 alternate}@keyframes cbounce{to{transform:scale(1.07)}}
+#chestRow .legend{font-weight:900;color:#ffd98a;text-shadow:0 1px 4px #000}
+#chestFx{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(0,0,0,.65)}#chestFx[hidden]{display:none}
+#chestFx .cfx{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px}
+#chestFx img{width:140px;height:140px;border-radius:24px;position:relative;z-index:1;box-shadow:0 0 40px #ffd98a}
+#chestFx .rays{position:absolute;left:50%;top:70px;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;background:repeating-conic-gradient(rgba(255,217,138,.35) 0 10deg,transparent 10deg 20deg);opacity:0}
+#chestFx b{position:relative;z-index:1;font-family:var(--f-display);font-weight:400;font-size:30px;color:#fff6dc;text-shadow:0 3px 0 #3a1f05,0 0 18px #ffb84a;opacity:0}
+#chestFx small{position:relative;z-index:1;color:#ddd;opacity:0}
+#chestFx.go img{animation:cshake .7s ease-in-out,cpop .5s .7s cubic-bezier(.3,1.6,.5,1) forwards}
+#chestFx.go .rays{animation:crays 3s .9s linear forwards}#chestFx.go b{animation:cin .5s 1s cubic-bezier(.3,1.6,.5,1) forwards}#chestFx.go small{animation:cin .4s 1.6s forwards}
+@keyframes cshake{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(6deg)}}
+@keyframes cpop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1.15)}}
+@keyframes crays{0%{opacity:0;transform:rotate(0) scale(.6)}15%{opacity:1}100%{opacity:.8;transform:rotate(90deg) scale(1)}}
+@keyframes cin{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:none}}
 </style>
 
 </head>
@@ -422,6 +439,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <h1 class="title"><span data-t="title1"></span><br><span data-t="title2"></span></h1>
     <p class="tagline" data-t="tagline"></p>
     <span class="star-total"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span id="menuStars">0/300</span></span>
+    <div id="chestRow"></div>
     <p class="foot" data-t="foot"></p>
    </div>
    <div class="mright">
@@ -585,7 +603,7 @@ const STR={
   kills:['أعداء سقطوا','Enemies defeated','Fiender beseiret'],livesL:['الأرواح','Lives','Liv'],locked:['مقفلة','Locked','Låst'],
   startBtn:['ابدأ المعركة','Start battle','Start kampen'],wavesN:['{0} موجة','{0} waves','{0} bølger'],wavesNs:['{0} موجات','{0} waves','{0} bølger'],plotsN:['{0} قاعدة بناء','{0} build sites','{0} byggeplasser'],
   bossLvl:['معركة زعيم','Boss battle','Sjefskamp'],noMods:['بدون تحديات إضافية','No extra challenges','Ingen ekstra utfordringer'],
-  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],resetProg:['البدء من جديد','Restart progress','Restart progress'],resetQ:['البدء من المرحلة 1 من جديد؟','Start again from level 1?','Start again from level 1?'],resetD:['ستُمسح المراحل والنجوم وتطويرات المملكة. الجواهر والأبطال المشتراة وتطوير مهاراتهم تبقى.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.'],resetYes:['نعم، ابدأ من جديد','Yes, start over','Yes, start over'],cancel:['إلغاء','Cancel','Cancel'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ مستوى واحداً من التطوير السابق أولاً','Buy at least one level of the upgrade above first','Kjøp forrige oppgradering først'],
+  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],chestNext:['صندوق النجوم عند {0} ★','Star chest at {0} ★','Star chest at {0} ★'],chestOpen:['🎁 افتح صندوق النجوم!','🎁 Open your star chest!','🎁 Open your star chest!'],chestNeed:['تحتاج {0} ★ إضافية — العب مراحل قديمة لتجمع النجوم','You need {0} more ★ — replay levels to collect stars','You need {0} more ★ — replay levels to collect stars'],chestTrial:['تجربة مجانية للبطل {0}!','Free trial of {0}!','Free trial of {0}!'],legendT:['أسطورة الكريستال','Crystal Legend','Crystal Legend'],resetProg:['البدء من جديد','Restart progress','Restart progress'],resetQ:['البدء من المرحلة 1 من جديد؟','Start again from level 1?','Start again from level 1?'],resetD:['ستُمسح المراحل والنجوم وتطويرات المملكة. الجواهر والأبطال المشتراة وتطوير مهاراتهم تبقى.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.'],resetYes:['نعم، ابدأ من جديد','Yes, start over','Yes, start over'],cancel:['إلغاء','Cancel','Cancel'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ مستوى واحداً من التطوير السابق أولاً','Buy at least one level of the upgrade above first','Kjøp forrige oppgradering først'],
   upgHint:['اكسب النجوم في المراحل واستخدمها لتقوية جيشك. يمكنك استرجاعها وإعادة توزيعها في أي وقت.','Earn stars in levels and spend them to strengthen your army. You can refund and redistribute them anytime.','Tjen stjerner på brettene og bruk dem til å styrke hæren. Du kan refundere og fordele dem på nytt når som helst.'],
   maxed:['مكتمل','Maxed','Fullt'],resetUpg:['استرجاع كل النجوم','Refund all stars','Refunder alle stjerner'],
   noGL:['تعذّر تشغيل الرسومات ثلاثية الأبعاد على هذا الجهاز. جرّب متصفح Chrome محدّثاً.','3D graphics could not start on this device. Try an up-to-date Chrome browser.','3D-grafikken kunne ikke starte på denne enheten. Prøv en oppdatert Chrome-nettleser.'],
@@ -2340,7 +2358,7 @@ function onTap(ev){
 function banner(main,sub){const b=$('#banner');b.innerHTML=`<b>${main}</b>${sub?`<span>${sub}</span>`:''}`;b.classList.remove('show');void b.offsetWidth;b.classList.add('show');}
 function showHint(s){const h=$('#hint');if(!s){h.hidden=true;return;}h.textContent=s;h.hidden=false;}
 const SCREENS=['menu','worldScr','levels','heroScr','upgScr','shopScr','pauseScr','endScr','reviveScr'];
-function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','worldScr','levels','heroScr','upgScr','shopScr'].includes(id));updGems();if(id==='menu')$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;}
+function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','worldScr','levels','heroScr','upgScr','shopScr'].includes(id));updGems();if(id==='menu'){$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;renderChest();}}
 function demoLevel(){return Math.min(S.unlocked-1,NLEV-1);}
 function toMenu(screen){closeSheets();showHint(null);newGame(demoLevel(),true);if(screen==='levels')renderLevels();showScreen(screen);}
 /* language */
@@ -2350,7 +2368,7 @@ function applyLang(){
   document.querySelectorAll('[data-ta]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.ta)));
   $('#langRow').innerHTML=Object.keys(LANGS).map(k=>`<button data-l="${k}" class="${k===LANG?'on':''}">${LANGS[k].label}</button>`).join('');
   $('#langRow').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{LANG=S.lang=b.dataset.l;save();sfx('ui');applyLang();}));
-  soundLabel();renderStoreBtns();$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;
+  soundLabel();renderStoreBtns();$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;try{renderChest();}catch(e){}
   for(const k in LVCACHE)LVCACHE[k].name=lvName(+k);
   if(G&&!G.demo){buildSkills();buildTowerList();waveKey='';lastHeroKey='';}
   if(!$('#levels').hidden)renderLevels();if(!$('#heroScr').hidden)renderHeroes();if(!$('#worldScr').hidden)renderWorld();if(!$('#upgScr').hidden)renderUpg();
@@ -2417,6 +2435,19 @@ function tipEnemy(type){const E=ENEMIES[type],bt=bestTowerFor(type),c=ACLS[E.ac]
   showTip(`<div class="tw">${window.EICON&&EICON[type]?`<img src="${EICON[type]}" alt="">`:''}<div><b>${t('newEnemy',tx(E.name))}</b><p>${tx(E.desc||E.name)}${c?' · '+tx(c.name):''}</p>${bt?`<p class="best">${t('tipBest','')}<span style="--c:${TCOL[bt][0]}"><img src="${TICON[bt+'1']}" alt="">${tx(TOWERS[bt].name)}</span></p>`:''}</div></div>`,'#ff8a6a');}
 function tipTower(k){const D=TOWERS[k],st=strongVs(SRC_OF[k]||'').map(c=>tx(ACLS[c].name)).join(', ');
   showTip(`<div class="tw"><img src="${TICON[k+'1']}" alt=""><div><b>${tx(D.name)}</b><p>${tx(D.desc)}${D.air?t('hitsAir'):t('groundOnly')}</p>${st?`<p class="best">${t('strongVs',st)}</p>`:''}</div></div>`,TCOL[k][0]);}
+const CHESTS=[[50,'gems',50],[100,'trial',0],[150,'gems',100],[200,'items',0],[250,'gems',150],[300,'legend',0]];
+function renderChest(){const el=$('#chestRow');if(!el)return;const n=S.chest||0,ts=totalStars();if(n>=CHESTS.length){el.innerHTML=S.legend?`<span class="legend">👑 ${t('legendT')}</span>`:'';return;}
+  const [need]=CHESTS[n],prev=n?CHESTS[n-1][0]:0,ready=ts>=need,pc=Math.min(100,Math.round((ts-prev)/(need-prev)*100));
+  el.innerHTML=`<button class="chest${ready?' ready':''}"><img alt="" src="${(window.UPICON&&UPICON.kingdom0)||''}"><span><b>${ready?t('chestOpen'):t('chestNext',need)}</b><i class="cbar"><u style="width:${pc}%"></u></i></span></button>`;
+  el.querySelector('.chest').onclick=()=>{if(!ready){sfx('ui');showHint(t('chestNeed',need-ts));setTimeout(()=>showHint(null),1800);return;}openChest();};}
+function openChest(){const n=S.chest||0,[need,kind,val]=CHESTS[n];if(totalStars()<need)return;S.trial=S.trial||{};let txt;
+  if(kind==='gems'){gemInit();S.gems+=val;txt='+'+val+' 💎';}
+  else if(kind==='items'){gemInit();['meteor','freeze','shield'].forEach(k=>S.inv[k]=(S.inv[k]||0)+1);txt='☄️ +1  ❄️ +1  🛡️ +1';}
+  else if(kind==='trial'){const id=HORDER.find(h=>HEROES[h].paid&&!heroOwned(h)&&!S.trial[h])||HORDER.find(h=>HEROES[h].paid&&!heroOwned(h)&&S.trial[h]===3);if(id){S.trial[id]=1;S.hero=id;txt=t('chestTrial',tx(HEROES[id].name).split(' ')[0]);}else{gemInit();S.gems+=75;txt='+75 💎';}}
+  else{S.legend=1;txt='👑 '+t('legendT');}
+  S.chest=n+1;save();updGems();sfx('level');
+  let m=$('#chestFx');if(!m){m=document.createElement('div');m.id='chestFx';document.body.appendChild(m);}
+  m.innerHTML=`<div class="cfx"><i class="rays"></i><img alt="" src="${(window.UPICON&&UPICON.kingdom0)||''}"><b>${txt}</b><small>${t('tipClose')}</small></div>`;m.hidden=false;m.className='';void m.offsetWidth;m.className='go';m.onclick=()=>{m.hidden=true;};renderChest();}
 function placeRP(){const L=$('#levels');L.classList.remove('swap');const P=$('#lvlInfo').getBoundingClientRect(),Hc=$('#rHero').getBoundingClientRect(),W=L.clientWidth;
   const nodes=[...document.querySelectorAll('#rNodes .rnode')].map(n=>n.getBoundingClientRect());
   const hit=(r,x0,x1,y0,y1)=>nodes.filter(n=>n.right>x0&&n.left<x1&&n.bottom>y0&&n.top<y1).length;

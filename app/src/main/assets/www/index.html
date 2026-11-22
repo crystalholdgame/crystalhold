@@ -621,8 +621,8 @@ const TOWERS={
   archer:{name:N3('برج الرماة','Archer Tower','Bueskyttertårn'),color:'#9bd35a',cost:70,upg:[70,120],dmg:[9,14,22],rate:[2,2.4,2.8],range:[2.6,2.9,3.2],air:true,unlock:0,desc:N3('سهام سريعة تصيب الأرض والطائرين','Fast arrows that hit ground and air','Raske piler mot bakke- og luftmål')},
   cannon:{name:N3('مدفع','Cannon','Kanon'),color:'#e8a34a',cost:100,upg:[90,160],dmg:[30,48,80],rate:[.7,.8,.9],range:[2.4,2.6,2.9],splash:[.9,1.05,1.25],air:false,unlock:0,desc:N3('قذائف تفجّر الجموع، لا تصيب الطائر','Explosive shells for crowds; cannot hit flyers','Eksplosive kuler mot grupper; treffer ikke flygende')},
   frost:{name:N3('برج الجليد','Frost Tower','Frosttårn'),color:'#8fd3ff',cost:90,upg:[80,140],dmg:[4,7,11],rate:[.9,1,1.2],range:[2.0,2.3,2.6],slow:[.35,.45,.55],air:true,unlock:1,desc:N3('موجات صقيع تبطئ كل من حوله','Frost waves slow everything nearby','Frostbølger bremser alt i nærheten')},
-  lightning:{name:N3('برج البرق','Lightning Tower','Lyntårn'),color:'#b9a3ff',cost:130,upg:[120,190],dmg:[18,30,48],rate:[1,1.15,1.3],range:[2.3,2.5,2.8],chain:[3,4,6],air:true,unlock:2,desc:N3('صاعقة تقفز بين الأعداء وتخترق الدروع','Chain lightning that pierces armor','Kjedelyn som går gjennom rustning')},
-  ballista:{name:N3('قوس الحصار','Ballista','Ballista'),color:'#d9b98a',cost:140,upg:[120,200],dmg:[62,100,155],rate:[.5,.58,.68],range:[3.6,4.0,4.4],pierce:[2,3,4],air:true,unlock:3,desc:N3('رمح أزرق يخترق صفاً من الوحوش ويمزق الدروع الثقيلة، ويضرب الزعماء بقوة مضاعفة','A blue bolt that pierces a line of enemies, shreds heavy armor and hits bosses extra hard','Et blått spyd som går gjennom en rekke fiender, river opp tung rustning og treffer bosser ekstra hardt')},
+  lightning:{name:N3('برج البرق','Lightning Tower','Lyntårn'),color:'#b9a3ff',cost:130,upg:[120,190],dmg:[18,30,48],rate:[1,1.15,1.3],range:[2.3,2.5,2.8],chain:[2,3,4],air:true,unlock:2,desc:N3('صاعقة تقفز بين الأعداء وتخترق الدروع','Chain lightning that pierces armor','Kjedelyn som går gjennom rustning')},
+  ballista:{name:N3('قوس الحصار','Ballista','Ballista'),color:'#d9b98a',cost:140,upg:[120,200],dmg:[62,100,155],rate:[.5,.58,.68],range:[3.6,4.0,4.4],pierce:[2,2,3],air:true,unlock:3,desc:N3('رمح أزرق يخترق صفاً من الوحوش ويمزق الدروع الثقيلة، ويضرب الزعماء بقوة مضاعفة','A blue bolt that pierces a line of enemies, shreds heavy armor and hits bosses extra hard','Et blått spyd som går gjennom en rekke fiender, river opp tung rustning og treffer bosser ekstra hardt')},
   javelin:{name:N3('معسكر الرماحين','Spear Camp','Spydleir'),color:'#ff6a3d',cost:115,upg:[100,180],dmg:[20,30,44],rate:[1.1,1.3,1.5],range:[2.5,2.8,3.1],men:[2,3,3],air:true,unlock:5,desc:N3('محاربون يرمون الرماح، وفي المستوى 3 يخرج فيل حرب يدهس الوحوش','Warriors hurl spears; at level 3 a war elephant charges out','Krigere kaster spyd; på nivå 3 stormer en krigselefant ut')},
   mortar:{name:N3('الهاون','Mortar','Morter'),color:'#ff8a5a',cost:170,upg:[150,240],dmg:[65,105,170],rate:[.38,.44,.52],range:[4.5,5.1,5.8],splash:[1.1,1.25,1.45],min:1.1,air:false,unlock:4,desc:N3('قصف بعيد المدى بانفجار هائل','Long-range shelling with huge blasts','Langtrekkende beskytning med store eksplosjoner')},
 };
@@ -760,6 +760,7 @@ const UPGS=[
   {id:'skill',name:N3('التأمل','Meditation','Meditasjon'),desc:N3('-8% وقت انتظار المهارات','-8% skill cooldown','-8 % nedkjøling for ferdigheter')},
 ];
 const UPG_MAX=5;
+window.BAL=window.BAL||{cannonMax:3,mortarMax:4,chainFall:.7,boltFall:.75,fallUp:.06,ezHp:.55,ezLives:4,ezArmor:.5};
 const UPT_COST=[2,4,6],UPK_COST=[3,5,7],HSK_COST=[50,50,50],UMAX=3;
 const UPT={
  archer:[['dmg',.1],['range',.06],['rate',.1]],
@@ -769,8 +770,8 @@ const UPT={
  ballista:[['dmg',.1],['range',.06],['pierce',1]],
  mortar:[['dmg',.1],['range',.05],['splash',.12]]};
 const UPK=[['gold',50],['walls',2],['cost',.05]];
-const UPN={dmg:N3('ضرر أقوى','Sharper damage','Mer skade'),range:N3('مدى أبعد','Longer range','Lengre rekkevidde'),rate:N3('رمي أسرع','Faster shots','Raskere skudd'),splash:N3('انفجار أوسع','Bigger blast','Større eksplosjon'),slow:N3('تجميد أقوى','Deeper chill','Sterkere frost'),chain:N3('سلسلة إضافية','Extra chain','Ekstra kjede'),pierce:N3('اختراق إضافي','Extra pierce','Ekstra gjennomslag'),gold:N3('خزينة الحرب','War chest','Krigskasse'),walls:N3('أسوار القلعة','Castle walls','Slottsmurer'),cost:N3('المهندسون','Engineers','Ingeniører')};
-function upDesc(k,v,type){const P=Math.round(v*100);return ({dmg:N3('+'+P+'% ضرر','+'+P+'% damage','+'+P+' % skade'),range:N3('+'+P+'% مدى','+'+P+'% range','+'+P+' % rekkevidde'),rate:N3('+'+P+'% سرعة الرمي','+'+P+'% fire rate','+'+P+' % skuddtakt'),splash:N3('+'+P+'% حجم الانفجار','+'+P+'% blast size','+'+P+' % eksplosjonsstørrelse'),slow:N3('إبطاء أقوى للوحوش','Slows enemies more','Bremser fiender mer'),chain:N3('البرق يقفز لوحش إضافي','Lightning jumps to one more enemy','Lynet hopper til én fiende til'),pierce:N3('الرمح يخترق وحشاً إضافياً','The bolt pierces one more enemy','Spydet går gjennom én fiende til'),gold:N3('+'+v+' ذهب في بداية كل مرحلة','+'+v+' gold at the start of every level','+'+v+' gull ved start av hvert nivå'),walls:N3('+'+v+' أرواح','+'+v+' lives','+'+v+' liv'),cost:N3('-'+P+'% تكلفة البناء والترقية','-'+P+'% build and upgrade cost','-'+P+' % bygge- og oppgraderingskostnad')})[k];}
+const UPN={dmg:N3('ضرر أقوى','Sharper damage','Mer skade'),range:N3('مدى أبعد','Longer range','Lengre rekkevidde'),rate:N3('رمي أسرع','Faster shots','Raskere skudd'),splash:N3('انفجار أوسع','Bigger blast','Større eksplosjon'),slow:N3('تجميد أقوى','Deeper chill','Sterkere frost'),chain:N3('برق أقوى','Stronger chain','Sterkere kjede'),pierce:N3('رمح أقوى','Stronger pierce','Sterkere gjennomslag'),gold:N3('خزينة الحرب','War chest','Krigskasse'),walls:N3('أسوار القلعة','Castle walls','Slottsmurer'),cost:N3('المهندسون','Engineers','Ingeniører')};
+function upDesc(k,v,type){const P=Math.round(v*100);return ({dmg:N3('+'+P+'% ضرر','+'+P+'% damage','+'+P+' % skade'),range:N3('+'+P+'% مدى','+'+P+'% range','+'+P+' % rekkevidde'),rate:N3('+'+P+'% سرعة الرمي','+'+P+'% fire rate','+'+P+' % skuddtakt'),splash:N3('+'+P+'% حجم الانفجار','+'+P+'% blast size','+'+P+' % eksplosjonsstørrelse'),slow:N3('إبطاء أقوى للوحوش','Slows enemies more','Bremser fiender mer'),chain:N3('البرق يفقد قوة أقل مع كل قفزة','Lightning loses less power on each jump','Lynet mister mindre kraft for hvert hopp'),pierce:N3('الرمح يفقد قوة أقل مع كل وحش','The bolt loses less power on each enemy','Spydet mister mindre kraft for hver fiende'),gold:N3('+'+v+' ذهب في بداية كل مرحلة','+'+v+' gold at the start of every level','+'+v+' gull ved start av hvert nivå'),walls:N3('+'+v+' أرواح','+'+v+' lives','+'+v+' liv'),cost:N3('-'+P+'% تكلفة البناء والترقية','-'+P+'% build and upgrade cost','-'+P+' % bygge- og oppgraderingskostnad')})[k];}
 function mkBn(){const bn={dmg:1,range:1,cost:1-ukB('cost'),hero:1,skill:1,t:{}};for(const k of TORDER)bn.t[k]={dmg:1+utB(k,'dmg'),range:1+utB(k,'range'),rate:1+utB(k,'rate'),splash:1+utB(k,'splash'),slow:utB(k,'slow'),chain:utB(k,'chain'),pierce:utB(k,'pierce')};bn.dmg=TORDER.reduce((a,k)=>a+bn.t[k].dmg*(1+(bn.t[k].rate-1)),0)/TORDER.length;bn.range=TORDER.reduce((a,k)=>a+bn.t[k].range,0)/TORDER.length;return bn;}
 function newBn(){if(!G||G.demo)return;const nb=mkBn();nb.cost=G.bn.cost;G.bn=nb;}
 const uL=(col,j)=>(((S.upl||{})[col]||[])[j]||0);const uCost=(col,j,l)=>(col==='kingdom'?UPK_COST:UPT_COST)[j]*(l+1);
@@ -910,7 +911,7 @@ const LVCACHE={};
 /* measured with test bots that play like a real player (star upgrades, hero level, skills): keeps every region a real fight */
 const HPT=[[0,1],[5,1.0],[9,1.2],[14,2.0],[24,2.05],[39,2.3],[49,1.8],[59,1.18],[69,1.03],[79,.86],[89,.72],[99,.66]];
 /* per-level fine tune from a full 100-level bot test (each map plays differently) */
-var LVT=[1,1,1,2.329,2.495,2.791,3.0,2.548,2.791,1.039,2.177,1.943,2.64,1.708,1.457,1.89,1.295,1.47,1.978,0.941,0.5,1.159,0.736,2.219,0.884,1.284,0.69,1.178,0.635,0.73,1.888,1.371,1.332,1.978,1.764,1.145,1,3.0,1.517,1.053,3.0,1.449,0.652,1,1.045,1.746,0.791,0.92,0.991,0.928,1.094,2.381,1.067,1.374,1,2.374,1.213,1,0.877,1.354,3.0,1.747,2.647,1.782,1.541,3.0,1.062,3.0,2.849,1.374,3.0,1.354,0.832,2.488,2.219,2.219,1.817,0.884,1.561,2.062,3.0,3.0,2.849,2.663,1.821,1.389,2.422,2.374,0.5,1.649,2.054,3.0,2.748,1.663,0.976,2.584,1.728,3.0,0.753,1.261];
+var LVT=[3.139, 2.487, 2.251, 2.329, 2.495, 2.791, 3.0, 2.548, 2.791, 1.039, 2.395, 1.782, 2.508, 1.879, 1.312, 1.576, 1.083, 1.081, 1.313, 0.849, 0.418, 0.875, 0.736, 2.003, 0.84, 1.483, 0.623, 1.063, 0.847, 0.763, 1.661, 1.168, 1.354, 2.077, 1.512, 1.008, 0.73, 3.812, 1.441, 1.0, 3.3, 1.151, 0.588, 1.158, 0.943, 2.017, 0.597, 0.844, 0.941, 0.928, 1.459, 2.541, 1.067, 1.305, 1.155, 3.016, 1.356, 1.0, 0.833, 1.116, 8.559, 1.791, 2.207, 1.693, 1.391, 2.804, 1.062, 3.268, 2.744, 1.374, 6.863, 1.408, 0.832, 2.476, 2.825, 1.75, 1.999, 0.928, 1.354, 2.268, 3.82, 4.622, 2.849, 2.663, 2.296, 1.254, 2.937, 2.617, 0.22, 1.567, 1.849, 10.357, 1.929, 1.659, 0.976, 1.756, 1.901, 6.138, 0.753, 1.013];var EZT=[2.98, 2.75, 0.707, 1.0, 1.0, 1.14, 1.0, 1.452, 1.06, 1.0, 0.864, 0.816, 0.979, 0.786, 0.979, 1.502, 1.697, 1.638, 1.596, 0.299, 1.788, 1.152, 1.734, 0.474, 1.264, 1.827, 2.077, 1.381, 0.972, 0.965, 0.927, 2.087, 1.816, 1.477, 1.534, 1.738, 1.949, 1.085, 1.125, 1.377, 0.793, 1.153, 1.049, 1.144, 1.151, 0.594, 1.05, 0.86, 0.891, 0.922, 0.962, 0.563, 1.352, 2.49, 1.712, 0.962, 1.142, 1.467, 1.073, 1.457, 1.567, 1.838, 0.72, 1.493, 1.763, 0.839, 0.809, 1.396, 1.555, 1.423, 0.409, 1.248, 0.937, 0.762, 0.423, 1.521, 0.463, 1.109, 1.274, 0.928, 0.773, 0.685, 0.877, 1.287, 0.449, 1.312, 0.605, 0.627, 0.129, 1.278, 1.663, 0.239, 1.36, 1.759, 1.734, 1.261, 1.08, 0.38, 0.901, 0.968];var LVLIVES=[20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14];
 function hpTune(i){for(let k=1;k<HPT.length;k++)if(i<=HPT[k][0]){const [a,x]=HPT[k-1],[b,y]=HPT[k];return x+(y-x)*(i-a)/(b-a);}return .8;}
 function getLevel(i){
   if(LVCACHE[i])return LVCACHE[i];
@@ -1130,7 +1131,7 @@ function newGame(i,demo=false){
   const scarce=lv.mods.includes('scarce');
   const assist=!demo&&S.assistL===i;S.assistL=null;
   const easy=!demo&&S.diff==='easy';
-  const lives=(lv.mods.includes('fragile')?8:15)+(demo?0:ukB('walls'))+(assist?5:0)+(easy?EZ.lives:0);
+  const lives=((window.LVLIVES&&LVLIVES[i]!=null)?LVLIVES[i]:(lv.mods.includes('fragile')?8:15))+(demo?0:ukB('walls'))+(assist?5:0)+(easy?BAL.ezLives:0);
   G={L:i,lv,path,paths,grid,painted:!!lv.pmap,mapH:lv.pmap?COLS*lv.pmap.aspect:ROWS,plots,demo,bn,gold:Math.round((170+6*Math.min(i,60)+45*(paths.length-1))*(scarce?.75:1)*(easy?EZ.gold:1))+(demo?0:ukB('gold')),easy,lives,maxLives:lives,wave:0,waves:lv.waves,queue:[],enemies:[],towers:[],tmap:{},projs:[],parts:[],texts:[],bolts:[],decals:[],meteors:[],
      assist,time:0,speed:1,paused:false,over:false,shake:0,castleHit:0,selected:null,buildCell:null,targeting:null,cleared:0,kills:0,nextId:1,demoT:0,flag:null};
   if(!demo&&(!HEROES[S.hero]||!heroOpen(S.hero)))S.hero=(S.ownHero&&HEROES[S.ownHero]&&heroOpen(S.ownHero))?S.ownHero:'knight';
@@ -1186,7 +1187,7 @@ const goldK=i=>i<6?1:Math.max(GMIN,1-(i-6)*GSLOPE);let GMIN=.2,GSLOPE=.015;
 function spawnEnemy(type,d=-2,pi=0){
   const b=ENEMIES[type],lv=G.lv,w=Math.max(1,G.wave),i=G.L;
   let m=(1+WA*(w-1)+WB*(w-1)*(w-1))*lv.hp;if(b.boss)m=(1+.04*(w-1))*lv.hp*1.05;
-  if(hasMod('elite'))m*=1.2;m*=playerPow();if(G.assist)m*=.75;if(G.easy)m*=EZ.hp*(b.fly?.65:1);m*=1-.1*(G.paths.length-1);if(pi<G.paths.length)m*=Math.min(1,Math.max(.5,G.paths[pi].total/18));if(hasMod('swarm')&&!b.boss)m*=.7;if(G.demo)m=1;
+  if(hasMod('elite'))m*=1.2;m*=playerPow();if(G.assist)m*=.75;if(G.easy)m*=BAL.ezHp*((window.EZT&&EZT[G.L])||1)*(b.fly?.65:1);m*=1-.1*(G.paths.length-1);if(pi<G.paths.length)m*=Math.min(1,Math.max(.5,G.paths[pi].total/18));if(hasMod('swarm')&&!b.boss)m*=.7;if(G.demo)m=1;
   const gm=(1+.03*Math.min(i,60))*goldK(i)*(hasMod('scarce')?.75:1)*(hasMod('elite')?1.15:1);
   if(pi>=G.paths.length)pi=0;const p=posAt(d,pi);
   const e={id:G.nextId++,pi,type,hp:b.hp*m,maxHp:b.hp*m,shield:(b.shield||0)*m,maxShield:(b.shield||0)*m,sp:b.sp*(hasMod('swift')?1.2:1),armor:b.armor+(hasMod('armored')?3:0),gold:Math.max(1,Math.round(b.gold*gm)),lives:b.lives,r:b.r,fly:!!b.fly,regen:(b.regen||0)+(hasMod('regen')?.015:0),
@@ -1231,8 +1232,8 @@ function addText(x,y,s,color,size=.3,h=.95){return;const cap=V.ultra?24:V.hq?14:
 function shakeIt(v){if(!reduceMotion)G.shake=Math.min(.8,Math.max(G.shake,v));}
 /* combat */
 function hurt(e,amt,kind,o={}){
-  if(e.dead)return;const mul=acMul(e,o.src);let a=amt*mul;
-  if(kind==='phys')a=Math.max(a*.3,a-e.armor);
+  if(e.dead)return;let mul=acMul(e,o.src);if(G.easy&&mul<1)mul=1-(1-mul)*BAL.ezArmor;let a=amt*mul;
+  if(kind==='phys')a=Math.max(a*.3,a-e.armor*(G.easy?BAL.ezArmor:1));
   const dealt=a;
   if(e.shield>0){const s=Math.min(e.shield,a);e.shield-=s;a-=s;if(e.shield<=0){debris(e.x,e.y,'#c8d2dc',8,2.5,.5);sfx('brk',e.x);}}
   e.hp-=a;
@@ -1252,7 +1253,9 @@ function kill(e,byHero){
   if(e.type==='slime'){spawnEnemy('blob',Math.max(-1,e.d-.25),e.pi);spawnEnemy('blob',e.d+.15,e.pi);}
 }
 function explode(x,y,rad,dmg,kind='phys',o={}){
-  for(const e of G.enemies){if(e.dead||(e.fly&&!o.air))continue;const d=Math.hypot(e.x-x,e.y-y);if(d<=rad+e.r){hurt(e,dmg*(1-.5*Math.min(1,d/rad)),kind,o);if(o.stun)e.stunT=Math.max(e.stunT,o.stun);}}
+  const hitL=[];for(const e of G.enemies){if(e.dead||(e.fly&&!o.air))continue;const d=Math.hypot(e.x-x,e.y-y);if(d<=rad+e.r)hitL.push([e,d]);}
+  if(o.maxHit&&hitL.length>o.maxHit){hitL.sort((a,b)=>a[1]-b[1]);hitL.length=o.maxHit;}
+  for(const [e,d] of hitL){hurt(e,dmg*(1-.5*Math.min(1,d/rad)),kind,o);if(o.stun)e.stunT=Math.max(e.stunT,o.stun);}
   vfx('boom',x,y,rad*2.2,.42);smokeFx(x,y,2,.26,true,.35);
   if(G.decals.length>24)G.decals.shift();G.decals.push({x,y,r:rad*.8,life:7});
   if(o.burn)groundFx(x,y,rad*.95,'fire',o.burn,{dmg:o.burnDmg||0});
@@ -1289,21 +1292,21 @@ function updateTower(t,dt){
   }else if(t.type==='cannon'){
     const dist=Math.hypot(e.x-t.x,e.y-t.y),ft=.32+dist*.1,mul=(e.stunT>0||e.frozenT>0||e.blocked)?0:(1-e.slowF);
     const p=posAt(Math.min(G.paths[e.pi].total,e.d+e.sp*mul*ft),e.pi);
-    G.projs.push({k:'shell',sx:mx,sy:my,ex:p.x,ey:p.y,x:mx,y:my,h0,t:0,ft,h:.35+dist*.08,dmg,rad:D.splash[l]*tB(t).splash,big:false});
+    G.projs.push({k:'shell',sx:mx,sy:my,ex:p.x,ey:p.y,x:mx,y:my,h0,t:0,ft,h:.35+dist*.08,dmg,rad:D.splash[l]*tB(t).splash,big:false,maxHit:BAL.cannonMax});
     flashFx(mx,my,.45,'#ffcf6a',.12,h0);fireFx(mx,my,5,h0,.16,.1,.3,[ca,sa]);emberFx(mx,my,6,h0,2.2,[ca,sa]);smokeFx(mx,my,6,.22,false,h0);lightFlash(mx,my,'#ffb060',1.6);shakeIt(.05);sfx('cannon',t.x);
   }else if(t.type==='mortar'){
     const dist=Math.hypot(e.x-t.x,e.y-t.y),ft=1.1+dist*.08,mul=(e.stunT>0||e.frozenT>0||e.blocked)?0:(1-e.slowF);
     const p=posAt(Math.min(G.paths[e.pi].total,e.d+e.sp*mul*ft*.9),e.pi);
-    G.projs.push({k:'shell',sx:t.x,sy:t.y,ex:p.x,ey:p.y,x:t.x,y:t.y,h0,t:0,ft,h:2.4+dist*.25,dmg,rad:D.splash[l]*tB(t).splash,big:true});
+    G.projs.push({k:'shell',sx:t.x,sy:t.y,ex:p.x,ey:p.y,x:t.x,y:t.y,h0,t:0,ft,h:2.4+dist*.25,dmg,rad:D.splash[l]*tB(t).splash,big:true,maxHit:BAL.mortarMax});
     flashFx(t.x,t.y,.5,'#ffcf6a',.14,h0);fireFx(t.x,t.y,5,h0+.1,.18,.1,2);emberFx(t.x,t.y,6,h0+.1,1.5);smokeFx(t.x,t.y,8,.26,false,h0);lightFlash(t.x,t.y,'#ffb060',1.8);shakeIt(.08);sfx('mortar',t.x);
   }else if(t.type==='lightning'){
     const hits=[e];let cur=e;
-    for(let i=1;i<D.chain[l]+tB(t).chain;i++){let nx=null,nd=1.7;for(const o of G.enemies){if(o.dead||hits.includes(o))continue;const d=Math.hypot(o.x-cur.x,o.y-cur.y);if(d<nd){nd=d;nx=o;}}if(!nx)break;hits.push(nx);cur=nx;}
+    for(let i=1;i<D.chain[l];i++){let nx=null,nd=1.7;for(const o of G.enemies){if(o.dead||hits.includes(o))continue;const d=Math.hypot(o.x-cur.x,o.y-cur.y);if(d<nd){nd=d;nx=o;}}if(!nx)break;hits.push(nx);cur=nx;}
     G.bolts.push({pts:[[t.x,t.y,h0+.05],...hits.map(h=>[h.x,h.y,h.fly?.85:h.r*1.4])],life:.2});
-    hits.forEach((h,i)=>{hurt(h,dmg*Math.pow(.85,i),'energy',{src:'shock'});if(!h.fly)ringFx(h.x,h.y,'#d6c4ff',.1,.75,.32,.07);flashFx(h.x,h.y,.9,'#e2d6ff',.14,h.fly?.85:.4);burst(h.x,h.y,'#d9d0ff',4,2.4,.07,.25,h.fly?.85:.4);});lightFlash(e.x,e.y,'#b9a3ff',2.2);
+    hits.forEach((h,i)=>{hurt(h,dmg*Math.pow(Math.min(.95,BAL.chainFall+BAL.fallUp*tB(t).chain),i),'energy',{src:'shock'});if(!h.fly)ringFx(h.x,h.y,'#d6c4ff',.1,.75,.32,.07);flashFx(h.x,h.y,.9,'#e2d6ff',.14,h.fly?.85:.4);burst(h.x,h.y,'#d9d0ff',4,2.4,.07,.25,h.fly?.85:.4);});lightFlash(e.x,e.y,'#b9a3ff',2.2);
     sfx('zap',t.x);
   }else if(t.type==='ballista'){
-    {const ex=e.x-mx,ey=e.y-my,ed=Math.hypot(ex,ey)||1;G.projs.push({k:'pbolt',x:mx,y:my,h0,vx:ex/ed*18,vy:ey/ed*18,dmg,life:(range+2)/18,sp:18,left:(D.pierce?D.pierce[l]:2)+tB(t).pierce,hit:[]});}sfx('bolt',t.x);
+    {const ex=e.x-mx,ey=e.y-my,ed=Math.hypot(ex,ey)||1;G.projs.push({k:'pbolt',x:mx,y:my,h0,vx:ex/ed*18,vy:ey/ed*18,dmg,life:(range+2)/18,sp:18,left:(D.pierce?D.pierce[l]:2),fall:Math.min(.95,BAL.boltFall+BAL.fallUp*tB(t).pierce),hit:[]});}sfx('bolt',t.x);
   }else if(t.type==='javelin'){
     t.barrel=(t.barrel+1)%D.men[l];const off=(t.barrel-(D.men[l]-1)/2)*.16;
     G.projs.push({k:'arrow',jav:true,x:t.x-sa*off,y:t.y+ca*off,h0,vx:ca*10,vy:sa*10,tgt:e,dmg,life:1.5,sp:10});sfx('arrow',t.x);
@@ -1339,7 +1342,7 @@ function updateProjs(dt){
       if(p.k==='magic'&&canAdd()&&Math.random()<.8)G.parts.push({k:'spark',x:p.x,y:p.y,h:.55,vx:0,vy:0,vh:.2,g:0,life:.3,max:.3,size:.09,color:p.col||'#ff9a3d',drag:0});
     }else if(p.k==='pbolt'){
       p.x+=p.vx*dt;p.y+=p.vy*dt;if((p.life-=dt)<=0){p.dead=true;continue;}
-      for(const e of G.enemies){if(e.dead||p.hit.includes(e))continue;if(Math.hypot(e.x-p.x,e.y-p.y)<e.r+.18){p.hit.push(e);const n=p.hit.length-1;hurt(e,p.dmg*Math.pow(.85,n)*(ENEMIES[e.type].boss?1.5:1),'energy',{src:'bolt'});burst(e.x,e.y,'#7fd0ff',6,2.6,.07,.28,e.fly?.85:.4);flashFx(e.x,e.y,.6,'#9fdcff',.1,e.fly?.85:.4);if(--p.left<=0){p.dead=true;break;}}}
+      for(const e of G.enemies){if(e.dead||p.hit.includes(e))continue;if(Math.hypot(e.x-p.x,e.y-p.y)<e.r+.18){p.hit.push(e);const n=p.hit.length-1;hurt(e,p.dmg*Math.pow(p.fall||.75,n)*(ENEMIES[e.type].boss?1.5:1),'energy',{src:'bolt'});burst(e.x,e.y,'#7fd0ff',6,2.6,.07,.28,e.fly?.85:.4);flashFx(e.x,e.y,.6,'#9fdcff',.1,e.fly?.85:.4);if(--p.left<=0){p.dead=true;break;}}}
       if(canAdd())G.parts.push({k:'spark',x:p.x,y:p.y,h:p.h0*.7+.15,vx:0,vy:0,vh:0,g:0,life:.28,max:.28,size:.13,color:'#5fc4ff',drag:0});
     }else if(p.k==='ballfx'){p.t+=dt/p.ft;const h=p.hero;
       if(p.t<1){const u=p.t;p.x=p.sx+(p.ex-p.sx)*u;p.y=p.sy+(p.ey-p.sy)*u;}else if(p.back&&h&&!h.dead){const u=Math.min(1,p.t-1);p.x=p.ex+(h.x-p.ex)*u;p.y=p.ey+(h.y-p.ey)*u;if(u>=1)p.dead=true;}else p.dead=true;
@@ -1349,7 +1352,7 @@ function updateProjs(dt){
       p.t+=dt/p.ft;const u=Math.min(1,p.t);p.x=p.sx+(p.ex-p.sx)*u;p.y=p.sy+(p.ey-p.sy)*u;
       if(p.big&&canAdd()){const uu=Math.min(1,p.t),hh=p.h0*(1-uu)+Math.sin(Math.PI*uu)*p.h;fireFx(p.x,p.y,1,hh,.2,.02,.15);if(Math.random()<.5)emberFx(p.x,p.y,1,hh,.8);}
       if(canAdd()&&(p.k==='fireball'||p.big))G.parts.push({k:p.k==='fireball'?'spark':'smoke',x:p.x,y:p.y,h:p.h0*(1-u)+Math.sin(Math.PI*u)*p.h,vx:0,vy:0,vh:.1,g:0,life:p.k==='fireball'?.35:.5,max:.5,size:p.k==='fireball'?.18:.07,color:'#ff7a2a',drag:0});
-      if(p.t>=1){if(p.goal){bigText(p.ex,p.ey,LANG==='ar'?'هدف!':LANG==='no'?'MÅL!':'GOAL!');fireworks(p.ex,p.ey);shakeIt(.5);}explode(p.ex,p.ey,p.rad,p.dmg,p.k==='fireball'?'energy':'phys',p.k==='fireball'?{air:true,byHero:true,color:p.col||'#ff7a2a',src:p.goal?'blast':'fire',burn:p.goal?0:2,burnDmg:p.dmg*.012}:{src:'blast',burn:p.big?2.6:1.4,burnDmg:p.dmg*(p.big?.012:.007)});if(p.k==='fireball')burst(p.ex,p.ey,'#ff7a2a',20,5,.13,.5,.4);p.dead=true;}
+      if(p.t>=1){if(p.goal){bigText(p.ex,p.ey,LANG==='ar'?'هدف!':LANG==='no'?'MÅL!':'GOAL!');fireworks(p.ex,p.ey);shakeIt(.5);}explode(p.ex,p.ey,p.rad,p.dmg,p.k==='fireball'?'energy':'phys',p.k==='fireball'?{air:true,byHero:true,color:p.col||'#ff7a2a',src:p.goal?'blast':'fire',burn:p.goal?0:2,burnDmg:p.dmg*.012}:{src:'blast',maxHit:p.maxHit,burn:p.big?2.6:1.4,burnDmg:p.dmg*(p.big?.012:.007)});if(p.k==='fireball')burst(p.ex,p.ey,'#ff7a2a',20,5,.13,.5,.4);p.dead=true;}
     }
   }
   G.projs=G.projs.filter(p=>!p.dead);

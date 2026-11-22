@@ -20,6 +20,10 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.webkit.WebViewAssetLoader;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import org.json.JSONObject;
+import java.util.Iterator;
 
 /**
  * Hosts the game (assets/www) in a full-screen WebView and exposes a small
@@ -33,11 +37,13 @@ public class MainActivity extends ComponentActivity {
     private WebView web;
     private AdsManager ads;
     private BillingManager billing;
+    private FirebaseAnalytics analytics;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try { if (!FirebaseApp.getApps(this).isEmpty() || FirebaseApp.initializeApp(this) != null) analytics = FirebaseAnalytics.getInstance(this); } catch (Exception e) { analytics = null; }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
@@ -191,6 +197,24 @@ public class MainActivity extends ComponentActivity {
         @JavascriptInterface
         public boolean privacyRequired() {
             return ads != null && ads.privacyOptionsRequired();
+        }
+
+        /** Anonymous gameplay statistics (level results) - no personal data. */
+        @JavascriptInterface
+        public void logEvent(String name, String json) {
+            if (analytics == null) return;
+            try {
+                Bundle b = new Bundle();
+                JSONObject o = new JSONObject(json);
+                for (Iterator<String> it = o.keys(); it.hasNext(); ) {
+                    String k = it.next(); Object v = o.get(k);
+                    if (v instanceof Integer || v instanceof Long) b.putLong(k, ((Number) v).longValue());
+                    else if (v instanceof Number) b.putDouble(k, ((Number) v).doubleValue());
+                    else if (v instanceof Boolean) b.putLong(k, ((Boolean) v) ? 1 : 0);
+                    else b.putString(k, String.valueOf(v));
+                }
+                analytics.logEvent(name, b);
+            } catch (Exception ignored) { }
         }
 
         @JavascriptInterface

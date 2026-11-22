@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
 }
+// Firebase Analytics is switched on only when app/google-services.json is present
+if (file('google-services.json').exists()) { apply plugin: 'com.google.gms.google-services' }
 
 // Values come from GitHub secrets / environment variables. Google's official TEST ad IDs are used when nothing is set.
 def cfg = { String key, String dflt -> System.getenv(key) ?: (project.findProperty(key) ?: dflt) }
@@ -18,7 +20,7 @@ android {
         minSdk 24
         targetSdk 36
         versionCode Integer.parseInt(cfg('VERSION_CODE', '1'))
-        versionName cfg('VERSION_NAME', '1.5.0')
+        versionName cfg('VERSION_NAME', '1.5.1')
     }
 
     signingConfigs {
@@ -66,4 +68,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:25.5.0'
     implementation 'com.google.android.ump:user-messaging-platform:3.2.0'
     implementation 'com.android.billingclient:billing:8.3.0'
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }

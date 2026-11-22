@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "499584413806",
+    "project_id": "crystalhold",
+    "storage_bucket": "crystalhold.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499584413806:android:d424ce1d426b505527367f",
+        "android_client_info": {
+          "package_name": "com.crystalhold.td"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2NDFZvWIOY3xppC0XlDZ0NreN3sDS7ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

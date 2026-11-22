@@ -950,7 +950,7 @@ const LVCACHE={};
 /* measured with test bots that play like a real player (star upgrades, hero level, skills): keeps every region a real fight */
 const HPT=[[0,1],[5,1.0],[9,1.2],[14,2.0],[24,2.05],[39,2.3],[49,1.8],[59,1.18],[69,1.03],[79,.86],[89,.72],[99,.66]];
 /* per-level fine tune from a full 100-level bot test (each map plays differently) */
-var LVT=[2.083, 1.876, 1.249, 1.587, 2.252, 2.001, 3.0, 1.692, 2.161, 0.869, 1.762, 0.94, 2.207, 1.156, 1.312, 1.576, 1.083, 0.904, 1.313, 0.849, 0.46, 0.919, 0.736, 2.003, 0.84, 1.799, 0.623, 1.063, 0.538, 0.763, 1.222, 1.796, 0.821, 0.849, 0.93, 1.342, 1.071, 1.947, 1.007, 0.501, 1.439, 1.151, 0.491, 0.717, 0.584, 1.045, 0.597, 0.76, 1.139, 0.7, 1.854, 2.668, 0.963, 1.237, 1.087, 3.483, 1.747, 1.05, 0.804, 0.842, 2.77, 0.782, 2.804, 1.311, 1.043, 1.134, 0.703, 2.49, 1.11, 0.983, 8.698, 1.045, 0.871, 2.476, 2.825, 1.92, 1.714, 0.928, 1.132, 2.155, 2.262, 4.622, 2.619, 2.663, 2.021, 1.191, 2.937, 2.617, 0.175, 1.343, 1.87, 8.337, 1.494, 1.449, 0.976, 1.844, 1.296, 3.397, 0.753, 1.013];var EZT=[3.476, 3.289, 1.704, 1.468, 1.116, 1.686, 1.0, 2.187, 1.369, 2.108, 1.174, 1.548, 1.113, 1.278, 0.979, 1.682, 1.799, 1.874, 1.596, 0.198, 1.625, 1.097, 1.734, 0.474, 1.356, 1.178, 2.077, 1.381, 1.546, 0.917, 1.336, 0.948, 2.455, 2.398, 1.93, 1.306, 1.498, 1.329, 1.551, 1.908, 0.74, 1.095, 1.264, 1.291, 1.509, 0.695, 1.05, 0.976, 0.707, 0.689, 0.848, 0.509, 0.556, 0.962, 0.812, 0.933, 0.901, 1.664, 0.777, 1.365, 3.225, 2.254, 0.608, 2.434, 2.234, 1.386, 0.953, 1.154, 1.956, 1.705, 0.313, 1.473, 0.871, 0.762, 0.423, 1.767, 0.417, 1.109, 1.536, 1.098, 0.773, 0.685, 1.026, 1.287, 0.51, 1.381, 0.605, 0.627, 0.028, 1.043, 1.387, 0.324, 1.68, 1.571, 1.565, 1.511, 1.365, 0.673, 0.901, 0.968];var LVLIVES=[20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14];
+var LVT=[2.083, 1.876, 1.249, 1.587, 2.252, 2.001, 3.0, 1.692, 2.161, 0.869, 1.762, 0.94, 2.207, 1.156, 1.312, 1.576, 1.083, 0.904, 1.313, 0.849, 0.46, 0.919, 0.736, 2.003, 0.84, 1.799, 0.623, 1.063, 0.538, 0.763, 1.222, 1.796, 0.821, 0.849, 0.93, 1.342, 1.071, 1.947, 1.007, 0.501, 1.439, 1.151, 0.491, 0.717, 0.584, 1.045, 0.597, 0.76, 1.139, 0.7, 1.854, 2.668, 0.963, 1.237, 1.087, 3.483, 1.747, 1.05, 0.804, 0.842, 2.77, 0.782, 2.804, 1.311, 1.043, 1.134, 0.703, 2.49, 1.11, 0.983, 8.698, 1.045, 0.871, 2.476, 2.825, 1.92, 1.714, 0.928, 1.132, 2.155, 2.262, 4.622, 2.619, 2.663, 2.021, 1.191, 2.937, 2.617, 0.175, 1.343, 1.87, 8.337, 1.494, 1.449, 0.976, 1.844, 1.296, 3.397, 0.753, 1.013];var EZT=[3.302, 3.519, 1.704, 1.468, 1.116, 1.686, 1.0, 2.187, 1.369, 2.546, 1.174, 1.548, 1.113, 1.278, 1.0, 1.682, 1.799, 2.099, 1.596, 0.153, 1.625, 1.186, 1.734, 0.474, 1.349, 1.204, 1.973, 1.62, 1.418, 1.224, 1.336, 1.085, 2.455, 2.341, 1.848, 1.306, 1.678, 1.422, 1.284, 1.908, 0.769, 1.095, 1.264, 1.291, 1.433, 0.673, 1.019, 0.997, 0.792, 0.878, 0.917, 0.581, 0.748, 1.04, 0.878, 0.863, 0.826, 1.78, 1.103, 1.558, 2.495, 2.067, 0.623, 2.434, 2.234, 1.342, 1.087, 1.471, 2.535, 1.705, 0.421, 1.351, 0.892, 0.794, 0.432, 1.81, 0.404, 1.199, 1.409, 1.116, 0.792, 0.505, 1.011, 1.18, 0.614, 1.381, 0.524, 0.516, 0.009, 1.329, 1.768, 0.297, 1.68, 2.114, 1.565, 1.536, 1.563, 0.695, 1.28, 1.214];var LVLIVES=[20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14];
 function hpTune(i){for(let k=1;k<HPT.length;k++)if(i<=HPT[k][0]){const [a,x]=HPT[k-1],[b,y]=HPT[k];return x+(y-x)*(i-a)/(b-a);}return .8;}
 function getLevel(i){
   if(LVCACHE[i])return LVCACHE[i];
@@ -1569,7 +1569,7 @@ function update(dt){
     else if(!stop&&!(e.holdT>0)){let v=e.sp*(1-e.slowF);
       if(e.type==='frog'){const big=(e.hopN||0)%5===4,air=big?.7:.45;e.hopU=(e.hopU===undefined?Math.random():e.hopU)+dt*1.25*(1-e.slowF*.5);if(e.hopU>=1){e.hopU-=1;e.hopN=(e.hopN||0)+1;}const up=e.hopU<air;v*=up?(big?3.4:2.1):0;e.hopH=up?Math.sin(e.hopU/air*Math.PI)*(big?.85:.3):0;if(!up&&e.wasUp){if(big){ringFx(e.x,e.y,'#7fe0c0',.15,1.1,.4,.04);burst(e.x,e.y,'#5ad0a8',6,2,.06,.3,.1);}e.land=.18;}e.wasUp=up;e.land=Math.max(0,(e.land||0)-dt);}
       if(e.boost>0){v*=1.3;e.boost-=dt;}
-      e.d+=v*dt;e.phase+=v*dt*8;}
+      e.d+=v*dt;e.phase+=v*dt*8;{const pp=G.paths[e.pi];if(pp){const f=e.d/pp.total;if(f>(G.maxProg||0))G.maxProg=f;}}}
     if(e.type==='direwolf'&&!stop){for(const o of G.enemies)if(!o.dead&&(o.type==='wolf'||o.type==='icewolf')&&Math.hypot(o.x-e.x,o.y-e.y)<1.8)o.boost=.3;if((e.howlT=(e.howlT||2)-dt)<=0){e.howlT=4;ringFx(e.x,e.y,'#ff5a4a',.2,1.8,.6,.035);}}
     if(e.d>=G.paths[e.pi].total){e.dead=true;leak(e);continue;}
     if(!e.blocked){const p=posAt(e.d,e.pi);e.x=p.x;e.y=p.y;e.dx=p.dx;e.dy=p.dy;e.ang=undefined;}
@@ -2651,13 +2651,15 @@ $('#resetBtn').addEventListener('click',()=>{sfx('ui');let m=$('#resetAsk');if(!
   m.onclick=e=>{const a=e.target.closest('[data-a]');if(!a)return;if(a.dataset.a==='yes'){S.stars=S.stars.map(()=>0);S.unlocked=1;S.sel=0;S.hard={};S.loss={};S.upl={};S.seenTw={};S.seenEn={};S.seenTut=false;curRegion=0;viewSel=null;save();sfx('sell');$('#menuStars').textContent=`0/${NLEV*3}`;}m.hidden=true;};});
 $('#tipCard').addEventListener('click',()=>{clearTimeout(tipTimer);nextTip();});
 $('#upgReset').addEventListener('click',()=>{S.upl={};save();sfx('sell');renderUpg();});
+/* anonymous gameplay statistics (Firebase Analytics through the Android bridge; no-op on web) */
+function track(name,o){try{if(window.AndroidApp&&AndroidApp.logEvent)AndroidApp.logEvent(name,JSON.stringify(o||{}));}catch(e){}}
 function startLevel(i){
   if(needMap(i)&&!startLevel.wait){startLevel.wait=1;ensureMap(i,()=>{startLevel.wait=0;startLevel(i);});return;}
   newGame(i,false);closeSheets();showScreen(null);
   for(const k in hudCache)delete hudCache[k];waveKey='';lastGold=-1;lastHeroKey='';
   buildSkills();buildTowerList();setSpeed(1);G.itemUse={};renderItemBar();refreshDailyUI();
   {const id=G.hero.type;if(HEROES[id].paid&&!heroOwned(id)&&S.trial&&S.trial[id]===1){S.trial[id]=2;save();}}
-  const lv=G.lv;
+  const lv=G.lv;G.maxProg=0;G.t0=Date.now();track('level_start',{level:i+1,diff:S.diff||'hard',hero:G.hero.type});
   banner(lv.name,`${t('levelN',i+1)} · ${wavesLabel(lv.waves)}${G.assist?' · '+t('assistOn'):''}`);
   const msgs=[];const nt=TORDER.find(k=>TOWERS[k].unlock===i&&i>0);if(nt)msgs.push([t('newDef'),tx(TOWERS[nt].name)+' — '+tx(TOWERS[nt].desc)]);
   if(lv.boss)msgs.push([t('bossLvl'),t('bossWarn')]);
@@ -2677,7 +2679,7 @@ function adviceHTML(i,losses){const lv=getLevel(i),mix=levelMix(i),sep=LANG==='a
   if(losses>=2){if(upgStars()-spentStars()>=3)out.push(t('hintUpg'));if(!G||!G.easy)out.push(t('hintEasy'));}
   if(losses>=3){out.push(t('hintShop'));if(lv.boss)out.push(t('hintBoss'));}
   return `<b>${t('hintT')}</b>${chips}<ul style="margin:6px 0 0;padding:0">${out.slice(0,losses>=2?4:2).map(x=>`<li>${x}</li>`).join('')}</ul>`;}
-function endLevel(win){try{TIPQ.length=0;clearTimeout(tipTimer);$('#tipCard').hidden=true;tipBusy=false;}catch(e){}
+function endLevel(win){try{if(G&&!G.demo){const tw={};for(const t of G.towers)tw[t.type]=(tw[t.type]||0)+1;track('level_end',Object.assign({level:G.L+1,diff:S.diff||'hard',win:win?1:0,lives_lost:G.maxLives-G.lives,lives_max:G.maxLives,max_prog:Math.round(Math.min(1,G.maxProg||0)*100),wave:G.wave,waves:G.waves,secs:Math.round((Date.now()-(G.t0||Date.now()))/1000),hero:G.hero.type,towers:G.towers.length,items:Object.values(G.itemUse||{}).reduce((a,b)=>a+(+b||0),0)},Object.fromEntries(Object.entries(tw).map(([k,v])=>['t_'+k,v]))));}}catch(e){}try{TIPQ.length=0;clearTimeout(tipTimer);$('#tipCard').hidden=true;tipBusy=false;}catch(e){}
   if(!G||G.demo)return;
   const trialHero=HEROES[G.hero.type].paid&&!heroOwned(G.hero.type)&&S.trial&&S.trial[G.hero.type]===2;endTrial();
   const prevStars=S.stars[G.L]||0;

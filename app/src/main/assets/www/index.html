@@ -394,6 +394,27 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @keyframes crays{0%{opacity:0;transform:rotate(0) scale(.6)}15%{opacity:1}100%{opacity:.8;transform:rotate(90deg) scale(1)}}
 @keyframes cin{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:none}}
 #endStats .chip.rew{background:linear-gradient(180deg,#ffdc8f,#e39a34);color:#2a1300;border-color:#ffd98a}#endStats .chip.rew span,#endStats .chip.rew b{color:#2a1300;font-size:17px}
+body>#hint{position:fixed;z-index:500;top:calc(env(safe-area-inset-top,0px) + 14px);bottom:auto;max-width:min(92%,640px)}
+
+#tinfo{font-size:11.5px;padding:5px 10px;max-width:min(80vw,460px)}
+#tinfo.top{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 58px)}
+#chestRow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.dpill{position:relative;display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:14px;border:1.5px solid #c99a3a;background:rgba(24,16,10,.85);color:#fff;font:inherit;font-size:13px;cursor:pointer}
+.dpill b{color:var(--gold-2);font-weight:900}.dpill.ready{border-color:#ffd98a;box-shadow:0 0 12px #ffd98a88;animation:cbounce .6s ease-in-out 6 alternate}
+.ddot{position:absolute;top:-4px;inset-inline-end:-4px;width:12px;height:12px;border-radius:50%;background:#ff4a3a;border:2px solid #fff}
+#dailyHud{font-size:20px}
+.popx{position:fixed;z-index:400}
+.pbox{width:min(560px,94vw);max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 14px;border-radius:18px;border:2px solid var(--gold);background:linear-gradient(180deg,#3d2e20,#1e160e);text-align:center;color:var(--parch)}
+.pbox h3{margin:0;color:var(--gold-2);font-size:18px}.pimg{width:40px;height:40px;border-radius:10px}
+.pprize{display:flex;flex-direction:column;gap:0;padding:4px 18px;border-radius:12px;background:rgba(255,217,138,.12);border:1px solid #c99a3a}.pprize small{opacity:.8;font-size:11px}.pprize b{font-size:17px;color:#fff}
+.pfree{margin:0;color:#9be27a;font-weight:900;font-size:13px}.pneed{margin:0;font-weight:800;font-size:13px}.ptip{margin:0;font-size:11.5px;opacity:.8}
+.plist{width:100%}.plist small{font-size:11px;opacity:.8}.plist ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px}.plist li{display:flex;justify-content:space-between;gap:10px;padding:2px 10px;border-radius:8px;background:rgba(255,255,255,.06);font-size:12.5px}
+.pbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.pbtns .btn{min-width:120px;padding:10px 16px;font-size:14px}
+.ddays{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;width:100%}
+.dday{position:relative;display:flex;flex-direction:column;gap:3px;padding:6px 3px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(201,154,58,.4);font-size:10.5px;line-height:1.25;min-width:0}
+.dday small{font-weight:900;color:var(--gold-2);font-size:10px}.dday.cur{border:2px solid #ffd98a;box-shadow:0 0 10px #ffd98a77;background:rgba(255,217,138,.14)}
+.dday.done{opacity:.55}.dday i{position:absolute;top:-6px;inset-inline-end:-4px;color:#9be27a;font-style:normal;font-weight:900;font-size:16px}
+#app.ringOpen #nextCard,#app.ringOpen #tipCard{visibility:hidden}
 </style>
 
 </head>
@@ -406,7 +427,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     <button class="stat sos" id="sosBtn" hidden></button>
     <div class="hud-btns">
       <button class="icon-btn wood speed-btn on" id="speed1" hidden>×1</button><button class="icon-btn wood speed-btn" id="speed2" hidden>×2</button>
-      <button class="icon-btn wood" id="pauseBtn" data-ta="pauseT"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>
+      <button class="icon-btn wood" id="dailyHud" hidden aria-label="Daily gift">🎁</button><button class="icon-btn wood" id="pauseBtn" data-ta="pauseT"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>
     </div>
   </header>
   <main id="stage">
@@ -604,7 +625,15 @@ const STR={
   kills:['أعداء سقطوا','Enemies defeated','Fiender beseiret'],livesL:['الأرواح','Lives','Liv'],locked:['مقفلة','Locked','Låst'],
   startBtn:['ابدأ المعركة','Start battle','Start kampen'],wavesN:['{0} موجة','{0} waves','{0} bølger'],wavesNs:['{0} موجات','{0} waves','{0} bølger'],plotsN:['{0} قاعدة بناء','{0} build sites','{0} byggeplasser'],
   bossLvl:['معركة زعيم','Boss battle','Sjefskamp'],noMods:['بدون تحديات إضافية','No extra challenges','Ingen ekstra utfordringer'],
-  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],chestNext:['صندوق النجوم عند {0} ★','Star chest at {0} ★','Star chest at {0} ★'],chestOpen:['🎁 افتح صندوق النجوم!','🎁 Open your star chest!','🎁 Open your star chest!'],chestNeed:['تحتاج {0} ★ إضافية — العب مراحل قديمة لتجمع النجوم','You need {0} more ★ — replay levels to collect stars','You need {0} more ★ — replay levels to collect stars'],chestTrial:['تجربة مجانية للبطل {0}!','Free trial of {0}!','Free trial of {0}!'],legendT:['أسطورة الكريستال','Crystal Legend','Crystal Legend'],resetProg:['البدء من جديد','Restart progress','Restart progress'],resetQ:['البدء من المرحلة 1 من جديد؟','Start again from level 1?','Start again from level 1?'],resetD:['ستُمسح المراحل والنجوم وتطويرات المملكة. الجواهر والأبطال المشتراة وتطوير مهاراتهم تبقى.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.'],resetYes:['نعم، ابدأ من جديد','Yes, start over','Yes, start over'],cancel:['إلغاء','Cancel','Cancel'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ مستوى واحداً من التطوير السابق أولاً','Buy at least one level of the upgrade above first','Kjøp forrige oppgradering først'],
+  upgTitle:['طوّر مملكتك','Kingdom upgrades','Oppgrader riket'],kingdomCol:['المملكة','Kingdom','Riket'],chestNext:['صندوق النجوم عند {0} ★','Star chest at {0} ★','Star chest at {0} ★'],chestOpen:['🎁 افتح صندوق النجوم!','🎁 Open your star chest!','🎁 Open your star chest!'],chestNeed:['تحتاج {0} ★ إضافية — العب مراحل قديمة لتجمع النجوم','You need {0} more ★ — replay levels to collect stars','You need {0} more ★ — replay levels to collect stars'],chestTrial:['تجربة مجانية للبطل {0}!','Free trial of {0}!','Free trial of {0}!'],legendT:['أسطورة الكريستال','Crystal Legend','Crystal Legend'],resetProg:['البدء من جديد','Restart progress','Restart progress'],resetQ:['البدء من المرحلة 1 من جديد؟','Start again from level 1?','Start again from level 1?'],resetD:['ستُمسح المراحل والنجوم وتطويرات المملكة. الجواهر والأبطال المشتراة وتطوير مهاراتهم تبقى.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.','Levels, stars and kingdom upgrades are cleared. Your gems, bought heroes and their skill levels are kept.'],resetYes:['نعم، ابدأ من جديد','Yes, start over','Yes, start over'],cancel:['إلغاء','Cancel','Cancel'],
+  dailyT:['الهدية اليومية','Daily gift','Daily gift'],dailyDay:['اليوم {0}','Day {0}','Day {0}'],dailyFree:['مجانية — لا تكلّف شيئاً','Free — costs nothing','Free — costs nothing'],
+  dailyClaim:['استلم','Claim','Claim'],dailyDouble:['شاهد إعلاناً لمضاعفتها ×2','Watch an ad to double ×2','Watch an ad to double ×2'],dailyNext:['الهدية القادمة بعد {0}','Next gift in {0}','Next gift in {0}'],
+  dailyGot:['تم الاستلام!','Collected!','Collected!'],dailyKeep:['فاتك يوم؟ لا تخسر تقدمك','Missed a day? You keep your progress','Missed a day? You keep your progress'],
+  dailyTrial:['تجربة بطل مميز','Premium hero trial','Premium hero trial'],dailyRand:['أداة مفاجأة','Surprise item','Surprise item'],dailyClock:['ساعة الجهاز تغيّرت — الهدية ستعود غداً','Device clock changed — your gift returns tomorrow','Device clock changed — your gift returns tomorrow'],
+  closeB:['إغلاق','Close','Close'],chestFree:['مجاني — لا يخصم من نجومك','Free — your stars are NOT spent','Free — your stars are NOT spent'],
+  chestPrize:['الجائزة','Reward','Reward'],chestNeedS:['اجمع {0} ★ إضافية لفتحه','Collect {0} more ★ to open it','Collect {0} more ★ to open it'],
+  chestAt:['عند {0} ★','At {0} ★','At {0} ★'],chestLater:['الصناديق القادمة','Next chests','Next chests'],chestTip:['نصيحة: أعد المراحل القديمة لتحصل على 3 نجوم','Tip: replay old levels to earn 3 stars','Tip: replay old levels to earn 3 stars'],
+  chestOpenB:['افتح الصندوق','Open chest','Open chest'],prizeItems:['☄️ نيزك + ❄️ تجميد + 🛡️ درع','☄️ Meteor + ❄️ Freeze + 🛡️ Shield','☄️ Meteor + ❄️ Freeze + 🛡️ Shield'],prizeLegend:['لقب الأسطورة 👑','Legend title 👑','Legend title 👑'],tipBest:['أفضل دفاع: {0}','Best defense: {0}','Best defense: {0}'],tipClose:['اضغط للإغلاق','Tap to close','Tap to close'],hintUpg:['لديك نجوم غير مستخدمة — طوّر أبراجك من «طوّر مملكتك»','You have unused stars — upgrade your towers in Kingdom upgrades','Du har ubrukte stjerner – oppgrader tårnene i Oppgrader riket'],hintEasy:['جرّب الوضع السهل إذا أردت تجاوز المرحلة الآن','Try Easy mode if you just want to get past this level','Prøv Lett modus hvis du bare vil komme forbi nivået'],skillUpD:['كل مستوى: +20% قوة للمهارة و-10% وقت انتظار','Each level: +20% skill power and -10% cooldown','Hvert nivå: +20 % kraft og -10 % nedkjøling'],upPrev:['اشترِ مستوى واحداً من التطوير السابق أولاً','Buy at least one level of the upgrade above first','Kjøp forrige oppgradering først'],
   upgHint:['اكسب النجوم في المراحل واستخدمها لتقوية جيشك. يمكنك استرجاعها وإعادة توزيعها في أي وقت.','Earn stars in levels and spend them to strengthen your army. You can refund and redistribute them anytime.','Tjen stjerner på brettene og bruk dem til å styrke hæren. Du kan refundere og fordele dem på nytt når som helst.'],
   maxed:['مكتمل','Maxed','Fullt'],resetUpg:['استرجاع كل النجوم','Refund all stars','Refunder alle stjerner'],
   noGL:['تعذّر تشغيل الرسومات ثلاثية الأبعاد على هذا الجهاز. جرّب متصفح Chrome محدّثاً.','3D graphics could not start on this device. Try an up-to-date Chrome browser.','3D-grafikken kunne ikke starte på denne enheten. Prøv en oppdatert Chrome-nettleser.'],
@@ -2274,7 +2303,7 @@ function buildTowerList(){
 function refreshBuild(){document.querySelectorAll('.tcard').forEach(c=>{const D=TOWERS[c.dataset.type];c.classList.toggle('locked',G.L<D.unlock);c.classList.toggle('poor',G.gold<tCost(c.dataset.type));});}
 function openBuildSheet(c,r){G.selected=null;G.buildCell={c,r};G.ringPick=null;openRing();sfx('ui');}
 function openTowerSheet(tw){G.buildCell=null;G.selected=tw;G.ringPick=null;openRing();sfx('ui');}
-function closeSheets(){$('#buildSheet').hidden=true;$('#towerSheet').hidden=true;const r=$('#ring');if(r){r.hidden=true;r.innerHTML='';$('#tinfo').hidden=true;}if(G){G.selected=null;G.buildCell=null;G.ringPick=null;}}
+function closeSheets(){$('#app').classList.remove('ringOpen');$('#buildSheet').hidden=true;$('#towerSheet').hidden=true;const r=$('#ring');if(r){r.hidden=true;r.innerHTML='';$('#tinfo').hidden=true;}if(G){G.selected=null;G.buildCell=null;G.ringPick=null;}}
 /* small ring of buttons around the tapped plot or tower (replaces the big bottom panel) */
 const COINS='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f0b23a"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#7a4d0c" stroke-width="2"/></svg>';
 function ringPos(i,n,R,start){const a=(start===undefined?-Math.PI/2:start)+i/n*Math.PI*2;return[Math.cos(a)*R,Math.sin(a)*R];}
@@ -2282,7 +2311,7 @@ function towerInfo(type,lvl,tw){const D=TOWERS[type],l=lvl,mul=G.bn.dmg;const st
   const vs=strongVs(SRC_OF[type]).map(c=>tx(ACLS[c].name)).join(LANG==='ar'?'، ':', ');
   return `<b>${tx(D.name)}</b> · ${t('lvlOf',l+1)}${D.air?t('hitsAir'):t('groundOnly')}<br><span class="st">${st.join(' · ')}</span>${vs?`<br><span class="vs">▲ ${vs}</span>`:''}`;}
 let RING_T=-1e9;
-function openRing(){const r=$('#ring');r.innerHTML='';r.hidden=false;const info=$('#tinfo');
+function openRing(){const r=$('#ring');r.innerHTML='';r.hidden=false;$('#app').classList.add('ringOpen');const info=$('#tinfo');
   const add=(cls,html,x,y,fn)=>{const b=document.createElement('button');b.className='ring-b '+cls;b.innerHTML=html;b.style.left=x+'px';b.style.top=y+'px';
     let down=false;b.addEventListener('pointerdown',ev=>{ev.stopPropagation();down=true;});b.addEventListener('pointerleave',()=>{down=false;});
     b.addEventListener('pointerup',ev=>{ev.stopPropagation();ev.preventDefault();if(!down)return;down=false;RING_T=performance.now();ensureAudio();fn(b);});
@@ -2300,9 +2329,12 @@ function openRing(){const r=$('#ring');r.innerHTML='';r.hidden=false;const info=
     add('sell','$<span class="pr">+'+Math.floor(tw.invested*.6)+'</span>',0,78,()=>sellSel());
     if(tw.type!=='frost')add('mode','🎯',-74,0,()=>{modeSel();openRing();});
     info.innerHTML=towerInfo(tw.type,tw.lvl)+(tw.type!=='frost'?'<br>'+t('targetL',t(MODES[tw.mode])):'');info.hidden=false;}
-  placeRing();refreshRing();}
+  placeRing();refreshRing();placeInfo();}
+let infoT=0;
+function placeInfo(){const info=$('#tinfo'),r=$('#ring');if(!info||info.hidden||!r)return;const ry=parseFloat(r.style.top)||0,H0=$('#stage').clientHeight||innerHeight;
+  info.classList.toggle('top',ry>H0*.5);clearTimeout(infoT);infoT=setTimeout(()=>{info.hidden=true;},4500);}
 function placeRing(){const r=$('#ring');if(!r||r.hidden||!G)return;let x,y;if(G.selected){x=G.selected.x;y=G.selected.y;}else if(G.buildCell){const q=plotXY(G.buildCell.c,G.buildCell.r);x=q.x;y=q.y;}else return;
-  const [sx,sy]=proj(x,.35,y),m=108;const sm=H<600;r.style.left=Math.max(m,Math.min(W-m,sx))+'px';r.style.top=Math.max(sm?112:158,Math.min(H-(sm?96:175),sy))+'px';}
+  const [sx,sy]=proj(x,.35,y),m=108;const sm=H<600;r.style.left=Math.max(m,Math.min(W-m,sx))+'px';r.style.top=Math.max(sm?112:158,Math.min(H-(sm?138:175),sy))+'px';}
 function refreshRing(){const r=$('#ring');if(!r||r.hidden)return;r.querySelectorAll('.ring-b.t').forEach(b=>b.classList.toggle('poor',G.gold<tCost(b.dataset.type)));const up=r.querySelector('.ring-b.up');if(up&&G.selected)up.classList.toggle('poor',G.gold<tUpg(G.selected));}
 function refreshTowerSheet(){
   const tw=G.selected;if(!tw)return;const D=TOWERS[tw.type],l=tw.lvl,n=l<2?l+1:null;
@@ -2360,7 +2392,7 @@ function onTap(ev){
   const h=G.hero;h.rx=Math.max(.2,Math.min(COLS-.2,wx));h.ry=Math.max(.2,Math.min((G.mapH||ROWS)-.2,wy));if(!h.dead)h.moving=true;G.flag={x:h.rx,y:h.ry,t:1};sfx('ui');
 }
 function banner(main,sub){const b=$('#banner');b.innerHTML=`<b>${main}</b>${sub?`<span>${sub}</span>`:''}`;b.classList.remove('show');void b.offsetWidth;b.classList.add('show');}
-function showHint(s){const h=$('#hint');if(!s){h.hidden=true;return;}h.textContent=s;h.hidden=false;}
+function showHint(s){const h=$('#hint');if(!s){h.hidden=true;return;}const inMenu=$('#app').classList.contains('in-menu');if(inMenu&&h.parentNode!==document.body)document.body.appendChild(h);else if(!inMenu&&h.parentNode===document.body)$('#stage').insertBefore(h,$('#ring'));h.textContent=s;h.hidden=false;}
 const SCREENS=['menu','worldScr','levels','heroScr','upgScr','shopScr','pauseScr','endScr','reviveScr'];
 function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','worldScr','levels','heroScr','upgScr','shopScr'].includes(id));updGems();if(id==='menu'){$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;renderChest();}}
 function demoLevel(){return Math.min(S.unlocked-1,NLEV-1);}
@@ -2443,7 +2475,46 @@ const CHESTS=[[50,'gems',50],[100,'trial',0],[150,'gems',100],[200,'items',0],[2
 function renderChest(){const el=$('#chestRow');if(!el)return;const n=S.chest||0,ts=totalStars();if(n>=CHESTS.length){el.innerHTML=S.legend?`<span class="legend">👑 ${t('legendT')}</span>`:'';return;}
   const [need]=CHESTS[n],prev=n?CHESTS[n-1][0]:0,ready=ts>=need,pc=Math.min(100,Math.round((ts-prev)/(need-prev)*100));
   el.innerHTML=`<button class="chest${ready?' ready':''}"><img alt="" src="${(window.UPICON&&UPICON.kingdom0)||''}"><span><b>${ready?t('chestOpen'):t('chestNext',need)}</b><i class="cbar"><u style="width:${pc}%"></u></i></span></button>`;
-  el.querySelector('.chest').onclick=()=>{if(!ready){sfx('ui');showHint(t('chestNeed',need-ts));setTimeout(()=>showHint(null),1800);return;}openChest();};}
+  el.innerHTML+=dailyPill();const db=el.querySelector('.dpill');if(db)db.onclick=()=>{sfx('ui');openDaily();};
+  el.querySelector('.chest').onclick=()=>{sfx('ui');chestInfo();};}
+function chestPrize(kind,val){return kind==='gems'?'💎 '+val:kind==='items'?t('prizeItems'):kind==='trial'?'👑 '+t('dailyTrial'):t('prizeLegend');}
+function popup(id,html){let m=$('#'+id);if(!m){m=document.createElement('div');m.id=id;m.className='diffask popx';document.body.appendChild(m);}m.innerHTML=`<div class="pbox">${html}</div>`;m.hidden=false;return m;}
+function chestInfo(){const n=S.chest||0;if(n>=CHESTS.length)return;const [need,kind,val]=CHESTS[n],ts=totalStars(),ready=ts>=need;
+  const nxt=CHESTS.slice(n+1,n+3).map(([nd,k,v])=>`<li><span>${t('chestAt',nd)}</span><b>${chestPrize(k,v)}</b></li>`).join('');
+  const m=popup('chestPop',`<img class="pimg" alt="" src="${(window.UPICON&&UPICON.kingdom0)||''}"><h3>${ready?t('chestOpen'):t('chestNext',need)}</h3>
+    <div class="pprize"><small>${t('chestPrize')}</small><b>${chestPrize(kind,val)}</b></div><p class="pfree">✓ ${t('chestFree')}</p>
+    ${ready?'':`<p class="pneed">${t('chestNeedS',need-ts)}</p><p class="ptip">${t('chestTip')}</p>`}
+    ${nxt?`<div class="plist"><small>${t('chestLater')}</small><ul>${nxt}</ul></div>`:''}
+    <div class="pbtns">${ready?`<button class="btn" data-a="open">${t('chestOpenB')}</button>`:''}<button class="btn ghost" data-a="close">${t('closeB')}</button></div>`);
+  m.onclick=e=>{const a=e.target.closest('[data-a]');if(!a&&e.target!==m)return;m.hidden=true;if(a&&a.dataset.a==='open')openChest();};}
+/* ---------- daily gift: 7-day cycle, missed days keep progress ---------- */
+const DAILY=[{g:10},{i:{freeze:1}},{g:15},{i:{lives:1,gold:1}},{g:20},{i:{meteor:1,shield:1}},{g:50,rand:1}];
+function dayKey(d){d=d||new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function dailyState(){S.daily=S.daily||{n:0,last:'',ts:0};return S.daily;}
+function dailyReady(){const D=dailyState();if(Date.now()+3600e3<D.ts)return false;return D.last!==dayKey();}
+function dailyPrize(n){const r=DAILY[n%7],out=[];if(r.g)out.push('💎 '+r.g);if(r.i)for(const k in r.i){const it=ITEMS.find(x=>x.id===k);out.push((it?it.ic:'')+' '+t('it_'+k)+(r.i[k]>1?' ×'+r.i[k]:''));}
+  if(r.rand)out.push('🎲 '+t('dailyRand'));if(n%28===27)out.push('👑 '+t('dailyTrial'));return out.join(' + ');}
+function dailyPill(){return `<button class="dpill${dailyReady()?' ready':''}">🎁 <b>${t('dailyT')}</b>${dailyReady()?'<i class="ddot"></i>':''}</button>`;}
+function giveDaily(n){const r=DAILY[n%7];gemInit();if(r.g)S.gems+=r.g;if(r.i)for(const k in r.i)S.inv[k]=(S.inv[k]||0)+r.i[k];
+  if(r.rand){const k=['freeze','meteor','shield','lives','gold'][Math.floor(Math.random()*5)];S.inv[k]=(S.inv[k]||0)+1;}
+  if(n%28===27){S.trial=S.trial||{};const id=HORDER.find(h=>HEROES[h].paid&&!heroOwned(h)&&S.trial[h]!==1&&S.trial[h]!==2);if(id)S.trial[id]=1;}}
+function fmtLeft(){const now=new Date(),mid=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);const m=Math.max(0,Math.round((mid-now)/60000));return Math.floor(m/60)+':'+String(m%60).padStart(2,'0');}
+let dailyPausedGame=false;
+function openDaily(){const D=dailyState(),ready=dailyReady(),wk=D.n-(D.n%7);
+  if(G&&!G.demo&&!G.over&&!G.paused){G.paused=true;dailyPausedGame=true;}
+  const clockBad=Date.now()+3600e3<D.ts;
+  const days=[0,1,2,3,4,5,6].map(j=>{const n=wk+j,done=n<D.n,cur=n===D.n;return `<div class="dday${done?' done':''}${cur?' cur':''}"><small>${t('dailyDay',j+1)}</small><span>${dailyPrize(n).replace(/ \+ /g,'<br>')}</span>${done?'<i>✓</i>':''}</div>`;}).join('');
+  const m=popup('dailyPop',`<h3>🎁 ${t('dailyT')}</h3><div class="ddays">${days}</div>
+    <p class="pfree">✓ ${t('dailyFree')} · ${t('dailyKeep')}</p>
+    ${ready?`<div class="pprize"><small>${t('dailyDay',D.n%7+1)}</small><b>${dailyPrize(D.n)}</b></div>`:`<p class="pneed">${clockBad?t('dailyClock'):t('dailyGot')+' '+t('dailyNext',fmtLeft())}</p>`}
+    <div class="pbtns">${ready?`<button class="btn" data-a="claim">${t('dailyClaim')}</button>`:''}<button class="btn ghost" data-a="close">${t('closeB')}</button></div>`);
+  m.onclick=e=>{const a=e.target.closest('[data-a]');if(!a&&e.target!==m)return;const act=a?a.dataset.a:'close';
+    if(act==='claim'){if(!dailyReady())return;const n=D.n;giveDaily(n);D.n=n+1;D.last=dayKey();D.ts=Date.now();save();sfx('upgrade');updGems();try{renderItemBar();}catch(_){}
+      const box=m.querySelector('.pbox');box.querySelector('.pbtns').innerHTML=(APP&&!STORE.adFree?`<button class="btn" data-a="double">▶ ${t('dailyDouble')}</button>`:'')+`<button class="btn ghost" data-a="close">${t('closeB')}</button>`;
+      box.querySelector('.pprize small').textContent=t('dailyGot');box.dataset.n=n;refreshDailyUI();return;}
+    if(act==='double'){const n=+m.querySelector('.pbox').dataset.n;a.disabled=true;watchAd('daily',ok=>{if(ok){giveDaily(n);save();sfx('upgrade');updGems();try{renderItemBar();}catch(_){}a.textContent='×2 ✓';}else a.disabled=false;});return;}
+    m.hidden=true;if(dailyPausedGame){dailyPausedGame=false;if(G&&!G.over)G.paused=false;}refreshDailyUI();};}
+function refreshDailyUI(){try{renderChest();}catch(_){}const b=$('#dailyHud');if(b)b.hidden=!(G&&!G.demo&&dailyReady());}
 function openChest(){const n=S.chest||0,[need,kind,val]=CHESTS[n];if(totalStars()<need)return;S.trial=S.trial||{};let txt;
   if(kind==='gems'){gemInit();S.gems+=val;txt='+'+val+' 💎';}
   else if(kind==='items'){gemInit();['meteor','freeze','shield'].forEach(k=>S.inv[k]=(S.inv[k]||0)+1);txt='☄️ +1  ❄️ +1  🛡️ +1';}
@@ -2517,7 +2588,7 @@ function startLevel(i){
   if(needMap(i)&&!startLevel.wait){startLevel.wait=1;ensureMap(i,()=>{startLevel.wait=0;startLevel(i);});return;}
   newGame(i,false);closeSheets();showScreen(null);
   for(const k in hudCache)delete hudCache[k];waveKey='';lastGold=-1;lastHeroKey='';
-  buildSkills();buildTowerList();setSpeed(1);G.itemUse={};renderItemBar();
+  buildSkills();buildTowerList();setSpeed(1);G.itemUse={};renderItemBar();refreshDailyUI();
   {const id=G.hero.type;if(HEROES[id].paid&&!heroOwned(id)&&S.trial&&S.trial[id]===1){S.trial[id]=2;save();}}
   const lv=G.lv;
   banner(lv.name,`${t('levelN',i+1)} · ${wavesLabel(lv.waves)}${G.assist?' · '+t('assistOn'):''}`);
@@ -2611,6 +2682,7 @@ $('#toLevelsBtn').addEventListener('click',()=>{sfx('ui');endTrial();toMenu('lev
 $('#retryBtn').addEventListener('click',()=>{sfx('ui');const L=G.L;maybeInterstitial();startLevel(L);});
 $('#nextBtn').addEventListener('click',()=>{sfx('ui');maybeInterstitial();toMenu('levels');});
 $('#endLevelsBtn').addEventListener('click',()=>{sfx('ui');maybeInterstitial();toMenu('levels');});
+$('#dailyHud').addEventListener('click',()=>{sfx('ui');openDaily();});
 $('#waveBtn').addEventListener('click',()=>{ensureAudio();if(!G||G.demo||G.over||G.paused)return;startWave();});
 document.addEventListener('visibilitychange',()=>{if(adShowing)return;if(document.hidden){pauseGame();try{AU.ctx&&AU.ctx.suspend();}catch(e){}}else{try{AU.ctx&&AU.ctx.resume();}catch(e){}}});
 /* ---- ads & purchases (only inside the Android app; window.AndroidApp is injected by the native shell) ---- */
@@ -2746,7 +2818,7 @@ showScreen('menu');
 requestAnimationFrame(frame);
 try{gemInit();updGems();if(S.trial)for(const k in S.trial)if(S.trial[k]===2)S.trial[k]=3;}catch(e){}
 try{const ro=S.reopen;if(ro){delete S.reopen;save();if(ro==='heroScr'){curRegion=null;renderLevels();openHeroes();}else if(ro==='worldScr')openWorld();else if(ro==='gfx'&&S.reopenL!=null){const L=S.reopenL;delete S.reopenL;save();startLevel(L);}}}catch(e){}
-window.__booted=true;(function(){var b=document.getElementById('boot');if(b){b.style.transition='opacity .35s';b.style.opacity='0';setTimeout(function(){b.remove();},400);}})();
+window.__booted=true;setTimeout(function(){try{if(dailyReady()&&!$('#menu').hidden&&S.seenDaily0!==dayKey()){S.seenDaily0=dayKey();openDaily();}}catch(e){}},1600);(function(){var b=document.getElementById('boot');if(b){b.style.transition='opacity .35s';b.style.opacity='0';setTimeout(function(){b.remove();},400);}})();
 </script>
 
 </body>

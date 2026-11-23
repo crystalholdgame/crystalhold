@@ -743,7 +743,7 @@ const HEROES={
   goal:{paid:1,name:N3('سامي نجم الكرة','Sami the Goal Star','Målstjernen Sami'),src:'blast',col:'#7dffd8',hp:270,dmg:22,rate:1.25,range:3.0,speed:3.1,armor:.1,melee:false,air:true,desc:N3('الأسرع: تسديدات سحرية تخترق الصفوف','The fastest: magic shots that cut through lines','Raskest: magiske skudd som går gjennom rekker'),
     skills:[{id:'shot',name:N3('التسديدة النارية','Power Shot','Kraftskudd'),cd:9,c:'#ff7a2a'},{id:'bicycle',name:N3('المقصّية','Bicycle Kick','Saksespark'),cd:15,c:'#7dffd8'},{id:'goalx',name:N3('هدف!','GOAL!','MÅL!'),cd:28,c:'#ffe066',target:true}]},
 };
-const HORDER=['knight','mage','archer','ice','fire','thunder','laser','dragon','wolfm','hoop','goal'];
+const HORDER=['mage','knight','archer','ice','fire','thunder','laser','dragon','wolfm','hoop','goal'];
 const HERO_SKU=id=>'hero_'+id,PACK_SKU='heroes_pack';
 const heroOwned=id=>!!(window.STORE&&STORE.owned&&(STORE.owned.includes(HERO_SKU(id))||(HEROES[id].paid&&STORE.owned.includes(PACK_SKU))));
 /* free trial = one level: 1 ready, 2 playing that level, 3 used */
@@ -852,7 +852,7 @@ const MODES=['mode0','mode1','mode2'];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ================= save ================= */
-const S={stars:[],unlocked:1,sound:true,music:true,seenTut:false,hero:'knight',xp:{knight:0,mage:0},upg:{},seenEn:{},lang:null,sel:0};
+const S={stars:[],unlocked:1,sound:true,music:true,seenTut:false,hero:'mage',xp:{knight:0,mage:0},upg:{},seenEn:{},lang:null,sel:0};
 try{const d=JSON.parse(localStorage.getItem('kristal-td-2')||'null');if(d){Object.assign(S,d);S.xp=Object.assign({knight:0,mage:0},d.xp||{});}}catch(e){}
 while(S.stars.length<NLEV)S.stars.push(0);if((S.gfxAuto||0)<3){S.gfxAuto=3;S.gfx='high';S.gfxCheck=1;}S.music=false;S.upg=S.upg||{};S.seenEn=S.seenEn||{};
 if(!S.lang||!LANGS[S.lang]){const nl=(navigator.language||'').toLowerCase().slice(0,2);S.lang=LANGS[nl]?nl:'en';}
@@ -1189,7 +1189,7 @@ function newGame(i,demo=false){
   const lives=((window.LVLIVES&&LVLIVES[i]!=null)?LVLIVES[i]:(lv.mods.includes('fragile')?8:15))+(demo?0:ukB('walls'))+(assist?5:0)+(easy?BAL.ezLives:0);
   G={L:i,lv,path,paths,grid,painted:!!lv.pmap,mapH:lv.pmap?COLS*lv.pmap.aspect:ROWS,plots,demo,bn,gold:Math.round((170+6*Math.min(i,60)+45*(paths.length-1))*(scarce?.75:1)*(easy?EZ.gold:1))+(demo?0:ukB('gold')),easy,lives,maxLives:lives,wave:0,waves:lv.waves,queue:[],enemies:[],towers:[],tmap:{},projs:[],parts:[],texts:[],bolts:[],decals:[],meteors:[],
      assist,time:0,speed:1,paused:false,over:false,shake:0,castleHit:0,selected:null,buildCell:null,targeting:null,cleared:0,kills:0,nextId:1,demoT:0,flag:null};
-  if(!demo&&(!HEROES[S.hero]||!heroOpen(S.hero)))S.hero=(S.ownHero&&HEROES[S.ownHero]&&heroOpen(S.ownHero))?S.ownHero:'knight';
+  if(!demo&&(!HEROES[S.hero]||!heroOpen(S.hero)))S.hero=(S.ownHero&&HEROES[S.ownHero]&&heroOpen(S.ownHero))?S.ownHero:'mage';
   if(!demo&&HEROES[S.hero]&&(!HEROES[S.hero].paid||heroOwned(S.hero)))S.ownHero=S.hero;
   G.hero=makeHero(demo?'knight':S.hero);
   if(demo)G.plots.slice(0,5).forEach((p,k)=>addTower(['archer','cannon','frost','lightning','ballista'][k],p.c,p.r,k%3));

@@ -415,6 +415,12 @@ body>#hint{position:fixed;z-index:500;top:calc(env(safe-area-inset-top,0px) + 14
 .dday small{font-weight:900;color:var(--gold-2);font-size:10px}.dday.cur{border:2px solid #ffd98a;box-shadow:0 0 10px #ffd98a77;background:rgba(255,217,138,.14)}
 .dday.done{opacity:.55}.dday i{position:absolute;top:-6px;inset-inline-end:-4px;color:#9be27a;font-style:normal;font-weight:900;font-size:16px}
 #app.ringOpen #nextCard,#app.ringOpen #tipCard{visibility:hidden}
+
+.modeBadge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-weight:900;font-size:12.5px;background:#2f5a22;border:1.5px solid #8fd06a;color:#e8ffd8;white-space:nowrap}
+.modeBadge.hard{background:#6a1a10;border-color:#ff7a4a;color:#ffe2d4;box-shadow:0 0 10px #ff5a2a88}
+#app.hardMode #worldScr .mapbox,#app.hardMode #levels .mapbox{box-shadow:inset 0 0 0 4px #ff5a2a,inset 0 0 40px #ff3a1a77}
+#app.hardMode #worldScr .mtop,#app.hardMode #levels .mtop{background:linear-gradient(180deg,rgba(80,16,8,.95),rgba(60,14,6,.78))}
+#diffPause{display:none!important}
 </style>
 
 </head>
@@ -477,13 +483,13 @@ body>#hint{position:fixed;z-index:500;top:calc(env(safe-area-inset-top,0px) + 14
   <div id="boot"><div class="crest" aria-hidden="true"><i></i></div><h1 class="title">Crystalhold</h1><div class="bbar"><i></i></div></div>
   <section class="screen mapscr" id="worldScr" hidden>
     <div class="mapbox" id="wBox"><img alt="" id="wImg" src="ui/world.webp"><div id="wPins"></div></div>
-    <div class="mtop"><button class="icon-btn wood back" id="worldBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button><h2 data-t="worldT"></h2><span class="mchip"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><b class="starTot">0</b></span><button class="mchip mbtn shopGo"><span data-t="shop"></span> 💎 <b class="gemCount">0</b></button><button class="mchip mbtn gfxGo" id="gfxW"></button></div>
+    <div class="mtop"><button class="icon-btn wood back" id="worldBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button><h2 data-t="worldT"></h2><span class="modeBadge"></span><span class="mchip"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><b class="starTot">0</b></span><button class="mchip mbtn shopGo"><span data-t="shop"></span> 💎 <b class="gemCount">0</b></button><button class="mchip mbtn gfxGo" id="gfxW"></button></div>
     <div class="mhint" data-t="worldHint"></div>
     <div class="diffask" id="diffAsk" hidden><div class="dbox"><h3 data-t="diffQ"></h3><button class="dopt easy" data-q="easy"><b data-t="diffEasy"></b><span data-t="diffEasyD"></span></button><button class="dopt hard" data-q="hard"><b data-t="diffHard"></b><span data-t="diffHardD"></span></button><small data-t="diffNote"></small></div></div>
   </section>
   <section class="screen mapscr" id="levels" hidden>
     <div class="mapbox" id="rBox"><img alt="" id="rImg"><div id="rNodes"></div></div>
-    <div class="mtop"><button class="icon-btn wood back" id="levelsBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button><h2><span id="regionName"></span><small id="landOf"></small></h2><span class="mchip"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><b class="starTot" id="lvStars">0</b></span><button class="mchip mbtn shopGo" id="lvShopTop"><span data-t="shop"></span> 💎 <b class="gemCount">0</b></button></div>
+    <div class="mtop"><button class="icon-btn wood back" id="levelsBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button><h2><span id="regionName"></span><small id="landOf"></small></h2><span class="modeBadge"></span><span class="mchip"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><b class="starTot" id="lvStars">0</b></span><button class="mchip mbtn shopGo" id="lvShopTop"><span data-t="shop"></span> 💎 <b class="gemCount">0</b></button></div>
     <button class="rarrow prev" id="rPrev" dir="ltr">‹</button><button class="rarrow next" id="rNext" dir="ltr">›</button>
     <button class="rhero" id="rHero"><img alt=""><span><b></b><small data-t="changeHero"></small></span></button>
     <div class="rplay" id="lvlInfo"></div>
@@ -743,7 +749,7 @@ const heroOwned=id=>!!(window.STORE&&STORE.owned&&(STORE.owned.includes(HERO_SKU
 /* free trial = one level: 1 ready, 2 playing that level, 3 used */
 const heroTrial=id=>{const v=(S.trial||{})[id];return v===1||v===2;};
 function endTrial(){if(!G||G.demo||!G.hero)return;const id=G.hero.type;if(HEROES[id].paid&&S.trial&&S.trial[id]===2&&!heroOwned(id)){S.trial[id]=3;save();}}
-const heroOpen=id=>{const D=HEROES[id];if(D.paid)return heroOwned(id)||heroTrial(id);return (D.unlock||0)<S.unlocked||D.unlock===0||heroOwned(id);};
+const heroOpen=id=>{const D=HEROES[id];if(D.paid)return heroOwned(id)||heroTrial(id);return (D.unlock||0)<maxUnl()||D.unlock===0||heroOwned(id);};
 const SKILL_ICO={
   slam:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="11" height="7" rx="1.5"/><rect x="9.5" y="9" width="2.5" height="10"/><path d="M2 21h20M4 18l3-2M20 18l-3-2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
   tstorm:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 9a5 5 0 0 1 9.6-2A4 4 0 1 1 16 15H6a3 3 0 0 1-1-6z" opacity=".6"/><path d="M8 14l-2 4h2l-1 4 3-5H8l1-3zM15 14l-2 4h2l-1 4 3-5h-2l1-3z"/></svg>',
@@ -851,10 +857,20 @@ try{const d=JSON.parse(localStorage.getItem('kristal-td-2')||'null');if(d){Objec
 while(S.stars.length<NLEV)S.stars.push(0);if((S.gfxAuto||0)<3){S.gfxAuto=3;S.gfx='high';S.gfxCheck=1;}S.music=false;S.upg=S.upg||{};S.seenEn=S.seenEn||{};
 if(!S.lang||!LANGS[S.lang]){const nl=(navigator.language||'').toLowerCase().slice(0,2);S.lang=LANGS[nl]?nl:'en';}
 LANG=S.lang;
-function save(){try{localStorage.setItem('kristal-td-2',JSON.stringify(S));}catch(e){}}
+/* separate progress for Easy and Hard; S.stars/S.unlocked/S.sel always hold the active mode */
+function syncProg(){const p=S.prog[S.diff==='hard'?'hard':'easy'];p.stars=S.stars;p.unlocked=S.unlocked;p.sel=S.sel||0;}
+function loadProg(){const p=S.prog[S.diff==='hard'?'hard':'easy'];while(p.stars.length<NLEV)p.stars.push(0);S.stars=p.stars;S.unlocked=p.unlocked||1;S.sel=p.sel||0;}
+if(!S.prog){S.prog={easy:{stars:S.stars.slice(),unlocked:S.unlocked||1,sel:S.sel||0},hard:{stars:Array(NLEV).fill(0),unlocked:1,sel:0}};}
+loadProg();
+const maxUnl=()=>Math.max(S.prog.easy.unlocked||1,S.prog.hard.unlocked||1);
+function switchMode(d){if(S.diff===d&&S.prog)return;syncProg();S.diff=d;loadProg();viewSel=null;curRegion=null;save();applyModeUI();
+  try{if(!$('#levels').hidden)renderLevels();if(!$('#worldScr').hidden)renderWorld();}catch(e){}}
+function applyModeUI(){const h=S.diff==='hard';$('#app').classList.toggle('hardMode',h);document.querySelectorAll('.modeBadge').forEach(b=>{b.innerHTML=h?t('diffHard'):t('diffEasy');b.classList.toggle('hard',h);});}
+function save(){try{syncProg();localStorage.setItem('kristal-td-2',JSON.stringify(S));}catch(e){}}
 const heroLevel=xp=>Math.min(20,1+Math.floor(Math.sqrt(xp/260)));
 const upr=id=>S.upg[id]||0;
-const totalStars=()=>S.stars.reduce((a,b)=>a+b,0);
+const totalStars=()=>{try{syncProg();}catch(e){}return ['easy','hard'].reduce((a,m)=>a+S.prog[m].stars.reduce((x,y)=>x+(y||0),0),0);};
+const modeStars=()=>S.stars.reduce((a,b)=>a+b,0);
 const upgStars=()=>totalStars()+(S.bonusStars||0);
 const spentStars=()=>{let a=0;for(const k of [...Object.keys(UPT),'kingdom'])for(let j=0;j<3;j++)for(let l=0;l<uL(k,j);l++)a+=uCost(k,j,l);return a;};
 
@@ -2461,7 +2477,7 @@ function onTap(ev){
 function banner(main,sub){const b=$('#banner');b.innerHTML=`<b>${main}</b>${sub?`<span>${sub}</span>`:''}`;b.classList.remove('show');void b.offsetWidth;b.classList.add('show');}
 function showHint(s){const h=$('#hint');if(!s){h.hidden=true;return;}const inMenu=$('#app').classList.contains('in-menu');if(inMenu&&h.parentNode!==document.body)document.body.appendChild(h);else if(!inMenu&&h.parentNode===document.body)$('#stage').insertBefore(h,$('#ring'));h.textContent=s;h.hidden=false;}
 const SCREENS=['menu','worldScr','levels','heroScr','upgScr','shopScr','pauseScr','endScr','reviveScr'];
-function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','worldScr','levels','heroScr','upgScr','shopScr'].includes(id));updGems();if(id==='menu'){$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;renderChest();}}
+function showScreen(id){SCREENS.forEach(s=>$('#'+s).hidden=s!==id);$('#app').classList.toggle('in-menu',['menu','worldScr','levels','heroScr','upgScr','shopScr'].includes(id));updGems();if(id==='menu'){$('#menuStars').textContent=`${totalStars()}/${NLEV*6}`;renderChest();}}
 function demoLevel(){return Math.min(S.unlocked-1,NLEV-1);}
 function toMenu(screen){closeSheets();showHint(null);newGame(demoLevel(),true);if(screen==='levels')renderLevels();showScreen(screen);}
 /* language */
@@ -2471,7 +2487,7 @@ function applyLang(){
   document.querySelectorAll('[data-ta]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.ta)));
   $('#langRow').innerHTML=Object.keys(LANGS).map(k=>`<button data-l="${k}" class="${k===LANG?'on':''}">${LANGS[k].label}</button>`).join('');
   $('#langRow').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{LANG=S.lang=b.dataset.l;save();sfx('ui');applyLang();}));
-  soundLabel();renderStoreBtns();$('#menuStars').textContent=`${totalStars()}/${NLEV*3}`;try{renderChest();}catch(e){}
+  soundLabel();renderStoreBtns();$('#menuStars').textContent=`${totalStars()}/${NLEV*6}`;try{renderChest();}catch(e){}
   for(const k in LVCACHE)LVCACHE[k].name=lvName(+k);
   if(G&&!G.demo){buildSkills();buildTowerList();waveKey='';lastHeroKey='';}
   if(!$('#levels').hidden)renderLevels();if(!$('#heroScr').hidden)renderHeroes();if(!$('#worldScr').hidden)renderWorld();if(!$('#upgScr').hidden)renderUpg();
@@ -2487,7 +2503,7 @@ const WORLDPINS=[[.218,.726],[.15,.481],[.203,.247],[.428,.507],[.459,.141],[.63
 function layoutMap(box,mode){const scr=box.parentElement,W=scr.clientWidth||innerWidth,H=scr.clientHeight||innerHeight,top=mode==='world'?44:0,sc=Math.max(W/1536,(H-top)/864),h=864*sc;
   const y=mode==='world'?top:Math.min(0,(H-h)/2);box.style.transform=`translate(${(W-1536*sc)/2}px,${y}px) scale(${sc})`;box.style.setProperty('--ks',(1/sc*Math.min(1.15,Math.max(.8,H/412))).toFixed(3));}
 function regionStars(r){let n=0;for(let i=r*10;i<r*10+10;i++)n+=S.stars[i]||0;return n;}
-function renderWorld(){const box=$('#wPins');box.innerHTML='';document.querySelectorAll('.starTot').forEach(e=>e.textContent=totalStars());gfxLabel();
+function renderWorld(){applyModeUI();const box=$('#wPins');box.innerHTML='';document.querySelectorAll('.starTot').forEach(e=>e.textContent=modeStars());gfxLabel();
   const cur=Math.floor(Math.min(S.unlocked-1,NLEV-1)/10);
   for(let r=0;r<10;r++){const lock=r*10>=S.unlocked,[x,y]=WORLDPINS[r],b=document.createElement('button');b.className='wpin'+(lock?' lock':'')+(r===cur?' cur':'')+(y<.2?' up':'');b.style.left=x*1536+'px';b.style.top=y*864+'px';
     b.innerHTML=`<span class="fl">${lock?'🔒 ':''}${tx(REGIONS[r].name)}<small>${lock?t('landLock',r*10):'★ '+regionStars(r)+'/30'}</small></span><span class="nb">${r+1}</span>`;
@@ -2516,10 +2532,10 @@ function renderHeroes(){
   renderGfxSeg($('#gfxSeg'),'heroScr');
 }
 function openHeroes(){viewHero=S.hero;renderHeroes();showScreen('heroScr');}
-function renderLevels(){
+function renderLevels(){applyModeUI();
   S.sel=Math.min(S.sel||0,S.unlocked-1);if(curRegion===null)curRegion=Math.floor(S.sel/10);
   if(Math.floor(S.sel/10)!==curRegion){viewSel=null;S.sel=Math.min(S.unlocked-1,curRegion*10+9);if(S.sel<curRegion*10)S.sel=curRegion*10;}
-  document.querySelectorAll('.starTot').forEach(e=>e.textContent=totalStars());try{updGems();}catch(e){}
+  document.querySelectorAll('.starTot').forEach(e=>e.textContent=modeStars());try{updGems();}catch(e){}
   $('#rImg').src='ui/region'+curRegion+'.webp';$('#regionName').textContent=tx(REGIONS[curRegion].name);$('#landOf').textContent=t('landOf',curRegion+1,10)+' · ★ '+regionStars(curRegion)+'/30';
   $('#rPrev').hidden=curRegion===0;$('#rNext').hidden=curRegion===9;$('#rNext').classList.toggle('locked',(curRegion+1)*10>=S.unlocked);
   const box=$('#rNodes');box.innerHTML='';const cur=viewSel!==null?viewSel:S.sel,next=Math.min(S.unlocked-1,NLEV-1);
@@ -2538,7 +2554,7 @@ function tipEnemy(type){const E=ENEMIES[type],bt=bestTowerFor(type),c=ACLS[E.ac]
   showTip(`<div class="tw">${window.EICON&&EICON[type]?`<img src="${EICON[type]}" alt="">`:''}<div><b>${t('newEnemy',tx(E.name))}</b><p>${tx(E.desc||E.name)}${c?' · '+tx(c.name):''}</p>${bt?`<p class="best">${t('tipBest','')}<span style="--c:${TCOL[bt][0]}"><img src="${TICON[bt+'1']}" alt="">${tx(TOWERS[bt].name)}</span></p>`:''}</div></div>`,'#ff8a6a');}
 function tipTower(k){const D=TOWERS[k],st=strongVs(SRC_OF[k]||'').map(c=>tx(ACLS[c].name)).join(', ');
   showTip(`<div class="tw"><img src="${TICON[k+'1']}" alt=""><div><b>${tx(D.name)}</b><p>${tx(D.desc)}${D.air?t('hitsAir'):t('groundOnly')}</p>${st?`<p class="best">${t('strongVs',st)}</p>`:''}</div></div>`,TCOL[k][0]);}
-const CHESTS=[[50,'gems',50],[100,'trial',0],[150,'gems',100],[200,'items',0],[250,'gems',150],[300,'legend',0]];
+const CHESTS=[[50,'gems',50],[100,'trial',0],[150,'gems',100],[200,'items',0],[250,'gems',150],[300,'gems',200],[350,'items',0],[400,'trial',0],[450,'gems',250],[500,'items',0],[550,'gems',300],[600,'legend',0]];
 function renderChest(){const el=$('#chestRow');if(!el)return;const n=S.chest||0,ts=totalStars();if(n>=CHESTS.length){el.innerHTML=S.legend?`<span class="legend">👑 ${t('legendT')}</span>`:'';return;}
   const [need]=CHESTS[n],prev=n?CHESTS[n-1][0]:0,ready=ts>=need,pc=Math.min(100,Math.round((ts-prev)/(need-prev)*100));
   el.innerHTML=`<button class="chest${ready?' ready':''}"><img alt="" src="${(window.UPICON&&UPICON.kingdom0)||''}"><span><b>${ready?t('chestOpen'):t('chestNext',need)}</b><i class="cbar"><u style="width:${pc}%"></u></i></span></button>`;
@@ -2624,7 +2640,7 @@ function openHeroPick(){let m=$('#upHeroPick');if(!m){m=document.createElement('
 function renderUpg(){S.upl=S.upl||{};S.hsk=S.hsk||{};gemInit();
   const avail=upgStars()-spentStars();$('#upStars').textContent=avail;$('#upGems').textContent=S.gems||0;
   const box=$('#upgList');box.innerHTML='';const H=HEROES[S.hero];
-  const cols=[...TORDER.map(k=>({id:k,col:TCOL[k][0],open:S.unlocked>TOWERS[k].unlock||TOWERS[k].unlock===0})),{id:'kingdom',col:'#c99a3a',open:true},{id:'hero',col:'#e9b44c',open:true}];
+  const cols=[...TORDER.map(k=>({id:k,col:TCOL[k][0],open:maxUnl()>TOWERS[k].unlock||TOWERS[k].unlock===0})),{id:'kingdom',col:'#c99a3a',open:true},{id:'hero',col:'#e9b44c',open:true}];
   if(!upSel)upSel={c:'archer',j:0};
   const lvOf=(c,j)=>c==='hero'?skL(S.hero,j):uL(c,j);
   const isLocked=(c,j,open)=>c!=='hero'&&(!open||(j>0&&uL(c,j-1)<1));
@@ -2648,7 +2664,7 @@ function renderUpg(){S.upl=S.upl||{};S.hsk=S.hsk||{};gemInit();
 }
 $('#resetBtn').addEventListener('click',()=>{sfx('ui');let m=$('#resetAsk');if(!m){m=document.createElement('div');m.id='resetAsk';m.className='diffask';$('#menu').appendChild(m);}
   m.innerHTML=`<div class="dbox"><h3>${t('resetQ')}</h3><p style="margin:0;font-size:13px;font-weight:700;max-width:40ch">${t('resetD')}</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn ghost" data-a="no">${t('cancel')}</button><button class="btn" data-a="yes" style="background:linear-gradient(180deg,#ff9a8a,#d9442a)">${t('resetYes')}</button></div></div>`;m.hidden=false;
-  m.onclick=e=>{const a=e.target.closest('[data-a]');if(!a)return;if(a.dataset.a==='yes'){S.stars=S.stars.map(()=>0);S.unlocked=1;S.sel=0;S.hard={};S.loss={};S.upl={};S.seenTw={};S.seenEn={};S.seenTut=false;curRegion=0;viewSel=null;save();sfx('sell');$('#menuStars').textContent=`0/${NLEV*3}`;}m.hidden=true;};});
+  m.onclick=e=>{const a=e.target.closest('[data-a]');if(!a)return;if(a.dataset.a==='yes'){S.prog={easy:{stars:Array(NLEV).fill(0),unlocked:1,sel:0},hard:{stars:Array(NLEV).fill(0),unlocked:1,sel:0}};loadProg();S.hard={};S.loss={};S.upl={};S.seenTw={};S.seenEn={};S.seenTut=false;curRegion=0;viewSel=null;save();sfx('sell');$('#menuStars').textContent=`0/${NLEV*6}`;}m.hidden=true;};});
 $('#tipCard').addEventListener('click',()=>{clearTimeout(tipTimer);nextTip();});
 $('#upgReset').addEventListener('click',()=>{S.upl={};save();sfx('sell');renderUpg();});
 /* anonymous gameplay statistics (Firebase Analytics through the Android bridge; no-op on web) */
@@ -2683,7 +2699,7 @@ function endLevel(win){try{if(G&&!G.demo){const tw={};for(const t of G.towers)tw
   if(!G||G.demo)return;
   const trialHero=HEROES[G.hero.type].paid&&!heroOwned(G.hero.type)&&S.trial&&S.trial[G.hero.type]===2;endTrial();
   const prevStars=S.stars[G.L]||0;
-  const stars=win?Math.min(G.assist||G.easy?2:3,(G.lives>=G.maxLives?3:G.lives>=G.maxLives*.5?2:1)):0,newStars=win?Math.max(0,stars-(S.stars[G.L]||0)):0;
+  const stars=win?Math.min(G.assist?2:3,(G.lives>=G.maxLives?3:G.lives>=G.maxLives*.5?2:1)):0,newStars=win?Math.max(0,stars-(S.stars[G.L]||0)):0;
   S.loss=S.loss||{};if(win)delete S.loss[G.L];else S.loss[G.L]=(S.loss[G.L]||0)+1;const losses=S.loss[G.L]||0;
   const before=S.unlocked;
   if(win){S.stars[G.L]=Math.max(S.stars[G.L]||0,stars);S.unlocked=Math.max(S.unlocked,Math.min(NLEV,G.L+2));S.sel=Math.min(NLEV-1,G.L+1);curRegion=Math.floor(S.sel/10);sfx('win');}else sfx('lose');
@@ -2715,8 +2731,8 @@ function soundLabel(){gfxLabel();const a=t(S.sound?'sfxOn':'sfxOff'),b=t(S.music
 function toggleSound(){S.sound=!S.sound;save();soundLabel();ensureAudio();busLevels();sfx('ui');}
 function toggleMusic(){S.music=!S.music;save();soundLabel();ensureAudio();busLevels();}
 function renderDiffSeg(box,onChange){box.innerHTML=['easy','hard'].map(q=>`<button data-q="${q}" class="${S.diff===q?'on':''} ${q}">${t(q==='easy'?'diffEasy':'diffHard')}</button>`).join('');
-  box.querySelectorAll('button').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();if(S.diff===b.dataset.q)return;S.diff=b.dataset.q;save();sfx('ui');renderDiffSeg(box,onChange);onChange&&onChange();}));}
-function askDiff(then){const d=$('#diffAsk');d.hidden=false;d.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{S.diff=b.dataset.q;save();sfx('ui');d.hidden=true;then&&then();});}
+  box.querySelectorAll('button').forEach(b=>b.addEventListener('click',ev=>{ev.stopPropagation();if(S.diff===b.dataset.q)return;switchMode(b.dataset.q);sfx('ui');renderDiffSeg(box,onChange);onChange&&onChange();}));}
+function askDiff(then){const d=$('#diffAsk');d.hidden=false;d.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{switchMode(b.dataset.q);save();sfx('ui');d.hidden=true;then&&then();});}
 function renderGfxSeg(box,reopen){box.innerHTML=['low','med','high'].map(q=>`<button data-q="${q}" class="${S.gfx===q?'on':''}">${t('gfx_'+q)}${S.gfx===q?' ✓':''}</button>`).join('');
   box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{if(S.gfx===b.dataset.q)return;S.gfx=b.dataset.q;S.reopen=reopen;if(reopen==='gfx'&&G&&!G.demo)S.reopenL=G.L;save();sfx('ui');setTimeout(()=>location.reload(),150);}));}
 function pauseGame(){if(!G||G.demo||G.over||G.paused)return;G.paused=true;closeSheets();save();renderGfxSeg($('#gfxPause'),'gfx');renderDiffSeg($('#diffPause'),()=>{startLevel(G.L);});updGems();showScreen('pauseScr');}

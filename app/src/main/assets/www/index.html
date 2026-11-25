@@ -2905,7 +2905,11 @@ function frame(now){
   if(G&&!G.demo)uiTick();
   requestAnimationFrame(frame);
 }
-if(APP){STORE.adFree=!!appCall(()=>APP.isAdFree(),false);STORE.price=appCall(()=>APP.removeAdsPrice(),'')||'';}
+if(APP){STORE.adFree=!!appCall(()=>APP.isAdFree(),false);STORE.price=appCall(()=>APP.removeAdsPrice(),'')||'';
+  /* purchases restored by the app before the page was ready must still unlock the heroes at start (the store callback may have fired too early) */
+  try{STORE.owned=JSON.parse(appCall(()=>APP.owned(),'[]')||'[]');STORE.prices=JSON.parse(appCall(()=>APP.prices(),'{}')||'{}');}catch(e){}
+  /* ask again a few seconds after start, in case Google Play answered late */
+  setTimeout(()=>{try{if(window.__onStore)__onStore(appCall(()=>APP.isAdFree(),false),appCall(()=>APP.removeAdsPrice(),''),false);}catch(e){}},4000);}
 applyLang();
 init3D();
 loadModels();

@@ -1718,7 +1718,7 @@ function heroGear(type,inner){if(type!=='knight'&&type!=='fire')return null;let 
   g.position.set(0,type==='knight'?.06:.1,type==='knight'?.02:.03).applyQuaternion(g.quaternion).multiplyScalar(0);
   const off=new THREE.Vector3(0,type==='knight'?0:.09,type==='knight'?.03:.06);g.position.copy(off.applyQuaternion(wq.clone().invert().multiply(iq)).multiplyScalar(k));
   hand.add(g);return g;}
-function heroBall(type,inner,H){const B=HERO_BALL[type];if(!B)return;if(B.cut)try{cutGeom(inner,B.cut);}catch(e){}H.ball=ballMesh(B.kind,B.kind==='soccer'?.085:.09);H.ballKind=B.kind;H.g.add(H.ball);}
+function heroBall(type,inner,H){const B=HERO_BALL[type];if(!B)return;if(B.cut)try{cutGeom(inner,B.cut);}catch(e){}H.ball=ballMesh(B.kind,B.kind==='soccer'?.085:.115);H.ballKind=B.kind;H.g.add(H.ball);}
 function animBall(R,h,dt,T){const b=R.ball;b.visible=!(h.ballAway>0)&&!h.dead;if(!b.visible)return;const r=b.geometry.parameters.radius;
   if(R.ballKind==='soccer'){if(h.moving){b.position.set(.15+.05*Math.abs(Math.sin(T*9)),r,.03);b.rotation.z-=dt*14;}else{const j=Math.abs(Math.sin(T*3.2));b.position.set(.1,r+.24*j,.02);b.rotation.z-=dt*4;}}
   else{/* basketball: held in the hand when standing, real dribbling when moving, carried by the throwing hand during throws */
@@ -2168,7 +2168,7 @@ function projMesh(p){
   if(p.k==='rain'){const L0=.5,th=.02,a=new THREE.Group();a.add(M(CYL(),L('#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));a.add(M(CONE(),MET('#c8d0d6'),L0/2+.03,0,0,[.03,.08,.03],{rz:-Math.PI/2,nc:1}));a.add(M(BOX(),L('#f0ece0'),-L0/2+.04,0,0,[.08,.006,.05],NC));a.add(M(BOX(),L('#f0ece0'),-L0/2+.04,0,0,[.08,.05,.006],NC));a.rotation.z=-1.25;g.add(a);return{root:g};}
   if(p.k==='arrow'||p.k==='spear'){const sp=p.k==='spear'||p.jav,L0=sp?.5:.34,th=sp?.022:.014;g.add(M(CYL(),L(sp?'#6a4020':'#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),MET('#c8d0d6'),L0/2+.025,0,0,[sp?.04:.02,.06,sp?.04:.02],{rz:-Math.PI/2,nc:1}));g.add(M(BOX(),L('#f0ece0'),-L0/2+.03,0,0,[.05,.004,.035],NC));}
   else if(p.k==='pbolt'){const bm=mt('pbolt',()=>new THREE.MeshBasicMaterial({color:'#7fd6ff'}));g.add(M(CYL(),bm,0,0,0,[.035,.62,.035],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),mt('pboltH',()=>new THREE.MeshBasicMaterial({color:'#e8f8ff'})),.34,0,0,[.07,.14,.07],{rz:-Math.PI/2,nc:1}));const s=new THREE.Sprite(GLOWM('#3fb4ff'));s.scale.set(1.1,.55,1);g.add(s);const s2=new THREE.Sprite(GLOWM('#bfeaff'));s2.scale.setScalar(.35);s2.position.x=.3;g.add(s2);return{root:g};}
-  else if(p.k==='ballfx'){const b=ballMesh(p.kind,p.kind==='soccer'?.075:.08);g.add(b);const s=new THREE.Sprite(GLOWM(p.kind==='soccer'?'#ffd27a':'#ff9a3a'));s.scale.setScalar(.38);g.add(s);return{root:g,ball:b};}
+  else if(p.k==='ballfx'){const b=ballMesh(p.kind,p.kind==='soccer'?.075:.105);g.add(b);const s=new THREE.Sprite(GLOWM(p.kind==='soccer'?'#ffd27a':'#ff9a3a'));s.scale.setScalar(.38);g.add(s);return{root:g,ball:b};}
   else if(p.k==='shell'){g.add(M(SPH(),p.big?EM('#ff8a2a'):MET('#262626'),0,0,0,p.big?.11:.075,NC));const s=new THREE.Sprite(GLOWM(p.big?'#ff9a3a':'#ffd27a'));s.scale.setScalar(p.big?.7:.3);g.add(s);}
   else{const big=p.k==='fireball';const s=new THREE.Sprite(GLOWM(p.col||'#ff7a2a'));s.scale.setScalar(big?1:.45);g.add(s);const s2=new THREE.Sprite(GLOWM('#fff0c0'));s2.scale.setScalar(big?.45:.18);g.add(s2);}
   return{root:g};

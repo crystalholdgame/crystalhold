@@ -1428,7 +1428,7 @@ function updateProjs(dt){
       if(canAdd())G.parts.push({k:'spark',x:p.x,y:p.y,h:p.h0*.7+.15,vx:0,vy:0,vh:0,g:0,life:.28,max:.28,size:.13,color:'#5fc4ff',drag:0});
     }else if(p.k==='ballfx'){p.t+=dt/p.ft;const h=p.hero;
       if(p.t<1){const u=p.t;p.x=p.sx+(p.ex-p.sx)*u;p.y=p.sy+(p.ey-p.sy)*u;}else if(p.back&&h&&!h.dead){const u=Math.min(1,p.t-1);p.x=p.ex+(h.x-p.ex)*u;p.y=p.ey+(h.y-p.ey)*u;if(u>=1)p.dead=true;}else p.dead=true;
-      if(canAdd()&&Math.random()<.6)G.parts.push({k:'spark',x:p.x,y:p.y,h:.3,vx:0,vy:0,vh:0,g:0,life:.22,max:.22,size:.09,color:p.kind==='soccer'?'#ffe9a0':'#ffae5a',drag:0});
+      if(canAdd()&&Math.random()<.6)G.parts.push({k:'spark',x:p.x,y:p.y,h:.3,vx:0,vy:0,vh:0,g:0,life:.22,max:.22,size:.09,color:p.kind==='soccer'?'#ffe9a0':'#ff6a5a',drag:0});
       if(p.dead&&h)h.ballAway=0;
     }else if(p.k==='shell'||p.k==='fireball'){
       p.t+=dt/p.ft;const u=Math.min(1,p.t);p.x=p.sx+(p.ex-p.sx)*u;p.y=p.sy+(p.ey-p.sy)*u;
@@ -1694,7 +1694,7 @@ function ballTex(kind){if(BALLTEX[kind])return BALLTEX[kind];const W=512,H=256,c
   for(let j=0;j<H;j++)for(let i=0;i<W;i++){const lon=i/W*2*Math.PI,lat=Math.PI/2-j/H*Math.PI,x=Math.cos(lat)*Math.cos(lon),y=Math.sin(lat),z=Math.cos(lat)*Math.sin(lon);let r,gg,b;
     if(kind==='soccer'){let best=-2,sec=-2,bi=0;for(let q=0;q<CEN.length;q++){const v=CEN[q],dt=v[0]*x+v[1]*y+v[2]*z;if(dt>best){sec=best;best=dt;bi=q;}else if(dt>sec)sec=dt;}
       if(best-sec<.018){r=45;gg=34;b=28;}else if(bi<12){r=255;gg=118;b=24;}else{r=250;gg=248;b=242;}}
-    else{const w=.035;const s1=Math.abs(y)<w,s2=Math.abs(x)<w,cv=Math.abs(Math.abs(z)-.62-.25*y*y)<w*1.2;if(s1||s2||cv){r=35;gg=20;b=12;}else{const n=.92+.08*Math.sin(i*1.7)*Math.sin(j*2.3);r=232*n;gg=110*n;b=34*n;}}
+    else{const w=.035;const s1=Math.abs(y)<w,s2=Math.abs(x)<w,cv=Math.abs(Math.abs(z)-.62-.25*y*y)<w*1.2;if(s1||s2||cv){r=35;gg=20;b=12;}else{const n=.92+.08*Math.sin(i*1.7)*Math.sin(j*2.3);r=222*n;gg=30*n;b=26*n;}}
     const k=(j*W+i)*4;d[k]=r;d[k+1]=gg;d[k+2]=b;d[k+3]=255;}
   g.putImageData(im,0,0);const t=new THREE.CanvasTexture(c);return BALLTEX[kind]=t;}
 /* the sport heroes always carry their ball: model parts that looked like a ball are cut away and a real ball is added */
@@ -2168,7 +2168,7 @@ function projMesh(p){
   if(p.k==='rain'){const L0=.5,th=.02,a=new THREE.Group();a.add(M(CYL(),L('#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));a.add(M(CONE(),MET('#c8d0d6'),L0/2+.03,0,0,[.03,.08,.03],{rz:-Math.PI/2,nc:1}));a.add(M(BOX(),L('#f0ece0'),-L0/2+.04,0,0,[.08,.006,.05],NC));a.add(M(BOX(),L('#f0ece0'),-L0/2+.04,0,0,[.08,.05,.006],NC));a.rotation.z=-1.25;g.add(a);return{root:g};}
   if(p.k==='arrow'||p.k==='spear'){const sp=p.k==='spear'||p.jav,L0=sp?.5:.34,th=sp?.022:.014;g.add(M(CYL(),L(sp?'#6a4020':'#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),MET('#c8d0d6'),L0/2+.025,0,0,[sp?.04:.02,.06,sp?.04:.02],{rz:-Math.PI/2,nc:1}));g.add(M(BOX(),L('#f0ece0'),-L0/2+.03,0,0,[.05,.004,.035],NC));}
   else if(p.k==='pbolt'){const bm=mt('pbolt',()=>new THREE.MeshBasicMaterial({color:'#7fd6ff'}));g.add(M(CYL(),bm,0,0,0,[.035,.62,.035],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),mt('pboltH',()=>new THREE.MeshBasicMaterial({color:'#e8f8ff'})),.34,0,0,[.07,.14,.07],{rz:-Math.PI/2,nc:1}));const s=new THREE.Sprite(GLOWM('#3fb4ff'));s.scale.set(1.1,.55,1);g.add(s);const s2=new THREE.Sprite(GLOWM('#bfeaff'));s2.scale.setScalar(.35);s2.position.x=.3;g.add(s2);return{root:g};}
-  else if(p.k==='ballfx'){const b=ballMesh(p.kind,p.kind==='soccer'?.075:.105);g.add(b);const s=new THREE.Sprite(GLOWM(p.kind==='soccer'?'#ffd27a':'#ff9a3a'));s.scale.setScalar(.38);g.add(s);return{root:g,ball:b};}
+  else if(p.k==='ballfx'){const b=ballMesh(p.kind,p.kind==='soccer'?.075:.105);g.add(b);const s=new THREE.Sprite(GLOWM(p.kind==='soccer'?'#ffd27a':'#ff4a3a'));s.scale.setScalar(.38);g.add(s);return{root:g,ball:b};}
   else if(p.k==='shell'){g.add(M(SPH(),p.big?EM('#ff8a2a'):MET('#262626'),0,0,0,p.big?.11:.075,NC));const s=new THREE.Sprite(GLOWM(p.big?'#ff9a3a':'#ffd27a'));s.scale.setScalar(p.big?.7:.3);g.add(s);}
   else{const big=p.k==='fireball';const s=new THREE.Sprite(GLOWM(p.col||'#ff7a2a'));s.scale.setScalar(big?1:.45);g.add(s);const s2=new THREE.Sprite(GLOWM('#fff0c0'));s2.scale.setScalar(big?.45:.18);g.add(s2);}
   return{root:g};

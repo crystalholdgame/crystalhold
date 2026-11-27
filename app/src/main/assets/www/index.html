@@ -2854,7 +2854,7 @@ window.__onRewarded=function(tag,ok){adShowing=false;audioHold(false);const cb=r
 function maybeInterstitial(){
   if(!APP||STORE.adFree||!G||G.demo)return;
   S.ends=(S.ends||0)+1;save();
-  if(G.L<2||S.ends%3!==0)return;
+  if(G.L<2||S.ends%2!==0)return;
   adShowing=true;audioHold(true);if(!appCall(()=>{APP.interstitial();return true;},false)){adShowing=false;audioHold(false);}
 }
 window.__onInterDone=function(){adShowing=false;audioHold(false);};

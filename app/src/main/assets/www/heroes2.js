@@ -29,7 +29,10 @@ function boneLocal(inner,name,out){const b=inner.getObjectByName(name);if(!b)ret
 /* ---------- dressing: clips + props ---------- */
 window.heroDress=function(type,inner,H,gm){const C=CL[type];if(!C||!H.mixer||!gm.clips)return;
   const act=n=>{if(!n||!gm.clips[n])return null;const a=H.mixer.clipAction(gm.clips[n]);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;return a;};
-  const at=act(C[0]);if(at)H.acts.attack=at;H.skActs=[act(C[1]),act(C[2]),act(C[3])];
+  let at=act(C[0]);
+  /* Jay: only the real throwing part of the long pitch clip (wind-up, release, follow-through) */
+  if(type==='hoop'&&gm.clips.pitch){try{const sc=THREE.AnimationUtils.subclip(gm.clips.pitch,'jthrow',30,78,30);const a=H.mixer.clipAction(sc);a.setLoop(THREE.LoopOnce,1);a.clampWhenFinished=true;at=a;}catch(e){}}
+  if(at)H.acts.attack=at;H.skActs=[act(C[1]),act(C[2]),act(C[3])];
   if(ALT[type]){H.alt={};for(const k in ALT[type])H.alt[k]=[H.skActs[k],act(ALT[type][k])];}
   if(type==='thunder'&&GLBM.prop_hammer&&GLBM.prop_hammer.ready){const g=new THREE.Group(),m=GLBM.prop_hammer.scene.clone();g.add(m);
     const gl=new THREE.Sprite(GLOWM('#7fe8ff'));gl.scale.setScalar(.7);gl.position.y=.56;g.add(gl);inner.add(g);H.hammer=g;H.hamAway=0;}
@@ -75,7 +78,7 @@ const FX={
   chain(h){buzz([30,20,30,20,60]);lightFlash(h.x,h.y,'#c9a6ff',2.2);flashFx(h.x,h.y,.8,'#e6d8ff',.15,1.2);},
   storm(h,x,y){buzz([40,30,40]);for(let i=0;i<6;i++)later(h,i*.45,()=>{smokeFx(x+(Math.random()-.5)*1.6,y+(Math.random()-.5)*1.2,4,.7,true,2.6);});},
   surge(h){buzz([40,40,80]);ringFx(h.x,h.y,'#ffc8f8',.2,2.4,.9,.2);for(let i=0;i<10;i++)later(h,i*.2,()=>{for(let k=0;k<3;k++){const a=Math.random()*6.28;sp(h.x+Math.cos(a)*.8,h.y+Math.sin(a)*.8,.1,0,0,2,'#ffc8f8',.14,.6);}});},
-  volley(h,x,y){later(h,.01,()=>{for(const v of (G.volleys||[])){if(Math.hypot(v.x-x,v.y-y)>1.6||v._fx)continue;v._fx=1;const px=v.x,py=v.y;for(let k=0;k<3;k++)later(h,v.t+k*.28,()=>fireFx(px,py,2,.05,.16,.06,1));}});},
+  volley(h,x,y){for(let k=0;k<3;k++)later(h,.45+k*.35,()=>{if(k===1)buzz(30);});},
   pierce(h){buzz(40);later(h,.02,()=>{const a=h.ang;for(let k=1;k<6;k++)ringFx(h.x+Math.cos(a)*k*1.3,h.y+Math.sin(a)*k*1.3,'#ffe28a',.1,.45,.3,.06);});},
   nova(h){buzz([40,30,80]);lightFlash(h.x,h.y,'#bfeaff',2.4);},
   prison(h){buzz(60);},

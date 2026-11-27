@@ -420,7 +420,15 @@ body>#hint{position:fixed;z-index:500;top:calc(env(safe-area-inset-top,0px) + 14
 .modeBadge.hard{background:#6a1a10;border-color:#ff7a4a;color:#ffe2d4;box-shadow:0 0 10px #ff5a2a88}
 #app.hardMode #worldScr .mapbox,#app.hardMode #levels .mapbox{box-shadow:inset 0 0 0 4px #ff5a2a,inset 0 0 40px #ff3a1a77}
 #app.hardMode #worldScr .mtop,#app.hardMode #levels .mtop{background:linear-gradient(180deg,rgba(80,16,8,.95),rgba(60,14,6,.78))}
-#diffPause{display:none!important}
+#diffPause,#diffLv{display:none!important}
+.hpin{position:absolute;width:190px;transform:translate(-50%,-50%);display:block;border:0;background:none;padding:0;cursor:pointer;z-index:2}
+.hpin img{width:190px;height:auto;display:block;filter:drop-shadow(0 6px 8px #0009)}
+.hpin.lock img{filter:drop-shadow(0 6px 8px #0009) saturate(.75) brightness(.85)}
+.hpin .hf{position:absolute;bottom:calc(100% - 26px);right:0;z-index:1;transform:scale(var(--ks,1));transform-origin:100% 100%;background:linear-gradient(180deg,#8a160a,#3a0603);color:#fff1dc;border:2px solid #ff8a3a;border-radius:12px;padding:3px 12px 4px;font-family:var(--f-display);font-size:19px;letter-spacing:.5px;line-height:1.1;text-align:center;white-space:nowrap;text-shadow:0 0 8px #ff5a1a,0 2px 0 #000;box-shadow:0 0 14px #ff4a1aaa,0 3px 0 #1a0200}
+.hpin .hf small{display:block;font-family:inherit;font-size:12.5px;letter-spacing:0;color:#ffd0a0;text-shadow:0 1px 0 #000}
+.hpin:not(.lock) .hf{animation:hpulse 1.6s ease-in-out infinite}
+@keyframes hpulse{50%{box-shadow:0 0 24px #ff6a2aee,0 3px 0 #1a0200}}
+#app:not(.hardMode) .modeBadge{display:none}
 </style>
 
 </head>
@@ -602,7 +610,7 @@ const STR={
   adFreeThanks:['شكراً لدعمك! أُزيلت الإعلانات','Thank you for your support! Ads removed','Takk for støtten! Reklame er fjernet'],
   tagline:['قُد بطلك، ابنِ الأبراج والمدافع، واحمِ القلعة من جحافل الغزاة.','Lead your hero, raise towers and cannons, and defend the castle against the invading hordes.','Led helten din, bygg tårn og kanoner, og forsvar slottet mot inntrengerhordene.'],
   play:['العب','Play','Spill'],upgrades:['التطويرات','Upgrades','Oppgraderinger'],
-  gfxQ:['الجرافيك: {0}','Graphics: {0}','Grafikk: {0}'],gfx_high:['أفضل','Best','Best'],nextWaveT:['الموجة {0} القادمة','Next: wave {0}','Neste: bølge {0}'],setRestart:['تغيير الصعوبة أو الجودة يعيد بدء المرحلة','Changing difficulty or quality restarts the level','Endring av vanskelighetsgrad eller grafikk starter brettet på nytt'],diffEasy:['😊 سهل','😊 Easy','😊 Lett'],diffHard:['🔥 صعب','🔥 Hard','🔥 Vanskelig'],diffQ:['اختر مستوى الصعوبة','Choose difficulty','Velg vanskelighetsgrad'],diffEasyD:['للمبتدئين والعائلة: وحوش أضعف وأرواح أكثر (حتى ★★)','For beginners and families: weaker monsters, more lives (max ★★)','For nybegynnere og familier: svakere monstre, flere liv (maks ★★)'],diffHardD:['للمتمرسين: تحدٍّ حقيقي، ★★★ وجواهر مضاعفة 💎×2','For experienced players: a real challenge, ★★★ and double gems 💎×2','For erfarne: ekte utfordring, ★★★ og doble edelsteiner 💎×2'],diffNote:['يمكنك تغييره في أي وقت','You can change it any time','Du kan endre det når som helst'],diffRestart:['تغيير الصعوبة يعيد بدء المرحلة','Changing difficulty restarts the level','Endring av vanskelighetsgrad starter brettet på nytt'],gfxRestart:['تغيير الجودة يعيد بدء المرحلة','Changing quality restarts the level','Endring av grafikk starter brettet på nytt'],worldT:['خريطة العالم · 10 أراضٍ','World map · 10 lands','Verdenskart · 10 land'],worldHint:['اضغط على أرض لترى مراحلها العشر','Tap a land to see its 10 levels','Trykk på et land for å se de 10 brettene'],landLock:['تُفتح بعد المرحلة {0}','Unlocks after level {0}','Åpnes etter brett {0}'],landOf:['الأرض {0} من {1}','Land {0} of {1}','Land {0} av {1}'],changeHero:['اضغط لتغيير البطل','Tap to change hero','Trykk for å bytte helt'],heroesT:['الأبطال','Heroes','Helter'],gfx_med:['متوسط','Medium','Middels'],gfx_low:['منخفض','Low','Lav'],
+  gfxQ:['الجرافيك: {0}','Graphics: {0}','Grafikk: {0}'],gfx_high:['أفضل','Best','Best'],nextWaveT:['الموجة {0} القادمة','Next: wave {0}','Neste: bølge {0}'],setRestart:['تغيير الصعوبة أو الجودة يعيد بدء المرحلة','Changing difficulty or quality restarts the level','Endring av vanskelighetsgrad eller grafikk starter brettet på nytt'],diffEasy:['😊 سهل','😊 Easy','😊 Lett'],hardPin:['🔥 الوضع الصعب','🔥 HARD MODE','🔥 VANSKELIG MODUS'],hardEnter:['ادخل إن تجرأت!','Enter if you dare!','Gå inn om du tør!'],hardBack:['🏰 العالم العادي','🏰 Normal world','🏰 Vanlig verden'],hardOn:['🔥 دخلت الوضع الصعب!','🔥 Hard mode!','🔥 Vanskelig modus!'],diffHard:['🔥 صعب','🔥 Hard','🔥 Vanskelig'],diffQ:['اختر مستوى الصعوبة','Choose difficulty','Velg vanskelighetsgrad'],diffEasyD:['للمبتدئين والعائلة: وحوش أضعف وأرواح أكثر (حتى ★★)','For beginners and families: weaker monsters, more lives (max ★★)','For nybegynnere og familier: svakere monstre, flere liv (maks ★★)'],diffHardD:['للمتمرسين: تحدٍّ حقيقي، ★★★ وجواهر مضاعفة 💎×2','For experienced players: a real challenge, ★★★ and double gems 💎×2','For erfarne: ekte utfordring, ★★★ og doble edelsteiner 💎×2'],diffNote:['يمكنك تغييره في أي وقت','You can change it any time','Du kan endre det når som helst'],diffRestart:['تغيير الصعوبة يعيد بدء المرحلة','Changing difficulty restarts the level','Endring av vanskelighetsgrad starter brettet på nytt'],gfxRestart:['تغيير الجودة يعيد بدء المرحلة','Changing quality restarts the level','Endring av grafikk starter brettet på nytt'],worldT:['خريطة العالم · 10 أراضٍ','World map · 10 lands','Verdenskart · 10 land'],worldHint:['اضغط على أرض لترى مراحلها العشر','Tap a land to see its 10 levels','Trykk på et land for å se de 10 brettene'],landLock:['تُفتح بعد المرحلة {0}','Unlocks after level {0}','Åpnes etter brett {0}'],landOf:['الأرض {0} من {1}','Land {0} of {1}','Land {0} av {1}'],changeHero:['اضغط لتغيير البطل','Tap to change hero','Trykk for å bytte helt'],heroesT:['الأبطال','Heroes','Helter'],gfx_med:['متوسط','Medium','Middels'],gfx_low:['منخفض','Low','Lav'],
   sfxOn:['الأصوات: تعمل','Sounds: on','Lyder: på'],sfxOff:['الأصوات: مكتومة','Sounds: off','Lyder: av'],
   musOn:['الموسيقى: تعمل','Music: on','Musikk: på'],musOff:['الموسيقى: مكتومة','Music: off','Musikk: av'],
   foot:['100 مرحلة · 10 عوالم · بطلان · 6 أبراج','100 levels · 10 realms · 2 heroes · 6 towers','100 brett · 10 riker · 2 helter · 6 tårn'],
@@ -863,6 +871,9 @@ function loadProg(){const p=S.prog[S.diff==='hard'?'hard':'easy'];while(p.stars.
 if(!S.prog){S.prog={easy:{stars:S.stars.slice(),unlocked:S.unlocked||1,sel:S.sel||0},hard:{stars:Array(NLEV).fill(0),unlocked:1,sel:0}};}
 loadProg();
 const maxUnl=()=>Math.max(S.prog.easy.unlocked||1,S.prog.hard.unlocked||1);
+/* hard mode opens from the cave on the world map once level 60 is beaten in the normal world */
+const HARD_AT=60;function hardOpen(){const u=S.diff==='hard'?(S.prog.easy.unlocked||1):(S.unlocked||1);return u>HARD_AT;}
+if(S.diff==='hard'&&(S.prog.easy.unlocked||1)<=HARD_AT){syncProg();S.diff='easy';loadProg();}
 function switchMode(d){if(S.diff===d&&S.prog)return;syncProg();S.diff=d;loadProg();viewSel=null;curRegion=null;save();applyModeUI();
   try{if(!$('#levels').hidden)renderLevels();if(!$('#worldScr').hidden)renderWorld();}catch(e){}}
 function applyModeUI(){const h=S.diff==='hard';$('#app').classList.toggle('hardMode',h);document.querySelectorAll('.modeBadge').forEach(b=>{b.innerHTML=h?t('diffHard'):t('diffEasy');b.classList.toggle('hard',h);});}
@@ -966,7 +977,7 @@ const LVCACHE={};
 /* measured with test bots that play like a real player (star upgrades, hero level, skills): keeps every region a real fight */
 const HPT=[[0,1],[5,1.0],[9,1.2],[14,2.0],[24,2.05],[39,2.3],[49,1.8],[59,1.18],[69,1.03],[79,.86],[89,.72],[99,.66]];
 /* per-level fine tune from a full 100-level bot test (each map plays differently) */
-var LVT=[2.083, 1.876, 1.249, 1.587, 2.252, 2.001, 3.0, 1.692, 2.161, 0.869, 1.762, 0.94, 2.207, 1.156, 1.312, 1.576, 1.083, 0.904, 1.313, 0.849, 0.46, 0.919, 0.736, 2.003, 0.84, 1.799, 0.623, 1.063, 0.538, 0.763, 1.222, 1.796, 0.821, 0.849, 0.93, 1.342, 1.071, 1.947, 1.007, 0.501, 1.439, 1.151, 0.491, 0.717, 0.584, 1.045, 0.597, 0.76, 1.139, 0.7, 1.854, 2.668, 0.963, 1.237, 1.087, 3.483, 1.747, 1.05, 0.804, 0.842, 2.77, 0.782, 2.804, 1.311, 1.043, 1.134, 0.703, 2.49, 1.11, 0.983, 8.698, 1.045, 0.871, 2.476, 2.825, 1.92, 1.714, 0.928, 1.132, 2.155, 2.262, 4.622, 2.619, 2.663, 2.021, 1.191, 2.937, 2.617, 0.175, 1.343, 1.87, 8.337, 1.494, 1.449, 0.976, 1.844, 1.296, 3.397, 0.753, 1.013];var EZT=[3.302, 3.519, 1.704, 1.468, 1.116, 1.686, 1.0, 2.187, 1.369, 2.546, 1.174, 1.548, 1.113, 1.278, 1.0, 1.682, 1.799, 2.099, 1.596, 0.153, 1.625, 1.186, 1.734, 0.474, 1.349, 1.204, 1.973, 1.62, 1.418, 1.224, 1.336, 1.085, 2.455, 2.341, 1.848, 1.306, 1.678, 1.422, 1.284, 1.908, 0.769, 1.095, 1.264, 1.291, 1.433, 0.673, 1.019, 0.997, 0.792, 0.878, 0.917, 0.581, 0.748, 1.04, 0.878, 0.863, 0.826, 1.78, 1.103, 1.558, 2.495, 2.067, 0.623, 2.434, 2.234, 1.342, 1.087, 1.471, 2.535, 1.705, 0.421, 1.351, 0.892, 0.794, 0.432, 1.81, 0.404, 1.199, 1.409, 1.116, 0.792, 0.505, 1.011, 1.18, 0.614, 1.381, 0.524, 0.516, 0.009, 1.329, 1.768, 0.297, 1.68, 2.114, 1.565, 1.536, 1.563, 0.695, 1.28, 1.214];var LVLIVES=[20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14];
+var LVT=[2.083, 1.876, 1.249, 1.587, 2.252, 2.001, 3.0, 1.692, 2.161, 0.869, 1.762, 0.94, 2.207, 1.156, 1.312, 1.576, 1.083, 0.904, 1.313, 0.849, 0.46, 0.919, 0.736, 2.003, 0.84, 1.799, 0.623, 1.063, 0.538, 0.763, 1.222, 1.796, 0.821, 0.849, 0.93, 1.342, 1.071, 1.947, 1.007, 0.501, 1.439, 1.151, 0.491, 0.717, 0.584, 1.045, 0.597, 0.76, 1.139, 0.7, 1.854, 2.668, 0.963, 1.237, 1.087, 3.483, 1.747, 1.05, 0.804, 0.842, 2.77, 0.782, 2.804, 1.311, 1.043, 1.134, 0.703, 2.49, 1.11, 0.983, 8.698, 1.045, 0.871, 2.476, 2.825, 1.92, 1.714, 0.928, 1.132, 2.155, 2.262, 4.622, 2.619, 2.663, 2.021, 1.191, 2.937, 2.617, 0.175, 1.343, 1.87, 8.337, 1.494, 1.449, 0.976, 1.844, 1.296, 3.397, 0.753, 1.013];var HDT=[1.5, 1.417, 1.326, 1.225, 1.326, 1.205, 1.314, 1.314, 1.225, 1.176, 1.314, 1.257, 1.114, 1.268, 1.417, 1.314, 1.268, 1.291, 1.246, 1.235, 1.148, 1.16, 1.12, 1.08, 1.04, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];var EZT=[3.302, 3.519, 1.704, 1.468, 1.116, 1.686, 1.0, 2.187, 1.369, 2.546, 1.174, 1.548, 1.113, 1.278, 1.0, 1.682, 1.799, 2.099, 1.596, 0.153, 1.625, 1.186, 1.734, 0.474, 1.349, 1.204, 1.973, 1.62, 1.418, 1.224, 1.336, 1.085, 2.455, 2.341, 1.848, 1.306, 1.678, 1.422, 1.284, 1.908, 0.769, 1.095, 1.264, 1.291, 1.433, 0.673, 1.019, 0.997, 0.792, 0.878, 0.917, 0.581, 0.748, 1.04, 0.878, 0.863, 0.826, 1.78, 1.103, 1.558, 2.495, 2.067, 0.623, 2.434, 2.234, 1.342, 1.087, 1.471, 2.535, 1.705, 0.421, 1.351, 0.892, 0.794, 0.432, 1.81, 0.404, 1.199, 1.409, 1.116, 0.792, 0.505, 1.011, 1.18, 0.614, 1.381, 0.524, 0.516, 0.009, 1.329, 1.768, 0.297, 1.68, 2.114, 1.565, 1.536, 1.563, 0.695, 1.28, 1.214];var LVLIVES=[20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14];
 function hpTune(i){for(let k=1;k<HPT.length;k++)if(i<=HPT[k][0]){const [a,x]=HPT[k-1],[b,y]=HPT[k];return x+(y-x)*(i-a)/(b-a);}return .8;}
 function getLevel(i){
   if(LVCACHE[i])return LVCACHE[i];
@@ -1256,7 +1267,7 @@ function bossSlam(e,dt,stop){if(e.holdT>0)e.holdT-=dt;if(stop)return;const ez=G.
 function spawnEnemy(type,d=-2,pi=0){
   const b=ENEMIES[type],lv=G.lv,w=Math.max(1,G.wave),i=G.L;
   let m=(1+WA*(w-1)+WB*(w-1)*(w-1))*lv.hp;if(b.boss)m=(1+.04*(w-1))*lv.hp*1.05;
-  if(hasMod('elite'))m*=1.2;m*=playerPow();if(G.assist)m*=.75;if(G.easy)m*=BAL.ezHp*((window.EZT&&EZT[G.L])||1)*(b.fly?.65:1);m*=1-.1*(G.paths.length-1);if(pi<G.paths.length)m*=Math.min(1,Math.max(.5,G.paths[pi].total/18));if(hasMod('swarm')&&!b.boss)m*=.7;if(G.demo)m=1;
+  if(hasMod('elite'))m*=1.2;m*=playerPow();if(G.assist)m*=.75;if(G.easy)m*=BAL.ezHp*((window.EZT&&EZT[G.L])||1)*(b.fly?.65:1);else if(!G.demo&&!G.assist&&window.HDT)m*=HDT[G.L]||1;m*=1-.1*(G.paths.length-1);if(pi<G.paths.length)m*=Math.min(1,Math.max(.5,G.paths[pi].total/18));if(hasMod('swarm')&&!b.boss)m*=.7;if(G.demo)m=1;
   const gm=(1+.03*Math.min(i,60))*goldK(i)*(hasMod('scarce')?.75:1)*(hasMod('elite')?1.15:1);
   if(pi>=G.paths.length)pi=0;const p=posAt(d,pi);
   const e={id:G.nextId++,pi,type,hp:b.hp*m,maxHp:b.hp*m,shield:(b.shield||0)*m,maxShield:(b.shield||0)*m,sp:b.sp*(hasMod('swift')?1.2:1),armor:b.armor+(hasMod('armored')?3:0),gold:Math.max(1,Math.round(b.gold*gm)),lives:b.lives,r:b.r,fly:!!b.fly,regen:(b.regen||0)+(hasMod('regen')?.015:0),
@@ -1426,6 +1437,7 @@ function updateProjs(dt){
       if(p.t>=1){if(p.goal){bigText(p.ex,p.ey,LANG==='ar'?'هدف!':LANG==='no'?'MÅL!':'GOAL!');fireworks(p.ex,p.ey);shakeIt(.5);}explode(p.ex,p.ey,p.rad,p.dmg,p.k==='fireball'?'energy':'phys',p.k==='fireball'?{air:true,byHero:true,color:p.col||'#ff7a2a',src:p.goal?'blast':'fire',burn:p.goal?0:2,burnDmg:p.dmg*.012}:{src:'blast',maxHit:p.maxHit,burn:p.big?2.6:1.4,burnDmg:p.dmg*(p.big?.012:.007)});if(p.k==='fireball')burst(p.ex,p.ey,'#ff7a2a',20,5,.13,.5,.4);p.dead=true;}
     }
   }
+  for(const p of G.projs)if(p.k==='rain'){if(p.t>0)p.t-=dt;else{p.stuck+=dt;if(p.stuck>.8)p.dead=true;}}
   G.projs=G.projs.filter(p=>!p.dead);
 }
 function explode2(x,y,rad,dmg,o={}){const col=o.col||'#ffb04a';let first=null;for(const e of G.enemies){if(e.dead)continue;if(Math.hypot(e.x-x,e.y-y)<=rad+e.r){if(!first)first=e;hurt(e,dmg,'energy',{byHero:true,src:o.src});if(o.slow&&!e.dead&&!ENEMIES[e.type].noSlow){e.slowF=Math.max(e.slowF,o.slow);e.slowT=Math.max(e.slowT,1.5);}}}
@@ -1468,6 +1480,9 @@ function updateHero(dt){if(G.hero&&G.hero.ballAway>0)G.hero.ballAway-=dt;
     const tg=nearestEnemy(h.x,h.y,D.range);
     if(tg){h.ang=Math.atan2(tg.y-h.y,tg.x-h.x);if(h.atkCd<=0){h.atkCd=1/D.rate;h.atkAnim=1,h.atkN=(h.atkN||0)+1;const ca=Math.cos(h.ang),sa=Math.sin(h.ang),dm=D.dmg*m*lvScale();
       if(h.type==='laser'){hurt(tg,dm,'energy',{byHero:true,src:'fire'});laserFx(h.x,h.y,h.ang,Math.hypot(tg.x-h.x,tg.y-h.y),.12,1.0);sfx('zap',h.x);}
+      else if(h.type==='hoop'){const tg0=tg;/* the ball leaves his hand at the release point of the throw animation */
+        heroSeq(h,[[.34,()=>{if(G.over||h.dead)return;const tx=tg0.x,ty=tg0.y;h.ballAway=0;ballFly(h,tx,ty,.26,.75,false);const bp=G.projs[G.projs.length-1];if(bp&&bp.k==='ballfx'){bp.h0=.62;bp.sx=h.x+Math.cos(h.ang)*.15;bp.sy=h.y+Math.sin(h.ang)*.15;}sfx('swing',h.x);
+          heroSeq(h,[[.26,()=>{if(G.over)return;explode2(tg0.dead?tx:tg0.x,tg0.dead?ty:tg0.y,.5,dm,{src:D.src,col:D.col,chain:0,slow:0});}]]);}]]);}
       else if(D.src==='arrow'){G.projs.push({k:'arrow',hero:1,x:h.x+ca*.2,y:h.y+sa*.2,h0:.75,vx:ca*13,vy:sa*13,tgt:tg,dmg:dm,life:1.5,sp:13});sfx('arrow',h.x);}
       else{G.projs.push({k:'magic',src:D.src,col:D.col,x:h.x+ca*.3,y:h.y+sa*.3,vx:ca*8,vy:sa*8,tgt:tg,dmg:dm,life:1.4,sp:8});sfx(D.src==='shock'?'zap':D.src==='ice'?'frost':'magic',h.x);}}}
   }
@@ -1571,7 +1586,8 @@ function castTarget(x,y){
   if(sk.id==='sky'){G.meteors.push({x,y,t:0,dur:.55,kind:'sword',dmg:150*sc,rad:1.4,stun:1.3});sfx('sky',x);}
   if(sk.id==='fireball'){h.atkAnim=1,h.atkN=(h.atkN||0)+1;G.projs.push({k:'fireball',sx:h.x,sy:h.y,ex:x,ey:y,x:h.x,y:h.y,h0:.7,t:0,ft:.45,h:.9,dmg:85*sc,rad:1.1});sfx('fireball',h.x);}
   if(sk.id==='storm'){if(!G.storms)G.storms=[];G.storms.push({x,y,t:2.6,tick:0,dmg:50*sc});ringFx(x,y,'#9f8cff',.2,1.7,.6,.1);sfx('zap',x);}
-  if(sk.id==='volley'){if(!G.volleys)G.volleys=[];for(let k=0;k<18;k++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*1.35;G.volleys.push({x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,t:.25+k*.06,dmg:24*sc});}sfx('arrow',x);}
+  if(sk.id==='volley'){if(!G.volleys)G.volleys=[];const da=Math.atan2(y-h.y,x-h.x),lowq=V.q==='low';for(let k=0;k<18;k++){const a=Math.random()*6.28,r=Math.sqrt(Math.random())*1.35,v={x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,t:.25+k*.06,dmg:24*sc};G.volleys.push(v);
+      if(!lowq||k%2===0)G.projs.push({k:'rain',x:v.x,y:v.y,t:v.t,da:da+(Math.random()-.5)*.25,stuck:0});}sfx('arrow',x);}
   if(sk.id==='blizzard'){if(!G.blizz)G.blizz=[];G.blizz.push({x,y,t:5,tick:0,dmg:8*sc});groundFx(x,y,1.8,'ice',5);sfx('freeze',x);}
   if(sk.id==='prison'){let best=null,bd=1.8;for(const e of G.enemies){if(e.dead)continue;const d=Math.hypot(e.x-x,e.y-y);if(d<bd){bd=d;best=e;}}if(best){best.frozenT=ENEMIES[best.type].boss?3:4.5;hurt(best,140*sc,'energy',{byHero:true,src:'ice'});if(!best.fly){iceSpikes(best.x,best.y,10,best.r*1.6);groundFx(best.x,best.y,.8,'ice',3);}snowFx(best.x,best.y,16,.5,1.8,.15);ringFx(best.x,best.y,'#bfeaff',.1,1,.5,.1);sfx('freeze',x);}else h.cd[i]=2;}
   if(sk.id==='firewall'){let bp=null;for(let pi=0;pi<G.paths.length;pi++){const P=G.paths[pi];for(let d=0;d<P.total;d+=.2){const q=posAt(d,pi),dd=Math.hypot(q.x-x,q.y-y);if(!bp||dd<bp.dd)bp={pi,d,dd};}}
@@ -1705,7 +1721,15 @@ function heroGear(type,inner){if(type!=='knight'&&type!=='fire')return null;let 
 function heroBall(type,inner,H){const B=HERO_BALL[type];if(!B)return;if(B.cut)try{cutGeom(inner,B.cut);}catch(e){}H.ball=ballMesh(B.kind,B.kind==='soccer'?.085:.09);H.ballKind=B.kind;H.g.add(H.ball);}
 function animBall(R,h,dt,T){const b=R.ball;b.visible=!(h.ballAway>0)&&!h.dead;if(!b.visible)return;const r=b.geometry.parameters.radius;
   if(R.ballKind==='soccer'){if(h.moving){b.position.set(.15+.05*Math.abs(Math.sin(T*9)),r,.03);b.rotation.z-=dt*14;}else{const j=Math.abs(Math.sin(T*3.2));b.position.set(.1,r+.24*j,.02);b.rotation.z-=dt*4;}}
-  else{if(h.jumpT>0){b.position.set(.05,.95,0);b.rotation.x+=dt*10;}else{const f=h.moving?7:3.6,j=Math.abs(Math.cos(T*f));b.position.set(.06,r+(.27-r)*j,-.2);b.rotation.x+=dt*(h.moving?6:2);}}}
+  else{/* basketball: held in the hand when standing, real dribbling when moving, carried by the throwing hand during throws */
+    if(R.inner&&R.hL===undefined){R.hL=R.inner.getObjectByName('LeftHand')||null;R.hR=R.inner.getObjectByName('RightHand')||null;}
+    const hand=(R.onceT>0||h.jumpT>0)?R.hR:R.hL;
+    if(hand){const v=_bv.set(0,0,0);hand.getWorldPosition(v);R.g.worldToLocal(v);
+      if(R.onceT>0||h.jumpT>0){b.position.set(v.x,v.y,v.z);b.rotation.x+=dt*4;}
+      else if(h.moving){const j=Math.abs(Math.cos(T*6.5));b.position.set(v.x+.07,r+(v.y-r*.9-r)*j,v.z);b.rotation.x+=dt*7;}
+      else{b.position.set(v.x+.03,v.y-r*.85,v.z);}}
+    else if(h.jumpT>0){b.position.set(.05,.95,0);b.rotation.x+=dt*10;}else{const f=h.moving?7:3.6,j=Math.abs(Math.cos(T*f));b.position.set(.06,r+(.27-r)*j,-.2);b.rotation.x+=dt*(h.moving?6:2);}}}
+const _bv=new THREE.Vector3();
 /* a ball that flies out from the hero and comes back to him (basic attacks and skills of the sport heroes) */
 function ballFly(h,tx,ty,ft,arc,back){if(!h)return;G.projs.push({k:'ballfx',kind:HERO_BALL[h.type]?HERO_BALL[h.type].kind:'soccer',h0:.25,sx:h.x,sy:h.y,ex:tx,ey:ty,x:h.x,y:h.y,t:0,ft,arc:arc||.6,back:back!==false,hero:h});h.ballAway=ft*(back!==false?2:1)+.05;}
 function slowMo(t){if(G)G.slowT=Math.max(G.slowT||0,t);}
@@ -2141,6 +2165,7 @@ function elephantMesh(){const root=new THREE.Group(),g=new THREE.Group(),R={root
   root.add(M(DISC(),SHADM(),0,.012,0,[.5,.5,1],{rx:-Math.PI/2,nc:1}));return R;}
 function projMesh(p){
   const g=new THREE.Group();
+  if(p.k==='rain'){const L0=.5,th=.02,a=new THREE.Group();a.add(M(CYL(),L('#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));a.add(M(CONE(),MET('#c8d0d6'),L0/2+.03,0,0,[.03,.08,.03],{rz:-Math.PI/2,nc:1}));a.add(M(BOX(),L('#f0ece0'),-L0/2+.04,0,0,[.08,.006,.05],NC));a.add(M(BOX(),L('#f0ece0'),-L0/2+.04,0,0,[.08,.05,.006],NC));a.rotation.z=-1.25;g.add(a);return{root:g};}
   if(p.k==='arrow'||p.k==='spear'){const sp=p.k==='spear'||p.jav,L0=sp?.5:.34,th=sp?.022:.014;g.add(M(CYL(),L(sp?'#6a4020':'#8a6a40'),0,0,0,[th,L0,th],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),MET('#c8d0d6'),L0/2+.025,0,0,[sp?.04:.02,.06,sp?.04:.02],{rz:-Math.PI/2,nc:1}));g.add(M(BOX(),L('#f0ece0'),-L0/2+.03,0,0,[.05,.004,.035],NC));}
   else if(p.k==='pbolt'){const bm=mt('pbolt',()=>new THREE.MeshBasicMaterial({color:'#7fd6ff'}));g.add(M(CYL(),bm,0,0,0,[.035,.62,.035],{rz:-Math.PI/2,nc:1}));g.add(M(CONE(),mt('pboltH',()=>new THREE.MeshBasicMaterial({color:'#e8f8ff'})),.34,0,0,[.07,.14,.07],{rz:-Math.PI/2,nc:1}));const s=new THREE.Sprite(GLOWM('#3fb4ff'));s.scale.set(1.1,.55,1);g.add(s);const s2=new THREE.Sprite(GLOWM('#bfeaff'));s2.scale.setScalar(.35);s2.position.x=.3;g.add(s2);return{root:g};}
   else if(p.k==='ballfx'){const b=ballMesh(p.kind,p.kind==='soccer'?.075:.08);g.add(b);const s=new THREE.Sprite(GLOWM(p.kind==='soccer'?'#ffd27a':'#ff9a3a'));s.scale.setScalar(.38);g.add(s);return{root:g,ball:b};}
@@ -2237,6 +2262,7 @@ function render3D(T,dt){vfxRender(dt||1/60);
   }
   for(const u of (G.units||[])){const R=getMesh(u,()=>elephantMesh()),rt=R.root;const age=G.time-u.born,pop=Math.min(1,age/.3)*Math.min(1,u.life/.4);rt.position.set(u.x,Math.abs(Math.sin(T*6))*.03,u.y);rt.scale.setScalar(Math.max(.05,pop));R.g.rotation.y=-Math.atan2(-u.dy,-u.dx);R.g.rotation.z=Math.sin(T*6)*.04;}
   for(const p of G.projs){const R=getMesh(p,()=>projMesh(p)),g=R.root;
+    if(p.k==='rain'){const f=Math.max(0,p.t),ca=Math.cos(p.da),sa=Math.sin(p.da);g.visible=f<.75;g.position.set(p.x-ca*f*2.8,.16+f*9,p.y-sa*f*2.8);g.rotation.y=-p.da;continue;}
     if(p.k==='arrow'||p.k==='spear'||p.k==='magic'){let hh;if(p.k==='magic')hh=.55;else{const th=p.tgt?(p.tgt.fly?.85:p.tgt.r*1.3):.25,dist=p.tgt?Math.hypot(p.tgt.x-p.x,p.tgt.y-p.y):0;if(p.d0===undefined)p.d0=Math.max(.2,dist);if(p.tgt){const uu=1-Math.min(1,dist/p.d0);p.lh=p.h0+(th-p.h0)*uu+Math.sin(uu*Math.PI)*.12*p.d0;}hh=p.lh===undefined?p.h0:p.lh;}
       g.position.set(p.x,hh,p.y);g.rotation.y=-Math.atan2(p.vy,p.vx);}
     else if(p.k==='pbolt'){g.position.set(p.x,p.h0*.7+.15,p.y);g.rotation.y=-Math.atan2(p.vy,p.vx);}
@@ -2428,7 +2454,15 @@ function openRing(){const r=$('#ring');r.innerHTML='';r.hidden=false;$('#app').c
   placeRing();refreshRing();placeInfo();}
 let infoT=0;
 function placeInfo(){const info=$('#tinfo'),r=$('#ring');if(!info||info.hidden||!r)return;const ry=parseFloat(r.style.top)||0,H0=$('#stage').clientHeight||innerHeight;
-  info.classList.toggle('top',ry>H0*.5);clearTimeout(infoT);infoT=setTimeout(()=>{info.hidden=true;},4500);}
+  info.classList.toggle('top',ry>H0*.5);info.style.left=info.style.top=info.style.bottom=info.style.transform='';
+  /* keep the info box clear of every ring button (upgrade / sell / target): try spots until none overlaps */
+  try{const par=(info.offsetParent||document.body).getBoundingClientRect(),bs=[...r.querySelectorAll('.ring-b')].map(b=>b.getBoundingClientRect()).filter(q=>q.width);
+    if(bs.length){const m=10,box={l:Math.min(...bs.map(q=>q.left))-m,t:Math.min(...bs.map(q=>q.top))-m-18,r:Math.max(...bs.map(q=>q.right))+m,b:Math.max(...bs.map(q=>q.bottom))+m+18};
+      const iw=info.offsetWidth,ih=info.offsetHeight,W0=par.width,Hh=par.height,top0=58,bot0=Hh-70-ih,pad=12;
+      const C=[[(W0-iw)/2,top0],[(W0-iw)/2,bot0],[W0-iw-pad,top0],[pad,top0],[W0-iw-pad,bot0],[pad,bot0],[W0-iw-pad,(Hh-ih)/2],[pad,(Hh-ih)/2]];
+      const hit=([x,y])=>{const L=par.left+x,T=par.top+y;return !(L+iw<box.l||L>box.r||T+ih<box.t||T>box.b);};
+      const p=C.find(c=>!hit(c));if(p){info.classList.remove('top');info.style.transform='none';info.style.left=Math.round(p[0])+'px';info.style.top=Math.round(p[1])+'px';info.style.bottom='auto';}}}catch(e){}
+  clearTimeout(infoT);infoT=setTimeout(()=>{info.hidden=true;},4500);}
 function placeRing(){const r=$('#ring');if(!r||r.hidden||!G)return;let x,y;if(G.selected){x=G.selected.x;y=G.selected.y;}else if(G.buildCell){const q=plotXY(G.buildCell.c,G.buildCell.r);x=q.x;y=q.y;}else return;
   const [sx,sy]=proj(x,.35,y),m=108;const sm=H<600;r.style.left=Math.max(m,Math.min(W-m,sx))+'px';r.style.top=Math.max(sm?112:158,Math.min(H-(sm?138:175),sy))+'px';}
 function refreshRing(){const r=$('#ring');if(!r||r.hidden)return;r.querySelectorAll('.ring-b.t').forEach(b=>b.classList.toggle('poor',G.gold<tCost(b.dataset.type)));const up=r.querySelector('.ring-b.up');if(up&&G.selected)up.classList.toggle('poor',G.gold<tUpg(G.selected));}
@@ -2521,8 +2555,11 @@ function renderWorld(){applyModeUI();const box=$('#wPins');box.innerHTML='';docu
   for(let r=0;r<10;r++){const lock=r*10>=S.unlocked,[x,y]=WORLDPINS[r],b=document.createElement('button');b.className='wpin'+(lock?' lock':'')+(r===cur?' cur':'')+(y<.2?' up':'');b.style.left=x*1536+'px';b.style.top=y*864+'px';
     b.innerHTML=`<span class="fl">${lock?'🔒 ':''}${tx(REGIONS[r].name)}<small>${lock?t('landLock',r*10):'★ '+regionStars(r)+'/30'}</small></span><span class="nb">${r+1}</span>`;
     b.addEventListener('click',()=>{sfx('ui');if(lock){showHint(t('landLock',r*10));setTimeout(()=>showHint(null),2200);return;}curRegion=r;viewSel=null;if(Math.floor(S.sel/10)!==r)S.sel=Math.min(S.unlocked-1,r*10+9);renderLevels();showScreen('levels');});box.appendChild(b);}
+  {const hm=S.diff==='hard',open=hm||hardOpen(),c=document.createElement('button');c.className='hpin'+(open?'':' lock');c.style.left=(.935*1536)+'px';c.style.top=(.60*864)+'px';
+    c.innerHTML=`<img alt="" src="ui/hardcave.webp"><span class="hf">${hm?t('hardBack'):(open?'':'🔒 ')+t('hardPin')}<small>${hm?'':open?t('hardEnter'):t('landLock',HARD_AT)}</small></span>`;
+    c.addEventListener('click',()=>{sfx('ui');if(hm){switchMode('easy');return;}if(!open){showHint(t('landLock',HARD_AT));setTimeout(()=>showHint(null),2200);return;}switchMode('hard');sfx('level');showHint(t('hardOn'));setTimeout(()=>showHint(null),1800);});box.appendChild(c);}
   requestAnimationFrame(()=>layoutMap($('#wBox'),'world'));}
-function openWorld(){if(!S.diff){askDiff(()=>{});}renderWorld();showScreen('worldScr');requestAnimationFrame(()=>layoutMap($('#wBox'),'world'));}
+function openWorld(){if(!S.diff)S.diff='easy';if(S.diff==='hard'&&!hardOpen())switchMode('easy');renderWorld();showScreen('worldScr');requestAnimationFrame(()=>layoutMap($('#wBox'),'world'));}
 function renderHeroes(){
   const box=$('#heroPick');if(!box)return;box.innerHTML='';const lv=getLevel(S.sel||0);S.trial=S.trial||{};
   if(!viewHero||!HEROES[viewHero])viewHero=S.hero;
